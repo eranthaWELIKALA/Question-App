@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title><ion-row>Delete Question<ion-label *ngIf="no_trash_questions>0">[{{no_trash_questions}}]</ion-label><ion-col><ion-icon (click)="showDeleteModal()" name="trash" class="ion-float-right"></ion-icon></ion-col></ion-row></ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+  <ion-content>
+    <ion-item class="ion-margin">
+        <ion-label>
+          Filter by Subject
+        </ion-label>
+        <ion-select placeholder="Select" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterQuestions()" multiple=true>
+          <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <!-- <ion-button (click)="refresh()"></ion-button> -->
+    <ion-list *ngFor="let question of questionArray; let t = index">
+      <ion-item>
+        <ion-label>{{t+1}})</ion-label>
+        <ion-textarea position="stacked" type="text" class="from-control" [value]="question.data.question" readonly></ion-textarea>
+        <ion-button type="button" color="danger" (click)="removeQuestion(t)"><ion-icon name="remove"></ion-icon></ion-button>
+      </ion-item>
+    </ion-list>
+  
+  </ion-content>
+  

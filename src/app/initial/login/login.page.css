@@ -1,0 +1,11 @@
+ion-grid{
+    align-items: center;
+}
+ion-item{
+    --background: #3f549d;
+    --color: rgb(255, 255, 255);
+}
+
+ion-button{
+    --background: #3f549d;
+}

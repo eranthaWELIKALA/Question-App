@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row>
+        <ion-title>Add Question</ion-title>
+    </ion-row>      
+  </ion-toolbar>
+</ion-header>
+        
+          <!-- the main content -->
+          <ion-content class="ion-padding">
+              <ion-card>
+                  <ion-card-header>
+                      Hi, This is my first app using Ionic4.
+                  </ion-card-header>
+                  <ion-card-content>
+                      <p>Slide right for menu</p>
+                      <ion-button class="mt-1" type="button" color="danger" (click)="addQuestion()"><ion-icon name="add-circle"></ion-icon> Add Question</ion-button>
+                  </ion-card-content>
+              </ion-card> 
+            <form (ngSubmit)="formSubmit()">
+              <ion-list *ngFor="let questionItem of questionGroup; let t = index">
+                  <ion-item>
+                      <ion-label>
+                          Subject
+                        </ion-label>
+                        <ion-select required placeholder="Select" class="form-control" name=subject{{t}} [(ngModel)]="questionItem.subject">
+                          <ion-select-option *ngFor="let subject of subjects" [value]="subject.id" >{{subject.data.name}}</ion-select-option>
+                        </ion-select>
+                  </ion-item>
+                  <ion-row>
+                      <ion-item>
+                          <ion-label position="stacked">Question :</ion-label>
+                          <ion-input type="text" class="form-control" name=question{{t}} clearInput placeholder="Enter an Question" [value]="questionItem.question" [(ngModel)]="questionItem.question"></ion-input>
+                      </ion-item>
+                        <ion-button type="button" color="danger" (click)="removeQuestion(t)"><ion-icon name="remove"></ion-icon></ion-button>
+                  </ion-row>                  
+                  <ion-item>
+                    <ion-label position="stacked">Choices   :</ion-label>
+                    <ion-input type="text" class="form-control" name=answer{{t}}a clearInput placeholder="Answer A" [value]="questionItem.a" [(ngModel)]="questionItem.a"></ion-input>
+                    <ion-input type="text" class="form-control" name=answer{{t}}b clearInput placeholder="Answer B" [value]="questionItem.b" [(ngModel)]="questionItem.b"></ion-input>
+                    <ion-input type="text" class="form-control" name=answer{{t}}c clearInput placeholder="Answer C" [value]="questionItem.c" [(ngModel)]="questionItem.c"></ion-input>
+                    <ion-input type="text" class="form-control" name=answer{{t}}d clearInput placeholder="Answer D" [value]="questionItem.d" [(ngModel)]="questionItem.d"></ion-input>
+                    <ion-input type="text" class="form-control" name=answer{{t}}e clearInput placeholder="Answer E" [value]="questionItem.e" [(ngModel)]="questionItem.e"></ion-input>
+                  </ion-item>
+                  <ion-item>
+                      <ion-label>Answer   :</ion-label>
+                      <ion-select placeholder="Select" class="form-control" name="role" [(ngModel)]="questionItem.answer">
+                          <ion-select-option *ngIf="questionItem.a != undefined && questionItem.a != ''" value="A">{{questionItem.a}}</ion-select-option>
+                          <ion-select-option *ngIf="questionItem.b != undefined && questionItem.b != ''" value="B">{{questionItem.b}}</ion-select-option>
+                          <ion-select-option *ngIf="questionItem.c != undefined && questionItem.c != ''" value="C">{{questionItem.c}}</ion-select-option>
+                          <ion-select-option *ngIf="questionItem.d != undefined && questionItem.d != ''" value="D">{{questionItem.d}}</ion-select-option>
+                          <ion-select-option *ngIf="questionItem.e != undefined && questionItem.e != ''" value="E">{{questionItem.e}}</ion-select-option>
+                      </ion-select>
+                  </ion-item>
+              </ion-list> 
+              <ion-button type="submit" [disabled]="disableSaveBtn">Save</ion-button>               
+            </form>            
+          </ion-content>
+        <!--</ion-split-pane>
+</ion-content>-->

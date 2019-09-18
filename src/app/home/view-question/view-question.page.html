@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>View Questions<ion-label *ngIf="no_questions>0">[{{no_questions}}]</ion-label></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="ion-margin">
+      <ion-label>
+        Filter by Subject
+      </ion-label>
+      <ion-select placeholder="Select" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterQuestions()" multiple=true>
+        <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+      </ion-select>
+  </ion-item>
+  <ion-list *ngFor="let question of questionArray; let t =index">
+      <ion-item>
+          <ion-label>{{t+1}})</ion-label>
+          <ion-textarea position="stacked" type="text" class="from-control" name=q{{question.id}} [(ngModel)]="question.data.question"></ion-textarea>
+      </ion-item>
+      <ion-row>
+        <ion-col>
+            <ion-item class="ion-float-left">
+                <ion-label>Answer   :</ion-label>
+                <ion-select placeholder="Select" class="form-control" name="role" [(ngModel)]="question.data.answer">
+                    <ion-select-option *ngIf="question.data.a != undefined && question.data.a != ''" value="A">{{question.data.a}}</ion-select-option>
+                    <ion-select-option *ngIf="question.data.b != undefined && question.data.b != ''" value="B">{{question.data.b}}</ion-select-option>
+                    <ion-select-option *ngIf="question.data.c != undefined && question.data.c != ''" value="C">{{question.data.c}}</ion-select-option>
+                    <ion-select-option *ngIf="question.data.d != undefined && question.data.d != ''" value="D">{{question.data.d}}</ion-select-option>
+                    <ion-select-option *ngIf="question.data.e != undefined && question.data.e != ''" value="E">{{question.data.e}}</ion-select-option>
+                </ion-select>
+          </ion-item>  
+        </ion-col>
+        <ion-col>
+            <ion-button type="button" class="ion-float-right" color="success" (click)="updateQuestion(question)"><ion-icon name="thumbs-up"></ion-icon></ion-button> 
+        </ion-col>          
+      </ion-row>
+      
+      <!-- <ion-input type="text" class="from-control" style="font-weight: bold; font-size: 12px; color: red;" [value]="question.data.answer"></ion-input> -->
+  </ion-list>
+</ion-content>

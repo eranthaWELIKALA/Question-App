@@ -1,0 +1,25 @@
+<ion-split-pane contentId="menu-content">
+  <!--  our side menu  -->
+  <ion-menu contentId="menu-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+          <ion-item class="ion-margin" routerLink="/home/add" routerDirection="forward" menuClose><ion-icon name="add-circle"></ion-icon>Add an Question</ion-item>
+          <ion-item class="ion-margin" routerLink="/home/view" routerDirection="forward" menuClose><ion-icon name="eye"></ion-icon>View Questions</ion-item>
+          <ion-item class="ion-margin" routerLink="/home/delete" routerDirection="forward" menuClose><ion-icon name="trash"></ion-icon>Delete Questions</ion-item>
+      </ion-list>
+    </ion-content>   
+  </ion-menu>      
+
+  <!-- the main content -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Question App By එරන්ත වැලිකල</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-router-outlet id="menu-content" scrollY="true" main></ion-router-outlet>
+</ion-split-pane>
