@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyD4Eitu94e5qZNkbe6U9aEPCMwattP9s4Y',    
-    authDomain: 'questionapp-42922.firebaseapp.com',
-    databaseURL: 'https://questionapp-42922.firebaseio.com/',
-    projectId: 'questionapp-42922',
-    messagingSenderId: '984999319594'
+    apiKey: '#########################',    
+    authDomain: 'questionapp-XXXXX.firebaseapp.com',
+    databaseURL: 'https://questionapp-XXXXX.firebaseio.com/',
+    projectId: 'questionapp-XXXXX',
+    messagingSenderId: '123456789'
   }
 };
 
