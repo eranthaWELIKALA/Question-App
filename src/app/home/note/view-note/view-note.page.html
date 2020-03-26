@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+            <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+            <ion-col sizez="8">View Notes</ion-col>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="viewNotePage">
+    <ion-refresher *ngIf="subjectFilter!=undefined" slot="fixed" id="refresher" (ionRefresh)="filterNotes()" #refresher>
+        <ion-refresher-content
+        pullingText="Pull Down to Refresh"
+        refreshingText="Refreshing"
+        refreshingSpinner="crescent"
+        ></ion-refresher-content>
+    </ion-refresher>
+
+    <!-- Subject Filter Area -->
+    <ion-card>
+        <ion-item>
+            <ion-col><ion-text *ngIf="filtersShow">Hide Filters</ion-text><ion-text *ngIf="!filtersShow">Show Filters</ion-text></ion-col>
+            <ion-col class="ion-float-right" size="1"><fa-icon [icon]="filtersShow?faCaretSquareUp:faCaretSquareDown" (click)="filtersShow=!filtersShow"></fa-icon></ion-col>
+        </ion-item>
+
+      <ion-item-group *ngIf="filtersShow">
+        <ion-item class="ion-margin">
+            <ion-label>
+              Filter by Subject
+            </ion-label>
+            <ion-select [placeholder]="subjects?.length==0?'No Subjects': 'Select'" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterNotes()">
+              <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item class="ion-margin" *ngIf="subjectFilter!=undefined">
+            <ion-col size="11">
+                <ion-label>Search by Instructor</ion-label>
+            </ion-col>
+            <ion-col size="1">
+                <ion-checkbox name="search_by_instructor" class="ion-float-right" [(ngModel)]="search_by_instructor" (ionChange)="initializeItems()"></ion-checkbox>
+            </ion-col>      
+        </ion-item>  
+        <ion-item class="ion-margin" *ngIf="search_by_instructor">
+            <ion-searchbar showcancelbutton="true" (ionInput)="filterByInstructor($event)"></ion-searchbar>
+        </ion-item>
+      </ion-item-group>
+    </ion-card>
+      
+      <!-- Papers -->
+      <ion-item-group *ngIf="subjectFilter!=undefined">
+          <ion-card *ngIf="notes?.length==0">
+            <ion-item class="ion-margin-vertical">
+                <ion-text>No Notes</ion-text>
+            </ion-item>
+          </ion-card>
+          <ion-list *ngFor="let note of notes">
+            <ion-card>
+                <ion-item-group class="ion-margin-bottom">
+                    <ion-item>
+                      <ion-text>{{note.data.name + " " + note.data.year}}</ion-text>
+                      <ion-col><span class="ion-float-right">View <fa-icon [icon]="faFilePdf" (click)="download_openPDF(note.data.contentURL, note.data.name)"></fa-icon></span></ion-col>
+                    </ion-item>
+                    <ion-item>
+                      <ion-text>{{"Prepared by " + getInstructorName(note.data.instructor)}}</ion-text>
+                    </ion-item>                             
+                    <ion-item>                        
+                        <ion-text>{{"Grade/ Level: " + note.data.grade_level}}</ion-text>
+                    </ion-item>                   
+                    <ion-item>
+                      <ion-textarea readonly>{{note.data.description}}</ion-textarea>
+                    </ion-item>     
+                    <ion-item>                        
+                        <ion-text>{{"Uploaded on: " + sharedService.timeStampToDate(note.data.timestamp)}}</ion-text>
+                    </ion-item> 
+                  </ion-item-group>
+            </ion-card>                  
+          </ion-list>
+      </ion-item-group> 
+</ion-grid>
+</ion-content>
+
+<ion-footer class="ion-text-center">
+    <small *ngIf="loggedInUser.data.grade_level=='' || loggedInUser.data.grade_level=='other'">Set Grade/ Level in your "Profile" for more filtered results</small>
+</ion-footer>

@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+              <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+              <ion-col sizez="8">View Notes</ion-col>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content class="ion-padding">
+<ion-grid class="viewCreatedNotePage">
+
+      <!-- Subject Filter Area -->
+      <ion-card>
+          <ion-item class="ion-margin">
+              <ion-label>
+                Filter by Subject
+              </ion-label>
+              <ion-select [placeholder]="subjects?.length==0?'No Subjects': 'Select'" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterNotes()">
+                <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+              </ion-select>
+          </ion-item>
+      </ion-card>
+        
+        <!-- Papers -->
+        <ion-item-group *ngIf="subjectFilter!=undefined">
+            <ion-card *ngIf="notes?.length==0">
+                <ion-item class="ion-margin-vertical">
+                    <ion-text>You have not uploaded any notes yet</ion-text>
+                </ion-item>
+              </ion-card>
+            <ion-list *ngFor="let note of notes">
+              <ion-card>
+                  <ion-item-group class="ion-margin-bottom">
+                      <ion-item>
+                        <ion-text>{{note.data.name + " " + note.data.year}}</ion-text>
+                        <ion-col><span class="ion-float-right">View <fa-icon [icon]="faFilePdf" (click)="download_openPDF(note.data.contentURL, note.data.name)"></fa-icon></span></ion-col>
+                      </ion-item>                             
+                      <ion-item>                        
+                          <ion-text>{{"Grade/ Level: " + note.data.grade_level}}</ion-text>
+                      </ion-item>       
+                      <ion-item>                        
+                          <ion-text>{{"Uploaded on: " + sharedService.timeStampToDate(note.data.timestamp)}}</ion-text>
+                      </ion-item>               
+                      <ion-item>
+                        <ion-button (click)="deleteNote(note.id)">Delete</ion-button>
+                      </ion-item>
+                    </ion-item-group>
+              </ion-card>                  
+            </ion-list>
+        </ion-item-group> 
+</ion-grid>
+</ion-content>

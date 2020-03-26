@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row>
+        <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+        <ion-col size="2"><fa-icon [icon]="faArrowLeft" (click)="goBack()"></fa-icon></ion-col>
+        <ion-col>Notifications<ion-badge *ngIf="notifications?.length>0" color="dark">{{notifications.length}}</ion-badge></ion-col>
+      </ion-row>
+  </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="notificationPage ion-padding">
+    <ion-card *ngIf="loggedInUser.data.adminFeatures">
+      <ion-item>
+        <ion-text>Add a Notification</ion-text>
+        <ion-col><ion-button class="ion-float-right" shape="round" size="small" (click)="disableSaveBtn=!disableSaveBtn;openCreateNotificationModal()"><fa-icon [icon]="faPlus"></fa-icon></ion-button></ion-col>
+      </ion-item>
+    </ion-card>
+    <ion-card *ngIf="notifications?.length==0">
+      <ion-item>
+        <ion-text>No notifications</ion-text>
+      </ion-item>
+    </ion-card>
+    <ion-list *ngIf="notifications?.length>0">
+      <ion-card *ngFor="let notification of notifications" class="ion-padding">
+        <ion-card-title>{{notification.data.title}}</ion-card-title>
+        <ion-card-content>
+          {{notification.data.description}}
+        </ion-card-content>
+        <ion-item>
+          <ion-col *ngIf="notification.data.createdUser == loggedInUser.id">            
+            <ion-button class="ion-float-left" size="small" (click)="disableSaveBtn=!disableSaveBtn;openEditNotificationModal(notification);" [disabled]="disableSaveBtn">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </ion-button>
+            <ion-button class="ion-float-left" size="small" (click)="disableSaveBtn=!disableSaveBtn;deleteNotification(notification.id);" [disabled]="disableSaveBtn">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </ion-button>
+            <ion-button class="ion-float-right" size="small" (click)="disableSaveBtn=!disableSaveBtn;cleanClearedUsers(notification);" [disabled]="disableSaveBtn">
+              Notify Again
+            </ion-button>
+          </ion-col>
+          <ion-col *ngIf="notification.data.createdUser != loggedInUser.id">
+            <ion-button class="ion-float-right" size="small" (click)="disableSaveBtn=!disableSaveBtn;clearForMe(notification);" [disabled]="disableSaveBtn">Clear</ion-button>
+          </ion-col>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </ion-grid>
+</ion-content>

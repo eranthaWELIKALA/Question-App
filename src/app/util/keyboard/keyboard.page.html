@@ -1,0 +1,49 @@
+<ion-header>      
+    <ion-col size="2" offset="10"><ion-button (click)="close()"><fa-icon [icon]="faTimes"></fa-icon></ion-button></ion-col>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+
+    <quill-editor [(ngModel)]="text">
+        <div quill-editor-toolbar>
+            <span class="ql-formats">
+                <select class="ql-font">
+                <option selected></option>
+                <option value="serif"></option>
+                <option value="monospace"></option>
+                </select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </span>            
+            <span class="ql-formats">
+                    <button class="ql-script" value="sub"></button>
+                    <button class="ql-script" value="super"></button>
+                </span>
+            <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+                <select class="ql-align">
+                <option selected></option>
+                <option value="center"></option>
+                <option value="right"></option>
+                <option value="justify"></option>
+                </select>
+            </span>
+        </div>
+    </quill-editor>
+</ion-content>
+
+<ion-footer>  
+    <ion-row>
+        <ion-col size="2" offset="10"><ion-button (click)="add()"><fa-icon [icon]="faSave"></fa-icon></ion-button></ion-col>
+      </ion-row>
+</ion-footer>

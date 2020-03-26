@@ -24,3 +24,70 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+ /* Quill css files*/
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
+/* ngx-datatable */
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.css';
+@import '~@swimlane/ngx-datatable/themes/dark.css';
+@import '~@swimlane/ngx-datatable/themes/material.css';
+
+.my-custom-modal-css .modal-wrapper {
+    height: 60%;
+    width: 95%;
+    top: 10%;
+    position: absolute; 
+    display: block;  
+ }
+
+ .my-validateMobile-modal-css .modal-wrapper {
+    height: 30%;
+    width: 95%;
+    top: 20%;
+    position: absolute; 
+    display: block;  
+    border-radius: 5px;
+ }
+
+ .my-agreement-modal-css .modal-wrapper {
+   height: 80%;
+   width: 95%;
+   top: 5%;
+   position: absolute; 
+   display: block;  
+   border-radius: 5px;
+}
+
+.my-helper-modal-css .modal-wrapper {   
+   height: 80%;
+   width: 95%;
+   top: 5%;
+   position: absolute; 
+   display: block;  
+   border-radius: 5px;
+}
+
+.my-newsfeed-modal-css .modal-wrapper {
+   height: 40%;
+   width: 95%;
+   top: 20%;
+   position: absolute; 
+   display: block;  
+   border-radius: 5px;
+}
+
+.my-notification-modal-css .modal-wrapper {
+   height: 75%;
+   width: 95%;
+   top: 5%;
+   position: absolute; 
+   display: block;  
+   border-radius: 5px;
+}
+
+ .ck-editor__editable {
+   width: 100% !important;
+}

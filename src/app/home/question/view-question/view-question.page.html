@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row>
+        <ion-title>
+          <ion-row>
+            <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+            <ion-col size="5">View Paper</ion-col>
+          </ion-row>
+        </ion-title>
+    </ion-row>      
+  </ion-toolbar>
+</ion-header>
+          
+<!-- the main content -->
+<ion-content class="ion-padding">
+
+  <ion-card *ngIf="papers?.length==0">
+      <ion-item class="ion-margin-vertical">
+          <ion-text>No Papers</ion-text>
+      </ion-item>
+  </ion-card>
+    
+
+
+  <!-- Question form area -->
+
+    <!-- Question info -->
+    <div *ngIf="paper != undefined && paperId!=undefined && paperId!=null && paperId!=''">
+
+        <ion-card>
+            <ion-item>
+                <ion-col><ion-text *ngIf="paperDetailsShow">Hide Paper Details</ion-text><ion-text *ngIf="!paperDetailsShow">Show Paper Details</ion-text></ion-col>
+                <ion-col class="ion-float-right" size="1"><fa-icon [icon]="paperDetailsShow?faCaretSquareUp:faCaretSquareDown" (click)="paperDetailsShow=!paperDetailsShow"></fa-icon></ion-col>
+            </ion-item>
+            <ion-item-group class="ion-margin-bottom" *ngIf="paperDetailsShow">
+                <ion-item>
+                  <ion-text>{{paper.data.name + " " + paper.data.year}}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-text>{{"Questions: " + paper.data.added_questions + " / " + paper.data.no_of_questions}}</ion-text>
+                </ion-item>
+                <ion-item>
+                    <ion-text>{{"Grade/ Level: " + paper.data.grade_level}}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-text>{{"Allocated time(mins): " + paper.data.time}}</ion-text>
+                </ion-item>
+                <ion-item *ngIf="paper.data.price!=''">
+                  <ion-text>{{"Charging amount(LKR): " + paper.data.price}}</ion-text>
+                </ion-item>
+                <ion-item *ngIf="paper.data.published">
+                  <ion-text>Published</ion-text>
+                </ion-item>
+              </ion-item-group>
+        </ion-card>
+
+        <ion-card *ngIf="questionGroup?.length==0">
+          <ion-item class="ion-margin-vertical">
+              <ion-text>No Questions</ion-text>
+          </ion-item>
+        </ion-card>
+      <ion-card class="ion-margin-vertical" *ngFor="let questionItem of questionGroup; let t = index">
+          <ion-item color="none" lines="none"><ion-text>Question {{t+1}}</ion-text></ion-item>
+          <ion-item>
+              <h4 innerHTML="{{questionItem.data.question}}"></h4>
+          </ion-item>
+          <ion-item color="none" lines="none" *ngIf="questionItem.data.image">
+              <img *ngIf="questionItem.data.image_url!=''" max-width="200" max-height="200" [src]="questionItem.data.image_url">
+          </ion-item>
+
+        <!-- Answers -->
+        <div>
+            <ion-item *ngIf="questionItem.data.a!=''">
+                <ion-col size="2"><ion-label>A</ion-label></ion-col>
+                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}a [innerHTML]="questionItem.data.a" readonly></ion-input></ion-col>
+              </ion-item>
+              <ion-item *ngIf="questionItem.data.b!=''">
+                <ion-col size="2"><ion-label>B</ion-label></ion-col>
+                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}b [innerHTML]="questionItem.data.b" readonly></ion-input></ion-col>
+              </ion-item>
+              <ion-item *ngIf="questionItem.data.c!=''">
+                <ion-col size="2"><ion-label>C</ion-label></ion-col>
+                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}c [innerHTML]="questionItem.data.c" readonly></ion-input></ion-col>
+              </ion-item>
+              <ion-item *ngIf="questionItem.data.d!=''">
+                <ion-col size="2"><ion-label>D</ion-label></ion-col>
+                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}d [innerHTML]="questionItem.data.d" readonly></ion-input></ion-col>
+              </ion-item>
+              <ion-item *ngIf="questionItem.data.e!=''">
+                <ion-col size="2"><ion-label>E</ion-label></ion-col>
+                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}e [innerHTML]="questionItem.data.e" readonly></ion-input></ion-col>
+              </ion-item>
+        </div>
+
+        <!-- Correct answer selection -->
+        <div>
+          <ion-item>
+              <ion-label>{{"Answer   : " + questionItem.data.answer}}</ion-label>
+          </ion-item>
+        </div>
+      </ion-card>
+
+      </div>           
+</ion-content>
+  

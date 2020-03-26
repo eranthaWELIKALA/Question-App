@@ -1,0 +1,125 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <h3 class="ion-text-center">
+            <fa-icon class="ion-float-left" [icon]="faArrowLeft" (click)="goBack()"></fa-icon>
+            <ion-text class="ion-margin-start">mTute.lk - Register</ion-text>
+            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='i'" [icon]="faChalkboardTeacher"></fa-icon>
+            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='s'" [icon]="faGraduationCap"></fa-icon>
+        </h3>
+      </ion-title>
+          
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-grid class="ion-align-items-center registerPage">
+        <form #form="ngForm" (ngSubmit)="register(form)" class="qFormClass">
+            <ion-list>
+              <ion-item class="ion-margin form-group">
+                    <ion-label for="firstname">Firstname</ion-label>
+                    <ion-input type="text" class="form-control" name="firstname" #firstname="ngModel" [(ngModel)]="user.firstname" [ngClass]="{ 'is-invalid': form.submitted && firstname.invalid }" required></ion-input>                    
+              </ion-item> 
+              <div *ngIf="form.submitted && firstname.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="firstname.errors.required">Firstname is required</div>
+              </div>     
+
+              <ion-item class="ion-margin">
+                      <ion-label for="lastname">Lastname</ion-label>
+                      <ion-input type="text" class="form-control" name="lastname" #lastname="ngModel" [(ngModel)]="user.lastname"  [ngClass]="{ 'is-invalid': form.submitted && lastname.invalid }" required></ion-input>
+              </ion-item>  
+              <div *ngIf="form.submitted && lastname.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="lastname.errors.required">Lastname is required</div>
+              </div>       
+
+              <ion-item class="ion-margin">                   
+                      <ion-label>Email</ion-label>
+                      <ion-input type="email" email class="form-control" name="email" #email="ngModel" [(ngModel)]="user.email" [color]="emailFormatValidation()? '': 'danger'" required email></ion-input>
+              </ion-item>  
+              <div *ngIf="form.submitted && email.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                  <div *ngIf="email.errors.email">Email must be valid</div>
+              </div>    
+
+              <ion-item class="ion-margin">                   
+                      <ion-label>Mobile</ion-label>
+                      <ion-input type="number" inputmode="numeric" pattern="tel" class="form-control" name="mobile" #mobileNo="ngModel" [(ngModel)]="user.mobile" required><ion-text>+94</ion-text></ion-input>
+                      <!-- <ion-button size="small" (click)="validateMobileNumber()">C</ion-button> -->
+              </ion-item>   
+              <div *ngIf="form.submitted && mobileNo.invalid" class="invalid-feedback ion-text-end">
+                    <div *ngIf="mobileNo.errors.required">Mobile is required</div>
+              </div>    
+
+              <ion-item class="ion-margin">
+                    <ion-label>
+                      Role
+                    </ion-label>
+                    <ion-select placeholder="Select" class="form-control" name="role" #role="ngModel" [(ngModel)]="user.role" required>
+                      <ion-select-option value="i">Instructor</ion-select-option>
+                      <ion-select-option value="s">Student</ion-select-option>
+                    </ion-select>
+              </ion-item>
+              <div *ngIf="form.submitted && role.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="role.errors.required">Role is required</div>
+              </div>  
+
+              <ion-item class="ion-margin">
+                  <ion-label>
+                    Subjects
+                  </ion-label>
+                  <ion-select placeholder="Select" class="form-control" name="subject" [(ngModel)]="subject" multiple=true required>
+                    <ion-select-option *ngFor="let subject of subjects" [value]="subject.id" >{{subject.data.name}}</ion-select-option>
+                  </ion-select>
+            </ion-item>  
+
+              <ion-item class="ion-margin">
+                <ion-row>
+                    <ion-col class="ion-float-left"><ion-label>Picture</ion-label></ion-col>
+                    <ion-col size="1" offset="8"><fa-icon [icon]="faCamera" (click)="openCamera()"></fa-icon></ion-col>
+                    <ion-col>
+                      <input
+                        #imgFile
+                        type="file"
+                        (change)="checkFileType($event.target.files)"
+                        name="imageFile"
+                        accept="image/*"
+                      /></ion-col>
+                      <ion-col class="ion-float-right">
+                          <ion-thumbnail><img *ngIf="user.img_url!=''" [src]="user.img_url"/></ion-thumbnail>
+                      </ion-col>
+                </ion-row>
+              </ion-item>
+
+              <ion-item class="ion-margin">
+                  <ion-label>Password</ion-label>
+                  <ion-input type="password" class="form-control" name="password" #rPassword="ngModel" [(ngModel)]="password" [color]="passwordValidation()? 'success' : 'warning'" minlength="8" required></ion-input>
+              </ion-item>
+              <div *ngIf="form.submitted && rPassword.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="rPassword.errors.required">Password is required</div>
+                  <div *ngIf="rPassword.errors.minlength">Password must be at least 8 characters</div>
+              </div>     
+
+              <ion-item class="ion-margin">
+                  <ion-label>Confirm Password</ion-label>
+                  <ion-input type="password" class="form-control" name="confirmPassword" #cPassword="ngModel" [(ngModel)]="confirmPassword" [color]="passwordValidation()? 'success' : 'warning'" required></ion-input>
+                  <fa-icon *ngIf="passwordValidation()" [icon]="faCheck"></fa-icon>
+              </ion-item>
+              <div *ngIf="form.submitted && cPassword.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="cPassword.errors.required">Confirm Password is required</div>
+              </div>
+              <div *ngIf="!passwordValidation()" class="invalid-feedback ion-text-end">
+                  Passwords must match
+              </div>     
+
+              
+              <ion-item class="ion-margin">
+                  <ion-col size="6">Sign Agreement</ion-col>
+                  <ion-col size="2"><ion-checkbox color="light" name="signedAgreement" [(ngModel)]="signedAgreement" (click)="showAgreement()"></ion-checkbox></ion-col>   
+              </ion-item>
+
+              <ion-button type="submit" class="ion-float-right ion-margin-end" >Register</ion-button>
+            </ion-list>
+          </form>
+    </ion-grid>  
+  </ion-content>
+  

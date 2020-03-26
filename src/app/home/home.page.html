@@ -1,14 +1,77 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-split-pane contentId="menu-content">
+  <!--  our side menu  -->
+  <ion-menu contentId="menu-content" menu-id="mainMenu" type="push">
+    <ion-header>
+      <ion-toolbar>
+        <ion-row>
+          <ion-col size="5">
+            <ion-title>Menu</ion-title>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button shape="round" size="small" color="dark" routerLink="/home/notification" routerDirection="forward" (click)="sharedService.toggleMenu()">
+              <fa-icon [icon]="icon.faBell"></fa-icon><ion-badge *ngIf="notificationCount>0" color="dark">{{notificationCount}}</ion-badge>
+            </ion-button>
+          </ion-col>          
+          <ion-col size="3">
+            <ion-button shape="round" size="small" color="dark" (click)="showHelper()"><ion-text>Help </ion-text><fa-icon [icon]="icon.faQuestionCircle"></fa-icon></ion-button>
+          </ion-col>          
+          <ion-col size="2">
+            <ion-button shape="round" size="small" color="dark" routerLink="/home/accountSettings" routerDirection="forward" (click)="sharedService.toggleMenu()">
+              <fa-icon [icon]="icon.faCogs"></fa-icon>
+            </ion-button>
+          </ion-col>  
+        </ion-row>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="menuClass">
+      <ion-backdrop visible="true" *ngIf="sharedService.getOnPaper()"  tappable="true" (ionBackdropTap)="displayAlert()"></ion-backdrop>
+      <ion-list>
+          <ion-item class="ion-margin" routerLink="/home/user" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faUser"></fa-icon><ion-label>Profile</ion-label></ion-item>
+          
+          <!-- Instructor Links -->
+          <ion-item-group *ngIf="loggedInUser.data.role=='i'">
+              <!-- Paper Links -->
+                <ion-item class="ion-margin" routerLink="/home/paper/create" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faFileMedical"></fa-icon><ion-label>Create a Paper</ion-label></ion-item>
+                <!-- Question Links -->
+                <ion-item class="ion-margin" routerLink="/home/question/add" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faEdit"></fa-icon><ion-label>Edit a Paper</ion-label></ion-item>  
+                
+                <ion-item class="ion-margin" routerLink="/home/paper/view_create" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faFileAlt"></fa-icon><ion-label>View Papers</ion-label></ion-item>
+              
+              
+              
+              
+              <!-- Note Links -->
+              <ion-item class="ion-margin" routerLink="/home/note/create" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faPlusCircle"></fa-icon><ion-label>Add a Note</ion-label></ion-item>        
+              <ion-item class="ion-margin" routerLink="/home/note/view_create" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faStickyNote"></fa-icon><ion-label>View Notes</ion-label></ion-item>             
+          </ion-item-group>
+          
+          <!-- Student Links -->
+          <ion-item-group *ngIf="loggedInUser.data.role=='s'">
+            <!-- Paper Links -->
+            <ion-item class="ion-margin" routerLink="/home/paper/view" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faFileAlt"></fa-icon><ion-label>Papers</ion-label></ion-item> 
+            
+            <!-- Note Links -->
+            <ion-item class="ion-margin" routerLink="/home/note/view" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faStickyNote"></fa-icon><ion-label>Notes</ion-label></ion-item> 
+          </ion-item-group>         
+          <ion-item class="ion-margin" (click)="logOut()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faSignOutAlt"></fa-icon><ion-label>Logout</ion-label></ion-item>
+      </ion-list>
+      </div>
+    </ion-content>  
+    
+    <ion-footer>
+      <ion-toolbar>
+          <ion-item class="ion-margin" routerLink="/home/newsfeed" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faRss"></fa-icon><ion-label>Newsfeed</ion-label></ion-item>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>      
 
-<ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
-</ion-content>
+  <!-- the main content -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Question App By එරන්ත වැලිකල</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-router-outlet id="menu-content" scrollY="true" main></ion-router-outlet>
+  
+</ion-split-pane>

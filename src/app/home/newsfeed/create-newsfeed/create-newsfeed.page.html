@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row>
+        <ion-title>Add to Newsfeed</ion-title>
+        <ion-col><fa-icon class="ion-float-right ion-margin-end" [icon]="faTimes" (click)="close()"></fa-icon></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="createNewsfeedPage">
+      <ion-item>
+          <ion-text>Description</ion-text>
+        </ion-item>
+        <ion-item>
+          <textarea name="description" [(ngModel)]="description"></textarea>
+        </ion-item>
+        <ion-item>
+          <ion-col><ion-button class="btn btn-primary form-control ion-float-right" (click)="diableSaveBtn=!disableSavebtn;post();" [disabled]="disableSavebtn">Post</ion-button></ion-col>
+        </ion-item>
+  </ion-grid>
+
+</ion-content>

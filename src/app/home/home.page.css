@@ -1,0 +1,16 @@
+.menuClass{
+    opacity: 0.9;
+    background-image: url("../../../Pics/homeHeaderBackground.jpg");
+    min-height: 100%;
+}
+
+ion-header ion-toolbar{
+    --background: url("../../../Pics/homeMenuBackground.jpg");
+}
+ion-footer ion-toolbar{
+    --background: url("../../../Pics/homeMenuBackground.jpg");
+}
+
+ion-col, ion-row, ion-list{
+    background: transparent;
+}

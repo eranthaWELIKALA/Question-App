@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+            <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+            <ion-col sizez="8">Create a Paper</ion-col>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-grid class="createPaperPage ion-padding">
+            <ion-card>
+                    <form #form="ngForm" (ngSubmit)="formSubmit()" class="form-group">
+                        <ion-list nol-line>
+                  
+                              <ion-item>
+                                      <ion-label>
+                                          Paper Name<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                                      </ion-label>
+                                      <ion-input class="form-control" type="text" name="name" #name="ngModel" [(ngModel)]="paper.name" [ngClass]="{ 'is-invalid': form.submitted && name.invalid }" required></ion-input>
+                                  </ion-item>
+                                  <div *ngIf="form.submitted && name.invalid" class="invalid-feedback ion-text-end">
+                                      <div *ngIf="name.errors.required">Paper name is required</div>
+                                  </div>     
+                            
+                                  <ion-item>
+                                      <ion-label>
+                                          Year
+                                      </ion-label>
+                                      <ion-datetime class="form-control" displayFormat="YYYY" picker-format="YYYY" name="year" #year="ngModel" [(ngModel)]="paper.year" (ionChange)="pickYear()" [ngClass]="{ 'is-invalid': form.submitted && year.invalid }" required></ion-datetime>
+                                  </ion-item>
+                                  <div *ngIf="form.submitted && year.invalid" class="invalid-feedback ion-text-end">
+                                      <div *ngIf="year.errors.required">Year is required</div>
+                                  </div>     
+                            
+                                  <ion-item>
+                                      <ion-label>Subject<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                                      <ion-select placeholder="Select" class="form-control" name="subject" #subject="ngModel" [(ngModel)]="paper.subject" [ngClass]="{ 'is-invalid': form.submitted && subject.invalid }" required>
+                                          <ion-select-option *ngFor="let subject of subjectGroup" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+                                      </ion-select>
+                                  </ion-item>
+                                  <div *ngIf="form.submitted && subject.invalid" class="invalid-feedback ion-text-end">
+                                      <div *ngIf="subject.errors.required">Subject is required</div>
+                                  </div>   
+                                  
+                                  <ion-item>
+                                        <ion-label>Grade/ Level<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                                        <ion-select placeholder="Select" class="form-control" name="grade_level" #grade_level="ngModel" [(ngModel)]="paper.grade_level" [ngClass]="{ 'is-invalid': form.submitted && grade_level.invalid }" required>
+                                            <ion-select-option [value]="g6">Grade 6</ion-select-option>
+                                            <ion-select-option [value]="g7">Grade 7</ion-select-option>
+                                            <ion-select-option [value]="g8">Grade 8</ion-select-option>
+                                            <ion-select-option [value]="g9">Grade 9</ion-select-option>
+                                            <ion-select-option [value]="ol">Ordinary Level</ion-select-option>
+                                            <ion-select-option [value]="al">Advanced Level</ion-select-option>
+                                            <ion-select-option [value]="other">Other</ion-select-option>
+                                        </ion-select>
+                                    </ion-item>
+                                    <div *ngIf="form.submitted && grade_level.invalid" class="invalid-feedback ion-text-end">
+                                        <div *ngIf="subject.errors.required">Grade/ Level is required</div>
+                                    </div>
+                            
+                                  <ion-item>
+                                      <ion-label>
+                                          No. of Questions<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                                      </ion-label>
+                                      <ion-input class="form-control" type="number" name="no_of_questions" #no_of_questions="ngModel" [(ngModel)]="paper.no_of_questions" [ngClass]="{ 'is-invalid': form.submitted && no_of_questions.invalid }" required></ion-input>
+                                  </ion-item>
+                                  <div *ngIf="form.submitted && no_of_questions.invalid" class="invalid-feedback ion-text-end">
+                                      <div *ngIf="no_of_questions.errors.required">No. of Questions is required</div>
+                                  </div>     
+                            
+                                  <ion-item>
+                                      <ion-label>
+                                          Allocated time in mins<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                                      </ion-label>
+                                      <ion-input class="form-control" type="number" name="time" #time="ngModel" [(ngModel)]="paper.time" [ngClass]="{ 'is-invalid': form.submitted && time.invalid }" required></ion-input>
+                                  </ion-item>
+                                  <div *ngIf="form.submitted && time.invalid" class="invalid-feedback ion-text-end">
+                                      <div *ngIf="time.errors.required">Time is required</div>
+                                  </div>     
+                            
+                                  <ion-item-group>
+                                      <ion-item>
+                                        <ion-label>Charging?<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                                        <ion-select placeholder="Select" class="form-control" name="charging" #charging_="ngModel" [(ngModel)]="charging" [ngClass]="{ 'is-invalid': form.submitted && charging_.invalid }" required>
+                                            <!-- <ion-select-option [value]=true>Yes</ion-select-option> -->
+                                            <ion-select-option [value]=false>No</ion-select-option>
+                                        </ion-select>
+                                      </ion-item>          
+                                      <div *ngIf="form.submitted && charging_.invalid" class="invalid-feedback ion-text-end">
+                                            <div *ngIf="charging_.errors.required">Charging? is required</div>
+                                        </div>     
+                            
+                                      <ion-item *ngIf="charging">
+                                        <ion-label>
+                                                Amount<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                                            </ion-label>
+                                            <ion-input class="form-control" type="number" name="price" #price="ngModel" [(ngModel)]="paper.price" [ngClass]="{ 'is-invalid': form.submitted && price.invalid }" required></ion-input><ion-text>LKR</ion-text>
+                                            <div *ngIf="form.submitted && price.invalid" class="invalid-feedback ion-text-end">
+                                                    <div *ngIf="price.errors.required">Price is required</div>
+                                            </div>     
+                                    </ion-item>
+                                  </ion-item-group>
+                                  
+                                <ion-item>
+                                    <ion-col size="3" offset="8">
+                                        <ion-button class="btn ion-margin-end ion-align-end" type="submit" (click)="disableSaveBtn=!disableSaveBtn" [disabled]="disableSavebtn">Save</ion-button>  
+                                    </ion-col>
+                                </ion-item>
+                        </ion-list>
+                    </form>  
+                  </ion-card> 
+    </ion-grid>
+         
+</ion-content>

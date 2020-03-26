@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+              <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+              <ion-col sizez="8">View Papers</ion-col>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content class="ion-padding">
+    <ion-grid class="viewCreatedPaperPage">
+
+      <!-- Subject Filter Area -->
+      <ion-card>
+          <ion-item class="ion-margin">
+              <ion-label>
+                Filter by Subject
+              </ion-label>
+              <ion-select [placeholder]="subjects?.length==0?'No Subjects': 'Select'" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterPapers()">
+                <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+              </ion-select>
+          </ion-item>
+      </ion-card>
+        
+        <!-- Papers -->
+        <ion-item-group *ngIf="subjectFilter!=undefined">
+            <ion-card *ngIf="papers?.length==0">
+                <ion-item class="ion-margin-vertical">
+                    <ion-text>You have not created any papers</ion-text>
+                </ion-item>
+              </ion-card>
+            <ion-list *ngFor="let paper of papers">
+              <ion-card>
+                  <ion-item-group class="ion-margin-bottom">
+                      <ion-item>
+                        <ion-text>{{paper.data.name + " " + paper.data.year}}</ion-text>
+                        <ion-col *ngIf="paper.data.published"><fa-icon class="ion-float-right" [icon]="faEye" (click)="viewPaper(paper.id)"></fa-icon></ion-col>
+                        <ion-col *ngIf="!paper.data.published"><fa-icon class="ion-float-right" [icon]="faEdit" (click)="editPaper(paper.data.subject, paper.id)"></fa-icon></ion-col>
+                      </ion-item>
+                      <ion-item>
+                        <ion-text>{{"Questions: " + paper.data.added_questions + " / " + paper.data.no_of_questions}}</ion-text>
+                      </ion-item>
+                      <ion-item>
+                          <ion-text>{{"Grade/ Level: " + paper.data.grade_level}}</ion-text>
+                      </ion-item>
+                      <ion-item>
+                        <ion-text>{{"Allocated time(mins): " + paper.data.time}}</ion-text>
+                      </ion-item>
+                      <ion-item *ngIf="paper.data.price!=''">
+                        <ion-text>{{"Charging amount(LKR): " + paper.data.price}}</ion-text>
+                      </ion-item>
+                      <ion-item *ngIf="paper.data.published">
+                        <ion-text>Published</ion-text>
+                      </ion-item>
+                      <ion-item>
+                        <ion-button [disabled]="paper.data.published" (click)="deletePaper(paper.id)">Delete</ion-button>
+                      </ion-item>
+                    </ion-item-group>
+              </ion-card>                  
+            </ion-list>
+        </ion-item-group> 
+      </ion-grid>
+</ion-content>

@@ -1,0 +1,29 @@
+ion-header ion-toolbar{
+    /* --background: url("../../../../Pics/bg3.jpg")!important; */
+    --background: rgb(8, 31, 38)!important;
+    --color:  rgb(65, 177, 218);
+}
+
+.registerPage{
+    opacity: 0.9;
+    background-image: url("../../../../Pics/bg1.jpg");
+    background-size: 100% 100%;
+}
+
+.qFormClass ion-input, ion-label{
+    --background: none;
+    --color: rgb(65, 177, 218);
+}
+
+.qFormClass ion-col, ion-row, ion-list{
+    background: transparent;
+}
+
+.qFormClass ion-item{
+    --background:rgb(8, 31, 38);
+    --color: green;
+}
+
+.invalid-feedback{
+    color: yellow;
+}

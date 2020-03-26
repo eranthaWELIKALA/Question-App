@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row>
+          <ion-col size="11">Results</ion-col>
+          <ion-col size="1"><fa-icon [icon]="faTimes" (click)="close();saveAttempts();"></fa-icon></ion-col>
+      </ion-row></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="answerPaperModel">
+      <ion-list>
+          <ion-item *ngFor="let question of questionArray; let t = index" class="ion-margin-bottom">
+            <ion-row><ion-textarea readonly innerHTML="{{question.data.question}}"></ion-textarea></ion-row>
+            <ion-row><ion-textarea readonly [color]="answerArray[t]==question.data.answer? 'success': 'danger'" innerHTML="{{question.data[question.data.answer.toLowerCase()]}}"></ion-textarea></ion-row>         
+          </ion-item>
+      </ion-list>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,24 @@
+ion-header ion-toolbar{
+    --background: url("../../../../../Pics/homeHeaderBackground.jpg");
+}
+
+.adminPage{
+    opacity: 0.9;
+    background-image: url("../../../../../Pics/Machinery.jpg");
+    min-height: 100%;
+    background-repeat: repeat-y;
+}
+
+.qFormClass ion-input, ion-searchbar{
+    --background: none;
+    --color: rgb(65, 177, 218);
+}
+
+.qFormClass ion-col, ion-row, ion-list{
+    background: transparent;
+}
+
+.qFormClass ion-item{
+    --background:rgb(8, 31, 38);
+    --color: green;
+}

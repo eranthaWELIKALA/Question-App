@@ -1,0 +1,14 @@
+ion-header ion-toolbar{
+    --background: url("../../../../../Pics/homeHeaderBackground.jpg");
+}
+
+.answerPage{
+    opacity: 0.9;
+    background-image: url("../../../../../Pics/Exam Paper.jpg");
+    min-height: 100%;
+    background-repeat: repeat-y;
+}
+
+.answerSlide{
+    background: transparent;
+}

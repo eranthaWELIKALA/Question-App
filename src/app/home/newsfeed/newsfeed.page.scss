@@ -1,0 +1,22 @@
+ion-header ion-toolbar{
+    --background: url("../../../../Pics/homeHeaderBackground.jpg");
+}
+
+ion-footer ion-toolbar{
+    --background: url("../../../../Pics/homeHeaderBackground.jpg");
+}
+
+ion-header ion-item{
+    --background: transparent;
+    --color: none;
+}
+
+img {
+    border-radius: 50%;
+    size: 5px;
+  }
+
+.newsfeedPage{
+    background-color: lightgrey;
+    min-height: 100%;
+}

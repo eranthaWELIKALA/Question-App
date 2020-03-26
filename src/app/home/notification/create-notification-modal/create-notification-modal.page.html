@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-toolbar>            
+        <ion-row>
+            <ion-title>Add a Notification</ion-title>
+            <ion-col><fa-icon class="ion-float-right ion-margin-end" [icon]="faTimes" (click)="close()"></fa-icon></ion-col>          
+        </ion-row>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="createNotePage ion-padding">
+    <ion-card>
+            <form #form="ngForm" (ngSubmit)="formSubmit()" class="form-group">
+                <ion-item>
+                    <ion-label>
+                        Title<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                    </ion-label>
+                    <ion-input class="form-control" type="text" name="title" #title="ngModel" [(ngModel)]="notification.title" [ngClass]="{ 'is-invalid': form.submitted && title.invalid }" required></ion-input>
+                </ion-item>
+                <div *ngIf="form.submitted && title.invalid" class="invalid-feedback ion-text-end">
+                    <div *ngIf="title.errors.required">Notification title is required</div>
+                </div> 
+
+                <ion-item>
+                  <ion-label>
+                      Description<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>
+                  </ion-label>
+                  <ion-textarea class="form-control" type="text" name="title" #description="ngModel" [(ngModel)]="notification.description" [ngClass]="{ 'is-invalid': form.submitted && description.invalid }" required></ion-textarea>
+              </ion-item>
+              <div *ngIf="form.submitted && description.invalid" class="invalid-feedback ion-text-end">
+                  <div *ngIf="description.errors.required">Notification description is required</div>
+              </div> 
+
+                <ion-item>
+                    <ion-label>Role specific?<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                    <ion-select placeholder="Select" class="form-control" name="userRoleSelection" #userRoleSelection="ngModel" [(ngModel)]="notification.userRoleSelection" [ngClass]="{ 'is-invalid': form.submitted && userRoleSelection.invalid }" required>
+                        <ion-select-option value="a">Only for admins</ion-select-option>
+                        <ion-select-option value="i">Only for instructors</ion-select-option>
+                        <ion-select-option value="s">Only for students</ion-select-option>
+                        <ion-select-option value="any">For any</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <div *ngIf="form.submitted && userRoleSelection.invalid" class="invalid-feedback ion-text-end">
+                    <div *ngIf="userRoleSelection.errors.required">Specific role is required</div>
+                </div>   
+                
+                <ion-item>
+                  <ion-label>User specific?<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                    <ion-select placeholder="Select" class="form-control" name="userRoleS" [(ngModel)]="notification.userSelection">
+                        <ion-select-option [value]="true">Yes</ion-select-option>
+                        <ion-select-option [value]="false">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+              
+                <ion-item *ngIf="notification.userSelection">
+                      <ion-label>User scope<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
+                      <ionic-selectable
+                          name="selectedUsers"
+                          [(ngModel)]="notification.selectedUsers"
+                          [items]="usersFormatted"
+                          itemValueField="id"
+                          itemTextField="name"
+                          [canSearch]="true"
+                          [isMultiple]="true">
+                        </ionic-selectable>
+                </ion-item>
+                
+                <ion-item>
+                    <ion-col>
+                        <ion-button class="ion-float-right" type="submit" size="small" (click)="disableSaveBtn=!disableSaveBtn" [disabled]="disableSaveBtn">Add</ion-button>
+                    </ion-col>
+                </ion-item>
+            </form>
+        </ion-card>
+</ion-grid>
+
+</ion-content>

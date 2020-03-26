@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+            <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+            <ion-col sizez="8">{{paper.data.name + " " + paper.data.year}}</ion-col>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="answerPaper">
+  <div class="answerPage">
+      <ion-row class="ion-text-center">
+          <ion-col>
+              <ion-text [color] = "maxTime > 10? '': 'danger'">{{showTime(maxTime)}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-text-center">
+            <ion-col>
+                <ion-text>Jump to Question No. :</ion-text><ion-input placeholder="Question No." type="number" [(ngModel)]="jumpQuestion"></ion-input><ion-button *ngIf="jumpQuestion!=undefined" (click)="jumpToQuestion(jumpQuestion)">Jump</ion-button>
+            </ion-col>
+          </ion-row>
+        <ion-slides [options]="slideOpts" #questionSlider (ionSlideWillChange)="checkSlideOptions()" (ionSlidesDidLoad)="checkSlideOptions()" class="answerSlide">
+            <ion-slide *ngFor="let question of questionArray; let t = index;">
+              <ion-item-group>
+                <ion-item color="none" lines="none"><ion-text>Question {{t+1}}</ion-text></ion-item>
+                <ion-item>
+                    <h4 innerHTML="{{question.data.question}}"></h4>
+                </ion-item>
+                <ion-item color="none" lines="none" *ngIf="question.data.image">
+                    <img *ngIf="question.data.image_url!=''" max-width="200" max-height="200" [src]="question.data.image_url">
+                </ion-item>
+
+                <!-- Answers -->
+                <div>
+                    <ion-item *ngIf="question.data.a != undefined && question.data.a!=''">
+                        <ion-col size="2"><ion-label>A</ion-label></ion-col>
+                        <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}a [innerHTML]="question.data.a" readonly></ion-input></ion-col>
+                      </ion-item>
+                      <ion-item *ngIf="question.data.b != undefined && question.data.b!=''">
+                        <ion-col size="2"><ion-label>B</ion-label></ion-col>
+                        <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}b [innerHTML]="question.data.b" readonly></ion-input></ion-col>
+                      </ion-item>
+                      <ion-item *ngIf="question.data.c != undefined && question.data.c!=''">
+                        <ion-col size="2"><ion-label>C</ion-label></ion-col>
+                        <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}c [innerHTML]="question.data.c" readonly></ion-input></ion-col>
+                      </ion-item>
+                      <ion-item *ngIf="question.data.d != undefined && question.data.d!=''">
+                        <ion-col size="2"><ion-label>D</ion-label></ion-col>
+                        <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}d [innerHTML]="question.data.d" readonly></ion-input></ion-col>
+                      </ion-item>
+                      <ion-item *ngIf="question.data.e != undefined && question.data.e!=''">
+                        <ion-col size="2"><ion-label>E</ion-label></ion-col>
+                        <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}e [innerHTML]="question.data.e" readonly></ion-input></ion-col>
+                      </ion-item>
+                </div>
+                <ion-item color="none" lines="none">
+                  <ion-text>Answer   :</ion-text>
+                          <ion-select interface="action-sheet" placeholder="Select" class="form-control" name="role" [(ngModel)]="answerArray[t]">
+                              <ion-select-option *ngIf="question.data.a != undefined && question.data.a != ''" value="A">A</ion-select-option>
+                              <ion-select-option *ngIf="question.data.b != undefined && question.data.b != ''" value="B">B</ion-select-option>
+                              <ion-select-option *ngIf="question.data.c != undefined && question.data.c != ''" value="C">C</ion-select-option>
+                              <ion-select-option *ngIf="question.data.d != undefined && question.data.d != ''" value="D">D</ion-select-option>
+                              <ion-select-option *ngIf="question.data.e != undefined && question.data.e != ''" value="E">E</ion-select-option>
+                          </ion-select>
+                </ion-item>
+                <ion-row>
+                  <ion-col class="ion-float-left">
+                      <ion-button (click)="slide('back')" *ngIf="backSlideButton">Back</ion-button>
+                  </ion-col>
+                  <ion-col class="ion-float-right">
+                      <ion-button (click)="slide('next')" *ngIf="nextSlideButton">Next</ion-button>
+                      <ion-button (click)="submit()" *ngIf="submitButton">Submit</ion-button>
+                  </ion-col>                
+                </ion-row>
+              </ion-item-group>          
+            </ion-slide>
+        </ion-slides>
+  </div>
+    
+</ion-content>
+
+<ion-footer *ngIf="answerPaper">
+  <ion-col *ngFor="let answer of answerArray; let t = index">
+      <ion-badge [color]="answer==undefined? 'danger': 'primary'" (click)="answer==undefined? jumpToQuestion(t+1): ''">{{t+1}}</ion-badge>
+  </ion-col>
+</ion-footer>

@@ -1,0 +1,7 @@
+#toolbar{
+    --ion-background-color: #000000;
+}
+
+.ck-editor__editable {
+    min-height: 500px !important;
+}

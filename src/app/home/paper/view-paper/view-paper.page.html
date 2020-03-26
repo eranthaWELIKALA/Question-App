@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+        <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+        <ion-col sizez="8">Papers</ion-col>
+      <!-- <p> {{showTime(maxTime)}}</p> -->
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher *ngIf="subjectFilter!=undefined" slot="fixed" id="refresher" (ionRefresh)="filterPapers()" #refresher>
+    <ion-refresher-content
+    pullingText="Pull Down to Refresh"
+    refreshingText="Refreshing"
+    refreshingSpinner="crescent"
+    ></ion-refresher-content>
+</ion-refresher>
+
+<ion-grid class="viewPaperPage">
+    <ion-card>
+        <ion-item>
+            <ion-col><ion-text *ngIf="filtersShow">Hide Filters</ion-text><ion-text *ngIf="!filtersShow">Show Filters</ion-text></ion-col>
+            <ion-col class="ion-float-right" size="1"><fa-icon [icon]="filtersShow?faCaretSquareUp:faCaretSquareDown" (click)="filtersShow=!filtersShow"></fa-icon></ion-col>
+        </ion-item>
+      <ion-item-group *ngIf="filtersShow">
+      <ion-item class="ion-margin">
+          <ion-label>
+            Filter by Subject
+          </ion-label>
+          <ion-select [placeholder]="subjects?.length==0?'No Subjects': 'Select'" class="form-control" name="subjectFilter" [(ngModel)]="subjectFilter" (ionChange)="filterPapers()">
+            <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      <ion-item class="ion-margin" *ngIf="subjectFilter!=undefined">
+          <ion-col size="11">
+              <ion-label>Search by Instructor</ion-label>
+          </ion-col>
+          <ion-col size="1">
+              <ion-checkbox name="search_by_instructor" class="ion-float-right" [(ngModel)]="search_by_instructor" (ionChange)="initializeItems()"></ion-checkbox>
+          </ion-col>      
+      </ion-item>  
+      <ion-item class="ion-margin" *ngIf="search_by_instructor">
+          <ion-searchbar showcancelbutton="true" (ionInput)="filterByInstructor($event)"></ion-searchbar>
+      </ion-item>
+    </ion-item-group>
+    </ion-card>
+    
+      <ion-item-group *ngIf="subjectFilter!=undefined">
+          <ion-card *ngIf="papers?.length==0">
+              <ion-item class="ion-margin-vertical">
+                  <ion-text>No Papers</ion-text>
+              </ion-item>
+            </ion-card>
+          <ion-list *ngFor="let paper of papers">
+              <ion-item-group class="ion-margin-bottom">
+                <ion-item>
+                  <ion-text>{{paper.data.name + " " + paper.data.year}}</ion-text>
+                  <ion-col><fa-icon class="ion-float-right" [icon]="faEdit" (click)="answerPaper(paper)"></fa-icon></ion-col>
+                </ion-item>
+                <ion-item>
+                  <ion-text>{{"Prepared by " + getInstructorName(paper.data.instructor)}}</ion-text>
+                </ion-item>
+                <ion-item>
+                    <ion-text>{{"Grade/ Level: " + paper.data.grade_level}}</ion-text>
+                  </ion-item>
+                <ion-item>
+                  <ion-text>{{"No. of Question: " + paper.data.no_of_questions}}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-text>{{"Allocated time(mins): " + paper.data.time}}</ion-text>
+                </ion-item>
+              </ion-item-group>  
+            </ion-list>
+      </ion-item-group> 
+</ion-grid>
+
+</ion-content>
+<ion-footer class="ion-text-center">
+  <small *ngIf="loggedInUser.data.grade_level=='' || loggedInUser.data.grade_level=='other'">Set Grade/ Level in your "Profile" for more filtered results</small>
+</ion-footer>

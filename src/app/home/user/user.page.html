@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row>
+        <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+        <ion-col size="8">{{loggedInUser.data.firstname + " " + loggedInUser.data.lastname}}</ion-col>
+        <ion-col size="2" *ngIf="loggedInUser.data.adminFeatures"><fa-icon [icon]="faUserCog" (click)="goAdmin()"></fa-icon></ion-col>
+        <ion-col size="2" *ngIf="loggedInUser.data.role=='s'"><fa-icon [icon]="faStar" (click)="goAttempt()"></fa-icon></ion-col>
+      </ion-row>      
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid [ngClass]="loggedInUser.data.role=='i'? 'instructorUserPage': loggedInUser.data.role=='s'? 'studentUserPage': 'adminPage'">
+    <form #form="ngForm" (ngSubmit)="update(form)">
+      <ion-row>
+        <ion-col size="9">
+          <ion-row>
+              <ion-text class="ion-margin ion-float-left">Firstname</ion-text>
+          </ion-row>
+          <ion-row>
+              <ion-item>
+                  <ion-input class="ion-margin-start ion-float-left" name="firstname" [(ngModel)]="loggedInUser.data.firstname"></ion-input>
+              </ion-item>
+          </ion-row>
+          <ion-row>
+              <ion-text class="ion-margin ion-float-left">Lastname</ion-text>
+          </ion-row>
+          <ion-row>
+              <ion-item>
+                  <ion-input class="ion-margin-start ion-float-left" name="lastname" [(ngModel)]="loggedInUser.data.lastname"></ion-input>
+                </ion-item>
+          </ion-row>
+          <ion-row>
+              <ion-text class="ion-margin ion-float-left">Email</ion-text>
+          </ion-row>
+          <ion-row>
+              <ion-item>
+                  <ion-input class="ion-margin-start ion-float-left" name="email" [(ngModel)]="loggedInUser.data.email" [color]="emailValidation()? '': 'danger'"></ion-input>
+                </ion-item>
+          </ion-row>
+          <ion-row>
+              <ion-text class="ion-margin ion-float-left">Role</ion-text>
+          </ion-row>
+          <ion-row>
+              <ion-item>
+                  <ion-input class="ion-margin-start ion-float-left" name="role" [value]="loggedInUser.data.role=='i'? 'Instructor': 'Student'" readonly></ion-input>
+                </ion-item>
+          </ion-row>
+          <ion-row>
+              <ion-text class="ion-margin ion-float-left">Subjects</ion-text>
+          </ion-row>
+          <ion-row>
+                  <ion-select placeholder="Select" name="subject" [(ngModel)]="subject" multiple=true>
+                      <ion-select-option *ngFor="let subject of subjects" [value]="subject.id" >{{subject.data.name}}</ion-select-option>
+                  </ion-select>
+          </ion-row>
+
+          <div *ngIf="loggedInUser.data.role=='s'">
+            <ion-row>
+                <ion-text class="ion-margin ion-float-left">Grade/ Level</ion-text>
+            </ion-row>
+            <ion-row id="selectRow">
+                <ion-select placeholder="Select" name="grade_level" [(ngModel)]="loggedInUser.data.grade_level">
+                    <ion-select-option value="g6">Grade 6</ion-select-option>
+                    <ion-select-option value="g7">Grade 7</ion-select-option>
+                    <ion-select-option value="g8">Grade 8</ion-select-option>
+                    <ion-select-option value="g9">Grade 9</ion-select-option>
+                    <ion-select-option value="ol">Ordinary Level</ion-select-option>
+                    <ion-select-option value="al">Advanced Level</ion-select-option>
+                    <ion-select-option value="other">Other</ion-select-option>
+                </ion-select>
+            </ion-row>
+          </div>
+        </ion-col>
+        <ion-col size="3" class="img-wrap">
+              <img class="ion-margin ion-float-right" [src]="loggedInUser.data.img_url"/>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+          <ion-col size="9">
+              <ion-row>
+                <ion-item>
+                    <input
+                    #imgFile
+                    type="file"
+                    (change)="checkFileType($event.target.files)"
+                    name="imageFile"
+                    accept="image/*"
+                    />
+                </ion-item>
+              </ion-row>
+          </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-button type="submit">Update</ion-button>
+      </ion-row>
+    </form>
+  </ion-grid>
+  
+  
+
+</ion-content>

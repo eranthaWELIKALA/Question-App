@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>      
+      <ion-row>
+        <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+        <ion-col size="2"><fa-icon [icon]="faArrowLeft" (click)="goBack()"></fa-icon></ion-col>
+        <ion-col size="6">Paper Attempts</ion-col>
+      </ion-row>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="attemptPage">
+        <ion-card *ngFor="let attempt of attempts" color="medium">
+            <ion-item-group class="ion-margin-bottom">
+              <ion-item>
+                <ion-text>{{attempt.paper}}</ion-text>
+                <!-- <ion-col><fa-icon class="ion-float-right" [icon]="faEdit" (click)="answerPaper(paper)"></fa-icon></ion-col> -->
+              </ion-item>
+              <ion-item>
+                <ion-col size="3">Tries</ion-col>
+                <ion-col size="3">{{attempt.data.no_of_attempts}}</ion-col>
+                <ion-col size="3">Average</ion-col>
+                <ion-col size="3">{{attempt.data.average}}</ion-col>
+              </ion-item>
+              <ion-item>               
+                <ion-col size="3">Highest</ion-col>
+                <ion-col size="3">{{attempt.data.highest}}</ion-col>
+                <ion-col size="3">Lowest</ion-col>
+                <ion-col size="3">{{attempt.data.lowest}}</ion-col>
+              </ion-item>
+              <ion-item>
+                <ion-text>{{"Last attempt: " + attempt.lastAttempt}}</ion-text>
+              </ion-item>
+            </ion-item-group>  
+          </ion-card>
+    </ion-grid>
+
+</ion-content>

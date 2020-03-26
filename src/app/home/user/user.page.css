@@ -1,0 +1,49 @@
+ion-header ion-toolbar{
+    --background: url("../../../../Pics/homeHeaderBackground.jpg");
+}
+
+.studentUserPage{
+    opacity: 0.9;
+    background-image: url("../../../../Pics/Student.jpg");
+    background-size: 100% 100%;
+}
+
+.instructorUserPage{
+    opacity: 0.9;
+    background-image: url("../../../../Pics/Teacher.jpg");
+    background-size: 100% 100%;
+}
+
+.qFormClass ion-input{
+    --background: none;
+    --color: rgb(65, 177, 218);
+}
+
+.qFormClass ion-col, ion-row, ion-list{
+    background: transparent;
+}
+
+.qFormClass ion-item{
+    --background:rgb(8, 31, 38);
+}
+
+#registerDirectText{
+    color: yellow;
+}
+#registerDirectText a{
+    color: rgb(255, 255, 255);
+}
+
+.img-wrap {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0;
+  }
+  
+  img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: auto;
+  }

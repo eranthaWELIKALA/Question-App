@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-row>
+          <ion-title>Question Trash</ion-title>
+          <ion-col>
+              <fa-icon class="ion-float-right ion-margin-end" [icon]="faTimes" (click)="dismissDeleteModal()"></fa-icon>
+          </ion-col>
+      </ion-row>
+    </ion-toolbar>
+    
+  </ion-header>
+  
+  <ion-content class="ion-padding">
+    <ion-card class="ion-margin">
+      <ion-text cololr="danger">In the selection you will see the question with HTML tags!!!...</ion-text>
+    </ion-card>
+    <ion-card>
+      <ion-item class="ion-margin">
+            <ion-label>
+              Restore
+            </ion-label>
+            <fa-icon class="fa-lg" [icon]="faTrashRestore" (click)="confirmRestore()"></fa-icon>
+      </ion-item>
+    </ion-card>
+    <ion-card class="ion-margin-top">
+      <ion-item class="ion-margin">
+          <ion-label>
+            Confirm Delete
+          </ion-label>
+          <ion-select placeholder="Select" class="form-control" name="confirmDeletions" [(ngModel)]="confirmedTrashQuestionArray" multiple=true>
+            <ion-select-option *ngFor="let trashQuestion of trashQuestionArray" [value]="trashQuestion">{{trashQuestion.data.question}}</ion-select-option>
+          </ion-select>
+    </ion-item>
+    <ion-button class="ion-float-right ion-margin-end" color="danger" (click)="deleteQuestions()">Confirm Delete</ion-button>
+    </ion-card>
+  </ion-content>
+  

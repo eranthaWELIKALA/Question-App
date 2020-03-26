@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title><h3 class="ion-text-center">mTute.lk - Login</h3></ion-title>
+      
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="loginPage">
+  <ion-grid class="ion-align-self-center">
+    <img src="assets/icon/favicon.png" width="25%"/>
+
+      <form #form="ngForm" (ngSubmit)="login()" class="qFormClass">
+          <ion-list>
+            <ion-item class="ion-margin">
+              <ion-col size="9" offset="1">
+                  <ion-input type="text" class="form-control" name="email" [(ngModel)]="email" placeholder="Email"></ion-input>
+              </ion-col>
+            </ion-item>
+            <ion-item class="ion-margin">
+                <ion-col size="9" offset="1">
+                    <ion-input [type]="passwordType" class="form-control" name="password" [(ngModel)]="password"  placeholder="Password"></ion-input>
+                </ion-col>
+                <ion-col size="2" style="color: white;">
+                    <ion-button size="small" expand="block" (click)="showPassword()"><ion-icon name="eye" class="ion-float-right"></ion-icon></ion-button>
+                </ion-col>
+            </ion-item>
+            <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>            
+            <ion-item class="ion-margin">
+              <ion-col size="9" offset="1" style="color: white;">
+                  <ion-label>Remember me?</ion-label>
+              </ion-col>
+              <ion-col size="1" style="color: white;">
+                  <ion-checkbox name="rememberMe" class="ion-float-right" [(ngModel)]="rememberMe"></ion-checkbox>
+              </ion-col>
+          </ion-item>
+            <ion-button type="submit" class="ion-float-right ion-margin-end">Login</ion-button>
+          </ion-list> 
+                      
+          <ion-item class="ion-margin">            
+            <ion-row class="ion-margin">
+              <div class="ion-text-center" id="registerDirectText">
+            If you don't have an account, please <a routerLink='../register' routerDirection="root">
+              register</a> first!
+              </div>
+          </ion-row> 
+        </ion-item>  
+        </form>
+  </ion-grid>
+</div>  
+</ion-content>

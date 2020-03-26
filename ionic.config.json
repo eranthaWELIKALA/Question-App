@@ -1,5 +1,7 @@
 {
-  "name": "QuestionApp",
-  "integrations": {},
+  "name": "mTute.lk",
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

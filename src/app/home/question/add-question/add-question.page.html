@@ -1,0 +1,188 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row>
+        <ion-title>
+          <ion-row>
+            <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
+            <ion-col size="5">Edit Paper</ion-col>
+            <ion-col size="3">
+                <fa-icon *ngIf="no_trash_questions>0" [icon]="faTrash" (click)="showDeleteModal()"></fa-icon>
+                <ion-label *ngIf="no_trash_questions>0">[{{no_trash_questions}}]</ion-label>
+            </ion-col>
+            <ion-col size="2">
+                <fa-icon *ngIf="paperId!=undefined" [icon]="faUndo" (click)="reload()"></fa-icon>
+              </ion-col>
+          </ion-row>
+        </ion-title>
+    </ion-row>      
+  </ion-toolbar>
+</ion-header>
+          
+<!-- the main content -->
+<ion-content class="ion-padding">
+  <ion-grid class="editPaperPage">
+
+      <!-- Filtering Area -->
+      <ion-card>
+          <ion-item>
+              <ion-col><ion-text *ngIf="filtersShow">Hide Filters</ion-text><ion-text *ngIf="!filtersShow">Show Filters</ion-text></ion-col>
+              <ion-col class="ion-float-right" size="1"><fa-icon [icon]="filtersShow?faCaretSquareUp:faCaretSquareDown" (click)="filtersShow=!filtersShow"></fa-icon></ion-col>
+          </ion-item>
+        <!-- Filter by Subject -->
+        <ion-item-group *ngIf="filtersShow">
+        <ion-item class="ion-margin">
+            <ion-label>
+              Filter by Subject
+            </ion-label>
+            <ion-select [placeholder]="subjects?.length==0?'No Subjects': 'Select'" class="form-control" name="subjectId" [(ngModel)]="subjectId" (ionChange)="filterPapersBySubject()">
+              <ion-select-option *ngFor="let subject of subjects; let t = index" [value]="subject.id">{{subject.data.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          
+          <!-- Filter by Paper -->
+          <ion-item class="ion-margin" *ngIf="papers != undeifined && subjectId != undefined && subjectId != null && papers?.length!=0 ">
+              <ion-label>
+                Filter by Paper
+              </ion-label>
+              <ion-select placeholder="Select" class="form-control" name="paperId" [(ngModel)]="paperId" (ionChange)="getPaperSubject();filterQuestionsByPaper();">
+                <ion-select-option *ngFor="let paper of papers; let t = index" [value]="paper.id">{{paper.data.name + " - " + paper.data.year}}</ion-select-option>
+              </ion-select>
+          </ion-item>
+        </ion-item-group>
+      </ion-card>
+  
+      
+      <ion-card *ngIf="papers?.length==0">
+          <ion-item class="ion-margin-vertical">
+              <ion-text>No Papers</ion-text>
+          </ion-item>
+      </ion-card>
+  
+      <ion-card *ngIf="paper != undefined">
+          <ion-item>
+              <ion-col><ion-text *ngIf="paperDetailsShow">Hide Paper Details</ion-text><ion-text *ngIf="!paperDetailsShow">Show Paper Details</ion-text></ion-col>
+              <ion-col class="ion-float-right" size="1"><fa-icon [icon]="paperDetailsShow?faCaretSquareUp:faCaretSquareDown" (click)="paperDetailsShow=!paperDetailsShow"></fa-icon></ion-col>
+          </ion-item>
+          <ion-item-group class="ion-margin-bottom" *ngIf="paperDetailsShow">
+              <ion-item>
+                <ion-text>{{paper.data.name + " " + paper.data.year}}</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-text>{{"Questions: " + paper.data.no_of_questions}}</ion-text>
+              </ion-item>
+              <ion-item>
+                  <ion-text>{{"Grade/ Level: " + paper.data.grade_level}}</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-text>{{"Allocated time(mins): " + paper.data.time}}</ion-text>
+              </ion-item>
+              <ion-item *ngIf="paper.data.price!=''">
+                <ion-text>{{"Charging amount(LKR): " + paper.data.price}}</ion-text>
+              </ion-item>
+          </ion-item-group>
+      </ion-card>
+      
+  
+  
+    <!-- Question form area -->
+    <form (ngSubmit)="disableSaveBtn=!disableSaveBtn;formSubmit();">
+  
+      <!-- Question info -->
+      <div *ngIf="paper != undefined && paperId!=undefined && paperId!=null && paperId!=''">
+          <ion-card *ngIf="questionGroup?.length==0">
+            <ion-item class="ion-margin-vertical">
+                <ion-text>No Questions</ion-text>
+            </ion-item>
+          </ion-card>
+        <ion-card class="ion-margin-vertical" *ngFor="let questionItem of questionGroup; let t = index">
+          <ion-item>
+              <ion-col size="2"><ion-label>{{t+1}}) </ion-label></ion-col>
+              <ion-col size=10><ion-label>Question :</ion-label></ion-col>
+          </ion-item>
+          <ion-item>
+            <ion-col size="10">
+              <ion-textarea [placeholder]="questionItem.data.question==''?'Question':''" type="text" class="form-control" name=question{{t}} [innerHTML]="questionItem.data.question" (click)="loadKeyboard(questionItem.data.question, true, questionGroup, t, 'data.question')" readonly></ion-textarea>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button type="button" color="danger" (click)="removeQuestion(t)"><ion-icon name="remove"></ion-icon></ion-button> 
+            </ion-col>
+          </ion-item>
+  
+          <!-- Answers -->
+          <div>
+              <ion-item>
+                  <ion-col size="2"><ion-label>A</ion-label></ion-col>
+                  <ion-col size="10"><ion-input [placeholder]="questionItem.data.a==''?'Answer A':''" type="text" class="form-control" name=answer{{t}}a [innerHTML]="questionItem.data.a" (click)="loadKeyboard(questionItem.data.a, true, questionGroup, t, 'data.a')" readonly></ion-input></ion-col>
+                </ion-item>
+                <ion-item>
+                  <ion-col size="2"><ion-label>B</ion-label></ion-col>
+                  <ion-col size="10"><ion-input [placeholder]="questionItem.data.b==''?'Answer B':''" type="text" class="form-control" name=answer{{t}}b [innerHTML]="questionItem.data.b" (click)="loadKeyboard(questionItem.data.b, true, questionGroup, t, 'data.b')" readonly></ion-input></ion-col>
+                </ion-item>
+                <ion-item>
+                  <ion-col size="2"><ion-label>C</ion-label></ion-col>
+                  <ion-col size="10"><ion-input [placeholder]="questionItem.data.c==''?'Answer C':''" type="text" class="form-control" name=answer{{t}}c [innerHTML]="questionItem.data.c" (click)="loadKeyboard(questionItem.data.c, true, questionGroup, t, 'data.c')" readonly></ion-input></ion-col>
+                </ion-item>
+                <ion-item>
+                  <ion-col size="2"><ion-label>D</ion-label></ion-col>
+                  <ion-col size="10"><ion-input [placeholder]="questionItem.data.d==''?'Answer D':''" type="text" class="form-control" name=answer{{t}}d [innerHTML]="questionItem.data.d" (click)="loadKeyboard(questionItem.data.d, true, questionGroup, t, 'data.d')" readonly></ion-input></ion-col>
+                </ion-item>
+                <ion-item>
+                  <ion-col size="2"><ion-label>E</ion-label></ion-col>
+                  <ion-col size="10"><ion-input [placeholder]="questionItem.data.e==''?'Answer E':''" type="text" class="form-control" name=answer{{t}}e [innerHTML]="questionItem.data.e" (click)="loadKeyboard(questionItem.data.e, true, questionGroup, t, 'data.e')" readonly></ion-input></ion-col>
+                </ion-item>
+          </div>
+  
+          <!-- Correct answer selection -->
+          <div>
+            <ion-item>
+                <ion-label>Answer   :</ion-label>
+                <ion-select interface="pop-over" placeholder="Select" class="form-control" name=answer{{t}} [(ngModel)]="questionItem.data.answer">
+                    <ion-select-option *ngIf="questionItem.data.a != undefined && questionItem.data.a != ''" value="A">A</ion-select-option>
+                    <ion-select-option *ngIf="questionItem.data.b != undefined && questionItem.data.b != ''" value="B">B</ion-select-option>
+                    <ion-select-option *ngIf="questionItem.data.c != undefined && questionItem.data.c != ''" value="C">C</ion-select-option>
+                    <ion-select-option *ngIf="questionItem.data.d != undefined && questionItem.data.d != ''" value="D">D</ion-select-option>
+                    <ion-select-option *ngIf="questionItem.data.e != undefined && questionItem.data.e != ''" value="E">E</ion-select-option>
+                </ion-select>
+            </ion-item>
+          </div>
+  
+          <!-- Image selection and previewing -->
+          <div>          
+            <ion-item>
+              <ion-label>Image for the question: </ion-label><ion-checkbox name=image{{t}} [(ngModel)]="questionItem.data.image"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image">
+              <ion-col size="8"><input
+                type="file"
+                class="upload"
+                (change)="uploadFile($event.target.files, t)"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.image_url!=''" [src]="questionItem.data.image_url"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>
+        </ion-card>
+  
+          <!-- Buttons Area -->
+          <div>
+            <ion-item>
+              <ion-col size="6"><ion-button class="btn btn-sm mt-1" type="submit" [disabled]="disableSaveBtn">Save</ion-button></ion-col>
+              <ion-col size="6"><ion-button *ngIf="((paper.data.no_of_questions==paper.data.added_questions) && (!paper.data.published))" class="btn btn-sm mt-1" (click)="disableSaveBtn=!disableSaveBtn;publishPaperConfirm();" [disabled]="disableSaveBtn">Save & Publish</ion-button></ion-col>
+            </ion-item>
+          </div>
+  
+        </div>
+    
+    
+    </form>    
+  </ion-grid>        
+</ion-content>
+
+<ion-footer>
+  <ion-item *ngIf="paperId!=undefined">
+      <ion-button class="btn btn-sm mt-1" type="button" color="danger" (click)="disableSaveBtn=!disableSaveBtn;addQuestion();" [disabled]="disableSaveBtn"><ion-icon name="add-circle"></ion-icon> Add Question</ion-button>
+  </ion-item>
+</ion-footer>
+  
