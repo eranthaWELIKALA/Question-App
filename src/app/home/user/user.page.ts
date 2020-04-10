@@ -134,7 +134,7 @@ export class UserPage implements OnInit, OnDestroy {
       this.loadingService.hideLoading();
     }
     
-    /*if(this.loggedInUser.data.role == "i" && this.otherSubject.replace(/\s/g,"") != ""){
+    /*if(this.loggedInUser.data.role == "instructor" && this.otherSubject.replace(/\s/g,"") != ""){
 
       this.otherSubjectArray = this.otherSubject.split(",");
       let promises = this.otherSubjectArray.map(async element => {

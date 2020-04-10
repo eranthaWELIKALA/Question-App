@@ -22,7 +22,6 @@ export class HomePage {
 
   public questionGroup: Array<any> = [];
   private loggedInUser: {id: string, data: User};
-  private notificationCount: number = 0;
   
   constructor(
     public sharedService: SharedService,
@@ -41,10 +40,9 @@ export class HomePage {
   async ngOnInit() {
     await this.loadingService.showLoading("Loading");
     await this.notificationService.getNotificationForMe(this.loggedInUser).then(doc=>{
-      this.notificationCount = doc.length;
+      this.sharedService.setNotificationCount(doc.length);
     });
-    this.loadingService.hideLoading();
-    
+    this.loadingService.hideLoading();    
   }
 
   private async showHelper(){

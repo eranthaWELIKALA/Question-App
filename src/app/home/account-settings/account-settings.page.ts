@@ -6,6 +6,7 @@ import { NavController, AlertController } from '@ionic/angular';
 import { UserService, User } from 'src/app/initial/user.service';
 import { PaperService, Paper } from '../paper/paper.service';
 import { LoadingService } from 'src/app/util/loading/loading.service';
+import { NoteService, Note } from '../note/note.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -24,6 +25,7 @@ export class AccountSettingsPage implements OnInit {
     private loadingService: LoadingService,
     private userService: UserService,
     private paperService: PaperService,
+    private noteService: NoteService,
     private fAuth: AngularFireAuth,
     private navController: NavController,
     private alertController: AlertController) { 
@@ -68,6 +70,13 @@ export class AccountSettingsPage implements OnInit {
               else{
                 await this.paperService.removePaper(paper.id);
               }
+            })
+
+            // add remote user and transfer all the notes to the remote user
+            let notes: {id: string, data: Note}[] = await this.noteService.getNotesByInstructorId(this.loggedInUser.id);
+            notes.forEach(async note=>{
+                note.data.instructor = this.sharedService.getRemoteUserID();
+                await this.noteService.updateNote(note.data, note.id);
             })
 
             // remove the pic

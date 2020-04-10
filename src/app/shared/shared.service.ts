@@ -18,6 +18,8 @@ export class SharedService {
 
   private teacherPicPath: string = "profilePictures/1569192345051_Teacher.jpg";
   private teacherPicUrl: string = "https://firebasestorage.googleapis.com/v0/b/questionapp-42922.appspot.com/o/profilePictures%2F1569192345051_Teacher.jpg?alt=media&token=bd4dbe94-2d14-4f37-bde6-0e9b597fbac5";
+
+  private notificationCount: number = 0;
   
   public STORAGE_PERMISSION: boolean = false;
   public CAMERA_PERMISSION: boolean = false;
@@ -31,6 +33,14 @@ export class SharedService {
     
   public getRemoteUserID(){
     return this.remoteUserID;
+  }
+
+  public setNotificationCount(count: number){
+    this.notificationCount = count;
+  }
+
+  public getNotificationCount(){
+    return this.notificationCount;
   }
 
   public getLoggedInUser(): {id: string, data:User}{

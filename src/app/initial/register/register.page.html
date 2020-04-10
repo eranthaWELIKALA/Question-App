@@ -4,8 +4,8 @@
         <h3 class="ion-text-center">
             <fa-icon class="ion-float-left" [icon]="faArrowLeft" (click)="goBack()"></fa-icon>
             <ion-text class="ion-margin-start">mTute.lk - Register</ion-text>
-            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='i'" [icon]="faChalkboardTeacher"></fa-icon>
-            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='s'" [icon]="faGraduationCap"></fa-icon>
+            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='instructor'" [icon]="faChalkboardTeacher"></fa-icon>
+            <fa-icon class="ion-margin-start ion-float-right" *ngIf="user.role=='student'" [icon]="faGraduationCap"></fa-icon>
         </h3>
       </ion-title>
           
@@ -55,8 +55,8 @@
                       Role
                     </ion-label>
                     <ion-select placeholder="Select" class="form-control" name="role" #role="ngModel" [(ngModel)]="user.role" required>
-                      <ion-select-option value="i">Instructor</ion-select-option>
-                      <ion-select-option value="s">Student</ion-select-option>
+                      <ion-select-option value="instructor">Instructor</ion-select-option>
+                      <ion-select-option value="student">Student</ion-select-option>
                     </ion-select>
               </ion-item>
               <div *ngIf="form.submitted && role.invalid" class="invalid-feedback ion-text-end">

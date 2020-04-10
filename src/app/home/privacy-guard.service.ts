@@ -18,7 +18,7 @@ export class PrivacyGuardService implements CanActivate{
     console.log(route);
 
     let authInfo = {
-        instructor: loggedInUser.data.role == 'i'? true: false
+        instructor: loggedInUser.data.role == 'instructor'? true: false
     };
 
     if (authInfo.instructor) {      

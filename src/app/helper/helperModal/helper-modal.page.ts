@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ComponentRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { faTimes, faArrowLeft, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { HelperService } from '../helper.service';
+import { NgTemplateOutlet } from '@angular/common';
+import { AgreementModalPage } from './agreementModal/agreement-modal/agreement-modal.page';
 
 @Component({
   selector: 'app-helper-modal',
@@ -40,6 +42,16 @@ export class HelperModalPage implements OnInit {
     this.helpContent = undefined;
     this.helpTitle = "Help";
     this.showContentPanel=!this.showContentPanel;
+  }
+
+  async openAgreementModal(){
+    console.log("openAgreementModal()___");
+    const modal = await this.modalController.create({
+      component: AgreementModalPage,
+      cssClass: "my-agreement-modal-css",
+      backdropDismiss : false
+    });
+    return await modal.present();
   }
 
   private async close(){

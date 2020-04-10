@@ -25,7 +25,7 @@ export class AuthGuardService implements CanActivate {
     };
 
     if(authInfo.loggedIn){
-      if (this.loggedInUser.data.role != "i") {
+      if (this.loggedInUser.data.role != "instructor") {
         console.log("You are a student");
         return false;
       }

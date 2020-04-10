@@ -41,6 +41,8 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
   private routerSubscription: Subscription;
   private questionSubscription: Subscription;
 
+  private timeoutVar;
+
   constructor(
     private questionService: QuestionService,
     private sharedService: SharedService,
@@ -115,7 +117,8 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
   }
 
   private startTimer(){
-    setTimeout(async x => 
+    clearInterval(this.timeoutVar);
+    this.timeoutVar = setTimeout(async x => 
       {
         if(this.maxTime <= 0) {          
           this.toastMessageService.showToastMessage("Time out", 2000);

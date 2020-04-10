@@ -220,7 +220,7 @@ export class RegisterPage implements OnInit, OnDestroy {
   private saveUser(){
     // Add default image urls if user didn't upload a profile picture
     if(this.user.img_url == ""){
-      this.user.role=="i"?this.user.img_url = this.sharedService.getTeacherPic().url: this.user.img_url = this.sharedService.getStudentPic().url;          
+      this.user.role=="instructor"?this.user.img_url = this.sharedService.getTeacherPic().url: this.user.img_url = this.sharedService.getStudentPic().url;          
     } 
 
     this.user.mobile = "+94"+this.user.mobile;

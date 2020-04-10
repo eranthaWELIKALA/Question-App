@@ -89,6 +89,7 @@ export class NewsfeedPage implements OnInit, OnDestroy {
         userSubscription.unsubscribe();
       });
     })
+    console.log(newsfeed);
     this.newsfeed = newsfeed;
     this.loadingService.hideLoading();
     this.refresher.complete();

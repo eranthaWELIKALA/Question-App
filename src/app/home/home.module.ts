@@ -8,6 +8,8 @@ import { HomePage } from './home.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PrivacyGuardService } from './privacy-guard.service';
 import { HelperModalPage } from 'src/app/helper/helperModal/helper-modal.page';
+import { AgreementModalPage } from '../helper/helperModal/agreementModal/agreement-modal/agreement-modal.page';
+import { PrivacyModalPage } from '../helper/helperModal/privacyModal/privacy-modal/privacy-modal.page';
 
 const routes: Routes = [
   {
@@ -60,7 +62,7 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [HelperModalPage],
-  declarations: [HomePage, HelperModalPage]
+  entryComponents: [HelperModalPage, AgreementModalPage, PrivacyModalPage],
+  declarations: [HomePage, HelperModalPage, AgreementModalPage, PrivacyModalPage]
 })
 export class HomePageModule {}

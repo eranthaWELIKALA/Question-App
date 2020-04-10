@@ -62,13 +62,13 @@ export class NotificationService {
           filtered ? this.copyToArrayIfNotBlocked(user.id, el) : '' ;
         }
         else{
-          if(data.userRoleSelection=='a' && user.data.adminFeatures){ 
+          if(data.userRoleSelection=='admin' && user.data.adminFeatures){ 
             this.copyToArrayIfNotBlocked(user.id, el);
           }
-          else if(data.userRoleSelection=='i' && user.data.role=="i"){     
+          else if(data.userRoleSelection=='instructor' && user.data.role=="instructor"){     
             this.copyToArrayIfNotBlocked(user.id, el);
           }
-          else if(data.userRoleSelection=='s' && user.data.role=="s"){ 
+          else if(data.userRoleSelection=='student' && user.data.role=="student"){ 
             this.copyToArrayIfNotBlocked(user.id, el);
           }
           else{

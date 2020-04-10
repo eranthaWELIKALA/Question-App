@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 export interface User{
   role: string;
-  adminFeatures: boolean,
+  adminFeatures: boolean;
   firstname: string;
   lastname: string;
   email: string;
@@ -129,7 +129,7 @@ export class UserService {
 
   getInstructors(){
     let users: {id: string, data: User}[] = [];
-    this.usersCollection.ref.where("role", "==", "i").get().then(function (querySnapshot) {
+    this.usersCollection.ref.where("role", "==", "instructor").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         users.push({id: doc.id, data: <User> doc.data()});
       });
@@ -139,7 +139,7 @@ export class UserService {
 
   getInstructorsNotAdmins(){
     let users: {id: string, data: User}[] = [];
-    this.usersCollection.ref.where("role", "==", "i").where("adminFeatures", "==", false).get().then(function (querySnapshot) {
+    this.usersCollection.ref.where("role", "==", "instructor").where("adminFeatures", "==", false).get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         users.push({id: doc.id, data: <User> doc.data()});
       });
@@ -159,7 +159,7 @@ export class UserService {
 
   getStudents(){
     let users: {id: string, data: User}[] = [];
-    this.usersCollection.ref.where("role", "==", "s").get().then(function (querySnapshot) {
+    this.usersCollection.ref.where("role", "==", "student").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         users.push({id: doc.id, data: <User> doc.data()});
       });

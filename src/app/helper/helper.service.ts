@@ -13,6 +13,26 @@ export class HelperService {
     {
       "Title": "User Profile",
       "type": "profile"
+    },
+    {
+      "Title": "Create Paper",
+      "type": "createPaper"
+    },
+    {
+      "Title": "Edit Paper",
+      "type": "editPaper"
+    },
+    {
+      "Title": "View Papers",
+      "type": "viewPaper"
+    },
+    {
+      "Title": "Add Note",
+      "type": "addNote"
+    },
+    {
+      "Title": "View Notes",
+      "type": "viewNote"
     }
   ]
 
@@ -38,6 +58,7 @@ export class HelperService {
       "createPaper": {
         title: "Create Paper",
         content: [
+          "Only for instructors",
           "Please fill all the requiered fields",
           "Don't disgrace yourself by creating unrelevant papers",
           "Using a good standard in papers is a key to success."
@@ -46,6 +67,7 @@ export class HelperService {
       "editPaper": {
         title: "Edit Paper",
         content: [
+          "Only for instructors",
           "Please fill all the requiered fields",
           "Don't disgrace yourself by creating unrelevant papers",
           "Using a good standard in papers is a key to success."
@@ -62,6 +84,7 @@ export class HelperService {
       "addNote": {
         title: "Add Note",
         content: [
+          "Only for instructors",
           "Please fill all the requiered fields",
           "Don't disgrace yourself by creating unrelevant papers",
           "Using a good standard in papers is a key to success."

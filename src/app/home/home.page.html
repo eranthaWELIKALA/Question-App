@@ -9,7 +9,7 @@
           </ion-col>
           <ion-col size="2">
             <ion-button shape="round" size="small" color="dark" routerLink="/home/notification" routerDirection="forward" (click)="sharedService.toggleMenu()">
-              <fa-icon [icon]="icon.faBell"></fa-icon><ion-badge *ngIf="notificationCount>0" color="dark">{{notificationCount}}</ion-badge>
+              <fa-icon [icon]="icon.faBell"></fa-icon><ion-badge *ngIf="sharedService.getNotificationCount()>0" color="dark">{{sharedService.getNotificationCount()}}</ion-badge>
             </ion-button>
           </ion-col>          
           <ion-col size="3">
@@ -30,7 +30,7 @@
           <ion-item class="ion-margin" routerLink="/home/user" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faUser"></fa-icon><ion-label>Profile</ion-label></ion-item>
           
           <!-- Instructor Links -->
-          <ion-item-group *ngIf="loggedInUser.data.role=='i'">
+          <ion-item-group *ngIf="loggedInUser.data.role=='instructor'">
               <!-- Paper Links -->
                 <ion-item class="ion-margin" routerLink="/home/paper/create" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faFileMedical"></fa-icon><ion-label>Create a Paper</ion-label></ion-item>
                 <!-- Question Links -->
@@ -47,7 +47,7 @@
           </ion-item-group>
           
           <!-- Student Links -->
-          <ion-item-group *ngIf="loggedInUser.data.role=='s'">
+          <ion-item-group *ngIf="loggedInUser.data.role=='student'">
             <!-- Paper Links -->
             <ion-item class="ion-margin" routerLink="/home/paper/view" routerDirection="root" (click)="sharedService.toggleMenu()"><fa-icon class="ion-margin-horizontal" [icon]="icon.faFileAlt"></fa-icon><ion-label>Papers</ion-label></ion-item> 
             

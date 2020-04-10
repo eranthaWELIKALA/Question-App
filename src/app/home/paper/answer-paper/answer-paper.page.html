@@ -55,7 +55,7 @@
                 </div>
                 <ion-item color="none" lines="none">
                   <ion-text>Answer   :</ion-text>
-                          <ion-select interface="action-sheet" placeholder="Select" class="form-control" name="role" [(ngModel)]="answerArray[t]">
+                          <ion-select interface="action-sheet" placeholder="Select" class="form-control" name="answerArray" [(ngModel)]="answerArray[t]">
                               <ion-select-option *ngIf="question.data.a != undefined && question.data.a != ''" value="A">A</ion-select-option>
                               <ion-select-option *ngIf="question.data.b != undefined && question.data.b != ''" value="B">B</ion-select-option>
                               <ion-select-option *ngIf="question.data.c != undefined && question.data.c != ''" value="C">C</ion-select-option>

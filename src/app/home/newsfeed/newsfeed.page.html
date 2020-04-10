@@ -58,7 +58,7 @@
                       [disabled]="disableLikeButton">
                       <fa-icon class="ion-margin-right" [icon]="faThumbsUp"></fa-icon><ion-text class="ion-float-right">{{news.data.likes}}</ion-text></ion-button>
                   </ion-col>      
-                  <ion-col size="2" offset="5" *ngIf="loggedInUser.data.role=='s' && news.data.type=='Paper'">
+                  <ion-col size="2" offset="5" *ngIf="loggedInUser.data.role=='student' && news.data.type=='Paper'">
                     <fa-icon class="ion-float-left" [icon]="faEdit" (click)="goToLink(news.data.ref_id, news.data.type)"></fa-icon>
                 </ion-col>
                 </ion-item>

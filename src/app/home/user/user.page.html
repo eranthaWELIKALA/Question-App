@@ -5,14 +5,14 @@
         <ion-col size="2"><fa-icon [icon]="faBars" (click)="sharedService.toggleMenu()"></fa-icon></ion-col>
         <ion-col size="8">{{loggedInUser.data.firstname + " " + loggedInUser.data.lastname}}</ion-col>
         <ion-col size="2" *ngIf="loggedInUser.data.adminFeatures"><fa-icon [icon]="faUserCog" (click)="goAdmin()"></fa-icon></ion-col>
-        <ion-col size="2" *ngIf="loggedInUser.data.role=='s'"><fa-icon [icon]="faStar" (click)="goAttempt()"></fa-icon></ion-col>
+        <ion-col size="2" *ngIf="loggedInUser.data.role=='student'"><fa-icon [icon]="faStar" (click)="goAttempt()"></fa-icon></ion-col>
       </ion-row>      
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid [ngClass]="loggedInUser.data.role=='i'? 'instructorUserPage': loggedInUser.data.role=='s'? 'studentUserPage': 'adminPage'">
+  <ion-grid [ngClass]="loggedInUser.data.role=='instructor'? 'instructorUserPage': loggedInUser.data.role=='student'? 'studentUserPage': 'adminPage'">
     <form #form="ngForm" (ngSubmit)="update(form)">
       <ion-row>
         <ion-col size="9">
@@ -45,7 +45,7 @@
           </ion-row>
           <ion-row>
               <ion-item>
-                  <ion-input class="ion-margin-start ion-float-left" name="role" [value]="loggedInUser.data.role=='i'? 'Instructor': 'Student'" readonly></ion-input>
+                  <ion-input class="ion-margin-start ion-float-left" name="role" [value]="loggedInUser.data.role=='instructor'? 'Instructor': 'Student'" readonly></ion-input>
                 </ion-item>
           </ion-row>
           <ion-row>
@@ -57,7 +57,7 @@
                   </ion-select>
           </ion-row>
 
-          <div *ngIf="loggedInUser.data.role=='s'">
+          <div *ngIf="loggedInUser.data.role=='student'">
             <ion-row>
                 <ion-text class="ion-margin ion-float-left">Grade/ Level</ion-text>
             </ion-row>

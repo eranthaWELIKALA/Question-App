@@ -34,9 +34,9 @@
                 <ion-item>
                     <ion-label>Role specific?<ion-text color="danger"><sup><fa-icon [icon]="faAsterisk" class="fa-xs"></fa-icon></sup></ion-text>   :</ion-label>
                     <ion-select placeholder="Select" class="form-control" name="userRoleSelection" #userRoleSelection="ngModel" [(ngModel)]="notification.userRoleSelection" [ngClass]="{ 'is-invalid': form.submitted && userRoleSelection.invalid }" required>
-                        <ion-select-option value="a">Only for admins</ion-select-option>
-                        <ion-select-option value="i">Only for instructors</ion-select-option>
-                        <ion-select-option value="s">Only for students</ion-select-option>
+                        <ion-select-option value="admin">Only for admins</ion-select-option>
+                        <ion-select-option value="instructor">Only for instructors</ion-select-option>
+                        <ion-select-option value="student">Only for students</ion-select-option>
                         <ion-select-option value="any">For any</ion-select-option>
                     </ion-select>
                 </ion-item>
