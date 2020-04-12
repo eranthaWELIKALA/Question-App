@@ -7,6 +7,8 @@ import { UserService, User } from 'src/app/initial/user.service';
 import { PaperService, Paper } from '../paper/paper.service';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { NoteService, Note } from '../note/note.service';
+import { AttemptService, Attempt } from '../user/attempt.service';
+import { Newsfeed, NewsfeedService } from '../newsfeed/newsfeed.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -26,6 +28,8 @@ export class AccountSettingsPage implements OnInit {
     private userService: UserService,
     private paperService: PaperService,
     private noteService: NoteService,
+    private attemptService: AttemptService,
+    private newsfeedService: NewsfeedService,
     private fAuth: AngularFireAuth,
     private navController: NavController,
     private alertController: AlertController) { 
@@ -79,16 +83,36 @@ export class AccountSettingsPage implements OnInit {
                 await this.noteService.updateNote(note.data, note.id);
             })
 
+            if(this.loggedInUser.data.role=="instructor"){
+              // Handle newdfeeds
+              let newsfeeds: {id: string, data: Newsfeed}[] = await this.newsfeedService.getNewsfeedsByUserId(this.loggedInUser.id);
+              newsfeeds.forEach(async newsfeed=>{
+                newsfeed.data.userId = this.sharedService.getRemoteUserID();
+                newsfeed.data.description = "Ownership is transfered to Mtute community";
+                await this.newsfeedService.updateNewsfeed(newsfeed.data, newsfeed.id);
+              })
+            }
+            else{
+              // Handle attempts
+              let attempts: {id: string, data: Attempt}[] = await this.attemptService.getAttemptsByUserId(this.loggedInUser.id);
+              attempts.forEach(async newsfeed=>{
+                this.attemptService.removeAttempt(newsfeed.id);
+              })
+            }
+
             // remove the pic
             if(this.loggedInUser.data.metadata != "" ){
-              this.userService.removeImage(this.loggedInUser.data.metadata).subscribe(()=>{
+              this.userService.removeImage(JSON.parse(this.loggedInUser.data.metadata)).subscribe(()=>{
                 console.log("Removed the profile pic");
+              },
+              error=>{
+                console.log("Image deletion is failed " + error);
               })
             }
             else{
               // nothing to do
             }
-
+            
             this.fAuth.auth.currentUser.delete();
             this.sharedService.setLoggedInUser(undefined);
             this.loadingService.hideLoading();

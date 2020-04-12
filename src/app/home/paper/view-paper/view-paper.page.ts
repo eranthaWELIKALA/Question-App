@@ -60,8 +60,8 @@ export class ViewPaperPage implements OnInit, OnDestroy {
 
     this.userSubscription = this.userService.getSubjects().subscribe(async res => {
       let result: any = []
-      if(JSON.parse(this.loggedInUser.data.units) != null && JSON.parse(this.loggedInUser.data.units) != undefined && JSON.parse(this.loggedInUser.data.units).length > 0){
-        JSON.parse(this.loggedInUser.data.units).forEach(element =>{
+      if(this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined && this.loggedInUser.data.units.length > 0){
+        this.loggedInUser.data.units.forEach(element =>{
           result = result.concat(res.filter(x => x.id == element))
         })
       }
@@ -141,15 +141,20 @@ export class ViewPaperPage implements OnInit, OnDestroy {
 
   private getInstructorName(id, part: string = "all"): string{
     if(this.instructors != undefined){      
-      let instructor = this.instructors.filter(x=> x.id == id)[0].data;
-      if(part=="firstname"){
-        return instructor.firstname;
+      let instructor = this.instructors.filter(x=> x.id == id)[0];
+      if(instructor!=undefined){
+        if(part=="firstname"){
+          return instructor.data.firstname;
+        }
+        else if(part=="lastname"){        
+          return instructor.data.lastname;
+        }
+        else{        
+          return instructor.data.firstname + " " + instructor.data.lastname;
+        }
       }
-      else if(part=="lastname"){        
-        return instructor.lastname;
-      }
-      else{        
-        return instructor.firstname + " " + instructor.lastname;
+      else{
+        return "";
       }
     }
   }

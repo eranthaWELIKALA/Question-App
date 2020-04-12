@@ -57,9 +57,15 @@ export class AttemptPage implements OnInit, OnDestroy {
         await this.attemptService.getAttemptsByUserId(this.loggedInUser.id).then(async res=>{
           res.forEach(async (el) => {
             let paper = this.papers.filter(paper_el => paper_el.id == el.data.paper)[0];
-            let subject = this.subjectGroup.filter(subject_el => subject_el.id == paper.data.subject)[0].data.name;
-            let paperName = paper.data.name + " " + paper.data.year + " - " + subject;
-            this.attempts.push({ id: el.id, paper: paperName, data: el.data, lastAttempt: el.data.timestamp.toDate().toDateString() });
+            if(paper != undefined){
+              let paper_search = this.subjectGroup.filter(subject_el => subject_el.id == paper.data.subject)[0];
+              let subject = "";
+              if(paper_search!=undefined){
+                subject = paper_search.data.name;
+              }
+              let paperName = paper.data.name + " " + paper.data.year + " - " + subject;
+              this.attempts.push({ id: el.id, paper: paperName, data: el.data, lastAttempt: el.data.timestamp.toDate().toDateString() });
+            }
           });        
           this.loadingService.hideLoading();
         },

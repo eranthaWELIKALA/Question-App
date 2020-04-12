@@ -5,33 +5,49 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface User{
-  role: string;
   adminFeatures: boolean;
-  firstname: string;
-  lastname: string;
+  contact: string;
+  create: firebase.firestore.Timestamp;
   email: string;
-  mobile: string;
-  units: string;
+  firstname: string;
   img_url: string;
-  metadata: string;
+  lastname: string;
+  role: string;
+  verify: string;
   grade_level: string;
-  
-  // User details according to user type
-  institute: Institute;
-  instructor: Instructor;
-  student: Student;
-}
-
-export interface Institute{
-  
+  metadata: string;
+  units: string[];
 }
 
 export interface Instructor{
-
+  achievement: string[];
+  backgroundImagePath: string;
+  degree: string;
+  degreeMSc: string;
+  degreePhd: string;
+  degreeYear: string;
+  email: string;
+  grad: string;
+  gradeA: string;
+  gradeB: string;
+  gradeC: string;
+  gradeS: string;
+  personalAchievement: string[];
+  profileImagePath: string;
+  subject: string;
+  teachingSchool: string;
+  university: string;
+  universityMSc: string;
+  universityPhD: string;
+  verify: string;
+  yearExperiences: string;
+  yearMSc: string;
+  yearPhD: string;
 }
 
 export interface Student{
-
+  email: string;
+  subject: string;
 }
 
 export interface Subject{
@@ -49,6 +65,8 @@ export interface OTP{
 export class UserService {
 
   private usersCollection: AngularFirestoreCollection<User>;
+  private instructorCollection: AngularFirestoreCollection<Instructor>;
+  private studentCollection: AngularFirestoreCollection<Student>;
   private subjectsCollection: AngularFirestoreCollection<Subject>;
   private otpsCollection: AngularFirestoreCollection<OTP>;
 
@@ -58,6 +76,8 @@ export class UserService {
 
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
     this.usersCollection = db.collection<User>('users');
+    this.instructorCollection = db.collection<Instructor>('instructor');
+    this.studentCollection = db.collection<Student>('student');
     this.subjectsCollection = db.collection<Subject>('subjects');
     this.otpsCollection = db.collection<OTP>('otp');
   }
@@ -120,7 +140,47 @@ export class UserService {
   }
  
   addUser(user: User) {
-    return this.usersCollection.add(user);
+    return this.usersCollection.add(user).then(async onfulfilled=>{
+      let id = onfulfilled.id;
+      if(user.role=="instructor"){
+        let instructor: Instructor = {
+          achievement: [],
+          backgroundImagePath: "",
+          degree: "",
+          degreeMSc: "",
+          degreePhd: "",
+          degreeYear: "",
+          email: user.email,
+          grad: "",
+          gradeA: "",
+          gradeB: "",
+          gradeC: "",
+          gradeS: "",
+          personalAchievement: [],
+          profileImagePath: "",
+          subject: "",
+          teachingSchool: "",
+          university: "",
+          universityMSc: "",
+          universityPhD: "",
+          verify: user.verify,
+          yearExperiences: "",
+          yearMSc: "",
+          yearPhD: ""
+        }
+        await this.instructorCollection.doc(id).set(instructor);
+      }
+      else if(user.role=="student"){
+        let student: Student = {
+          email: user.email,
+          subject: ""
+        }
+        await this.studentCollection.doc(id).set(student);
+      }
+      else{
+        // nothing to do
+      }
+    });
   }
  
   removeUser(id) {

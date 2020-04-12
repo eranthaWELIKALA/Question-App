@@ -80,7 +80,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.userSubscription = this.userService.getSubjects().subscribe(async res => {
       let result: any = []
       if(this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined){
-        JSON.parse(this.loggedInUser.data.units).forEach(element =>{
+        this.loggedInUser.data.units.forEach(element =>{
           result = result.concat(res.filter(x => x.id == element))
         })
       }

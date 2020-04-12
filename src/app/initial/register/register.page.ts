@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { FirebaseApp  } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-register',
@@ -34,9 +35,7 @@ export class RegisterPage implements OnInit, OnDestroy {
   private signedAgreement: boolean = false;
   private password: string;
   private confirmPassword: string;
-  private subject: Subject = {
-    name: ""
-  }
+  private subject: string[] = []
   private otherSubject: string = "";
   private otherSubjectArray: string[];
 
@@ -45,7 +44,7 @@ export class RegisterPage implements OnInit, OnDestroy {
   private users: {id: string, data: User}[];
   private imageFile: File;
 
-  private mobile: string;
+  private contact: string;
 
   private backButtonRegisterSubscription: Subscription;
   private subjectRegisterSubscription: Subscription;
@@ -109,7 +108,7 @@ export class RegisterPage implements OnInit, OnDestroy {
 
     // Remove if an image is uploaded without creating an account
     if(this.user.img_url != "" && this.user.metadata != ""){
-      this.userService.removeImage(this.user.metadata).subscribe(()=>{
+      this.userService.removeImage(JSON.parse(this.user.metadata)).subscribe(()=>{
         console.log("Removed uploaded image");
       });
     }
@@ -146,7 +145,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     console.log("___uploadFile()___");
     this.loadingService.showLoading("Saving");
     if(this.user.img_url != "" && this.user.metadata != ""){
-      this.userService.removeImage(this.user.metadata);
+      this.userService.removeImage(JSON.parse(this.user.metadata));
     }
     let {task, fileRef} = this.userService.uploadImage(file);
     task.then().then(
@@ -190,10 +189,10 @@ export class RegisterPage implements OnInit, OnDestroy {
       return;
     }
 
-    // Exit if mobile validation is failed and show a Toast message
+    // Exit if contact no validation is failed and show a Toast message
     /*if(!this.mobileValidation()){
       console.log("Mobile validation failed");
-      this.showToastMessage("Press \"C\" and Validate your mobile number");
+      this.showToastMessage("Press \"C\" and Validate your contact number");
       return;
     }*/
 
@@ -223,13 +222,15 @@ export class RegisterPage implements OnInit, OnDestroy {
       this.user.role=="instructor"?this.user.img_url = this.sharedService.getTeacherPic().url: this.user.img_url = this.sharedService.getStudentPic().url;          
     } 
 
-    this.user.mobile = "+94"+this.user.mobile;
+    this.user.contact = "+94"+this.user.contact;
 
     // Hashing the password
     this.password = JSON.stringify(CryptoJS.SHA1(this.password));
 
     // Adding the selected subjects
-    this.user.units = JSON.stringify(this.subject);       
+    this.user.units = this.subject;   
+
+    this.user.create = firebase.firestore.Timestamp.now();
 
     // Clear the user
     if(this.userService.addUser(this.user)){      
@@ -261,7 +262,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     if(this.password == "" || this.password == null || this.password == undefined){
       return false;
     }
-    if(this.user.mobile == "" || this.user.mobile == null || this.user.mobile == undefined){
+    if(this.user.contact == "" || this.user.contact == null || this.user.contact == undefined){
       return false;
     }
     return true;
@@ -270,8 +271,8 @@ export class RegisterPage implements OnInit, OnDestroy {
   // Not using
   private mobileValidation(): boolean{  
     console.log("___mobileValidation()___");  
-    if(this.user.mobile != this.mobile){
-      this.user.mobile = "";
+    if(this.user.contact != this.contact){
+      this.user.contact = "";
       return false;
     }
     return true
@@ -328,10 +329,10 @@ export class RegisterPage implements OnInit, OnDestroy {
   // Not using
   private async validateMobileNumber(){
     console.log("___validateMobileNumber()___"); 
-    if(this.mobile != undefined && this.mobile.toString().length == 9 && isNumber(this.mobile)){
+    if(this.contact != undefined && this.contact.toString().length == 9 && isNumber(this.contact)){
       let otp = this.generateOTP();
       let otpId;
-      this.ideaMartService.sendSMS({message: otp, telNo: "94"+this.mobile});
+      this.ideaMartService.sendSMS({message: otp, telNo: "94"+this.contact});
       await this.userService.addOTP({otp: otp, status: false}).then(
         onfulfilled =>{
           otpId = onfulfilled.id;
@@ -375,10 +376,10 @@ export class RegisterPage implements OnInit, OnDestroy {
     modal.onDidDismiss().then(data => {
       console.log(data)
       if(data.data["status"]){
-        this.user.mobile = this.mobile;
+        this.user.contact = this.contact;
       }
       else{
-        this.user.mobile = "";
+        this.user.contact = "";
       }
     })
     return await modal.present();
@@ -403,19 +404,18 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.password = undefined;
     this.confirmPassword = undefined;
     return {
-      firstname: "",
-      lastname: "",
-      email: "",
-      mobile: "",
-      units: "",
-      role: "",
       adminFeatures: false,
+      contact: "",
+      create: null,
+      email: "",
+      firstname: "",
       img_url: "",
-      metadata: "",
+      lastname: "",
+      role: "",
+      verify: "assets/verification/not_verified.png",
       grade_level: "",
-      institute: null,
-      instructor: null,
-      student: null
+      metadata: "",
+      units: [],
     };
   }
 

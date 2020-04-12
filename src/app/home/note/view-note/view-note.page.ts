@@ -60,7 +60,7 @@ export class ViewNotePage implements OnInit, OnDestroy {
 
   async ngOnInit() {    
     await this.loadingService.showLoading("Loading");
-    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subjectIdArray = JSON.parse(this.loggedInUser.data.units): "";    
+    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subjectIdArray = this.loggedInUser.data.units: "";    
 
     this.allInstructors = this.userService.getInstructors();
     this.instructors = this.allInstructors;

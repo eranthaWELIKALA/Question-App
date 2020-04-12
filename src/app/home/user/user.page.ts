@@ -48,7 +48,7 @@ export class UserPage implements OnInit, OnDestroy {
 
     this.subjectSubscription = this.userService.getSubjects().subscribe(async res => {
         this.subjects = res;        
-        this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subject = JSON.parse(this.loggedInUser.data.units): "";
+        this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subject = this.loggedInUser.data.units: "";
         console.log(res);
         this.loadingService.hideLoading();
     },
@@ -173,7 +173,7 @@ export class UserPage implements OnInit, OnDestroy {
   }
 
   private saveUser(){
-    this.loggedInUser.data.units = JSON.stringify(this.subject);
+    this.loggedInUser.data.units = this.subject;
     if(this.userService.updateUser(this.loggedInUser.data, this.loggedInUser.id)){
       // Clear the image file
       this.imageFile = undefined;

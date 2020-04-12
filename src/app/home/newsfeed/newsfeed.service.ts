@@ -5,6 +5,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { map } from 'rxjs/operators';
 import { PaperService } from '../paper/paper.service';
 import { NoteService } from '../note/note.service';
+import { id } from '@swimlane/ngx-datatable';
 
 export interface Newsfeed{
   userId: string;
@@ -48,6 +49,16 @@ export class NewsfeedService {
   getNewsfeedList(): {id: string, data: Newsfeed}[] {
     let newsfeeds: {id: string, data: Newsfeed}[] = [];
     this.newsfeedsCollection.ref.orderBy("timestamp").limit(100).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        newsfeeds.push({id: doc.id, data: <Newsfeed> doc.data()});
+      });
+    });
+    return newsfeeds;
+  }
+
+  async getNewsfeedsByUserId(userId: string) {
+    let newsfeeds: {id: string, data: Newsfeed}[] = [];
+    await this.newsfeedsCollection.ref.where("userId","==", userId).get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         newsfeeds.push({id: doc.id, data: <Newsfeed> doc.data()});
       });

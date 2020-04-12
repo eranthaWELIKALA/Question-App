@@ -30,6 +30,7 @@ export class AnswerPaperModelPage implements OnInit {
     console.log(this.user, this.paper)
     console.log(this.questionArray);
     console.log(this.answerArray);
+    this.saveAttempts();
   }
 
   private async close(){
@@ -67,7 +68,7 @@ export class AnswerPaperModelPage implements OnInit {
       if(previousAttempt.attempt.data.lowest>marks){
         previousAttempt.attempt.data.lowest = marks;
       }
-      previousAttempt.attempt.data.average = ((previousAttempt.attempt.data.average * previousAttempt.attempt.data.no_of_attempts) + marks) / (previousAttempt.attempt.data.no_of_attempts + 1);
+      previousAttempt.attempt.data.average = Number((((previousAttempt.attempt.data.average * previousAttempt.attempt.data.no_of_attempts) + marks) / (previousAttempt.attempt.data.no_of_attempts + 1)).toFixed(2));
       previousAttempt.attempt.data.no_of_attempts++;
 
       previousAttempt.attempt.data.timestamp = firebase.firestore.Timestamp.now();

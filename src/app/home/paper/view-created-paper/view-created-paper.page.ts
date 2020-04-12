@@ -44,7 +44,7 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
 
   async ngOnInit() {    
     await this.loadingService.showLoading("Loading");
-    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subjectIdArray = JSON.parse(this.loggedInUser.data.units): "";
+    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined ? this.subjectIdArray = this.loggedInUser.data.units: "";
 
     // Get Subjects and filter subjects relavent to the user
     this.userSubscription = this.userService.getSubjects().subscribe(async res => {

@@ -46,7 +46,7 @@ export class CreatePaperPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.paper = this.createNullPaper(this.loggedInUser.id);
-    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined? this.subjectIDGroup = JSON.parse(this.loggedInUser.data.units): "";
+    this.loggedInUser.data.units != null && this.loggedInUser.data.units != undefined? this.subjectIDGroup = this.loggedInUser.data.units: "";
     await this.loadingService.showLoading("Loading");
 
     this.subjectSubscription = this.userService.getSubjects().subscribe(async res =>

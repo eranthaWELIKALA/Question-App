@@ -42,12 +42,12 @@
               </div>    
 
               <ion-item class="ion-margin">                   
-                      <ion-label>Mobile</ion-label>
-                      <ion-input type="number" inputmode="numeric" pattern="tel" class="form-control" name="mobile" #mobileNo="ngModel" [(ngModel)]="user.mobile" required><ion-text>+94</ion-text></ion-input>
-                      <!-- <ion-button size="small" (click)="validateMobileNumber()">C</ion-button> -->
+                      <ion-label>Contact No.</ion-label>
+                      <ion-input type="number" inputmode="numeric" pattern="tel" class="form-control" name="contact" #contactNo="ngModel" [(ngModel)]="user.contact" required><ion-text>+94</ion-text></ion-input>
+                      <!-- <ion-button size="small" (click)="validatecontactNumber()">C</ion-button> -->
               </ion-item>   
-              <div *ngIf="form.submitted && mobileNo.invalid" class="invalid-feedback ion-text-end">
-                    <div *ngIf="mobileNo.errors.required">Mobile is required</div>
+              <div *ngIf="form.submitted && contactNo.invalid" class="invalid-feedback ion-text-end">
+                    <div *ngIf="contactNo.errors.required">Contact No is required</div>
               </div>    
 
               <ion-item class="ion-margin">

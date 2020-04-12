@@ -52,7 +52,7 @@
                   <ion-text>No Papers</ion-text>
               </ion-item>
             </ion-card>
-          <ion-list *ngFor="let paper of papers">
+          <ion-card *ngFor="let paper of papers">
               <ion-item-group class="ion-margin-bottom">
                 <ion-item>
                   <ion-text>{{paper.data.name + " " + paper.data.year}}</ion-text>
@@ -71,7 +71,7 @@
                   <ion-text>{{"Allocated time(mins): " + paper.data.time}}</ion-text>
                 </ion-item>
               </ion-item-group>  
-            </ion-list>
+            </ion-card>
       </ion-item-group> 
 </ion-grid>
 
