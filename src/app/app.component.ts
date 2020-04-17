@@ -44,11 +44,11 @@ export class AppComponent {
       // Waiting for Online-Offline respond
       this.network.onDisconnect().subscribe( async res =>{
         this.toastMessageService.showToastMessage(res.message, 5000);
-        await this.loadingService.showLoading("Connecting to internet", "bubbles");
+        await this.loadingService.showNetworkLoading("Connecting to internet", "bubbles");
       });
   
       this.network.onConnect().subscribe( res =>{
-        this.loadingService.hideLoading();
+        this.loadingService.hideNetworkLoading();
       });
 
 
