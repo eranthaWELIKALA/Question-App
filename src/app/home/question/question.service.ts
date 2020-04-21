@@ -25,6 +25,21 @@ export interface Question{
   image: boolean;
   image_url: string;
   metadata: string;
+  image_A: boolean,
+  imageA: string,
+  a_metadata: string;
+  image_B: boolean,
+  imageB: string,
+  b_metadata: string;
+  image_C: boolean,
+  imageC: string,
+  c_metadata: string;
+  image_D: boolean,
+  imageD: string,
+  d_metadata: string;
+  image_E: boolean,
+  imageE: string,
+  e_metadata: string;
 }
 
 @Injectable({

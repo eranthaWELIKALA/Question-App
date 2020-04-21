@@ -13,6 +13,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { QuillModule } from 'ngx-quill';
 import { CreateNewsfeedPage } from '../newsfeed/create-newsfeed/create-newsfeed.page';
 import { CreateNewsfeedPageModule } from '../newsfeed/create-newsfeed/create-newsfeed.module';
+import { AddQuestionPageModule } from './add-question/add-question.module';
+import { ViewQuestionPageModule } from './view-question/view-question.module';
 
 const routes: Routes = [
   {
@@ -26,11 +28,11 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        loadChildren: () => import('./add-question/add-question.module').then( m => m.AddQuestionPageModule)
+        loadChildren: () => AddQuestionPageModule
       },
       {
         path: 'view',
-        loadChildren: () => import('./view-question/view-question.module').then( m => m.ViewQuestionPageModule)
+        loadChildren: () => ViewQuestionPageModule
       }
     ]
   }

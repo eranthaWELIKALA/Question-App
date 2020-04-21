@@ -10,6 +10,14 @@ import { PrivacyGuardService } from './privacy-guard.service';
 import { HelperModalPage } from 'src/app/helper/helperModal/helper-modal.page';
 import { AgreementModalPage } from '../helper/helperModal/agreementModal/agreement-modal/agreement-modal.page';
 import { PrivacyModalPage } from '../helper/helperModal/privacyModal/privacy-modal/privacy-modal.page';
+import { QuestionPageModule } from './question/question.module';
+import { PaperPageModule } from './paper/paper.module';
+import { UserPageModule } from './user/user.module';
+import { NotePageModule } from './note/note.module';
+import { NewsfeedPageModule } from './newsfeed/newsfeed.module';
+import { NotificationsPageModule } from './notification/notification.module';
+import { AccountSettingsPageModule } from './account-settings/account-settings.module';
+import { ImageViewerPage } from '../util/image-viewer/image-viewer.page';
 
 const routes: Routes = [
   {
@@ -23,32 +31,32 @@ const routes: Routes = [
       },
       { 
         path: 'question', 
-        loadChildren: () => import('./question/question.module').then( m => m.QuestionPageModule), 
+        loadChildren: () => QuestionPageModule, 
         canActivate: [PrivacyGuardService]
       },
       { 
         path: 'paper', 
-        loadChildren: () => import('./paper/paper.module').then( m => m.PaperPageModule)
+        loadChildren: () => PaperPageModule
       },
       { 
         path: 'user', 
-        loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
+        loadChildren: () => UserPageModule
       },
       { 
         path: 'note', 
-        loadChildren: () => import('./note/note.module').then( m => m.NotePageModule)
+        loadChildren: () => NotePageModule
       },
       { 
         path: 'newsfeed', 
-        loadChildren: () => import('./newsfeed/newsfeed.module').then( m => m.NewsfeedPageModule)
+        loadChildren: () => NewsfeedPageModule
       },
       { 
         path: 'notification', 
-        loadChildren: () => import('./notification/notification.module').then( m => m.NotificationsPageModule)
+        loadChildren: () => NotificationsPageModule
       },
       { 
         path: 'accountSettings', 
-        loadChildren: () => import('./account-settings/account-settings.module').then( m => m.AccountSettingsPageModule)
+        loadChildren: () => AccountSettingsPageModule
       }
     ]
   }  
@@ -62,7 +70,7 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [HelperModalPage, AgreementModalPage, PrivacyModalPage],
-  declarations: [HomePage, HelperModalPage, AgreementModalPage, PrivacyModalPage]
+  entryComponents: [HelperModalPage, AgreementModalPage, PrivacyModalPage, ImageViewerPage],
+  declarations: [HomePage, HelperModalPage, AgreementModalPage, PrivacyModalPage, ImageViewerPage]
 })
 export class HomePageModule {}

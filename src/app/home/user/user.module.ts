@@ -9,6 +9,8 @@ import { UserPage } from './user.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminGuardService } from './admin-guard.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { AdminPageModule } from './admin/admin.module';
+import { AttemptPageModule } from './attempt/attempt.module';
 
 const routes: Routes = [
   {
@@ -17,11 +19,11 @@ const routes: Routes = [
   }, 
   { 
     path: 'admin', 
-    loadChildren: () => import('./admin/admin.module').then( m=> m.AdminPageModule),
+    loadChildren: () => AdminPageModule,
     canActivate: [AdminGuardService]
   },{ 
     path: 'attempt', 
-    loadChildren: () => import('./attempt/attempt.module').then( m=> m.AttemptPageModule)
+    loadChildren: () => AttemptPageModule
   }
 ];
 

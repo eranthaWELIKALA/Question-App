@@ -9,6 +9,7 @@ import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.ser
 import { Subscription } from 'rxjs';
 import { isNumber } from 'util';
 import { IconService } from 'src/app/util/icon/icon.service';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @Component({
   selector: 'app-create-paper',
@@ -39,9 +40,11 @@ export class CreatePaperPage implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private loadingService: LoadingService,
     private toastMessageService: ToastMessageService,
-    private navController: NavController){
+    private navController: NavController,
+    private adMob: AdMobFree){
       // Get Logged in User's details
       this.loggedInUser = this.sharedService.getLoggedInUser();
+      this.adMob.banner.config(this.sharedService.getBannerConfig());
     }
 
   async ngOnInit() {
@@ -60,10 +63,18 @@ export class CreatePaperPage implements OnInit, OnDestroy {
       console.log(err);
       this.loadingService.hideLoading();
     });
+
+    // Google Ads
+    this.adMob.banner.prepare().then(()=>{
+      this.adMob.banner.show();
+    }).catch(onrejected=>{
+      console.log(onrejected);
+    });
   }
 
   ngOnDestroy(){
     this.subjectSubscription.unsubscribe();
+    this.adMob.banner.remove();
   }
 
   private async formSubmit(){  

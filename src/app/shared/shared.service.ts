@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { User } from '../initial/user.service';
 import { MenuController, NavController } from '@ionic/angular';
+import { AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,27 @@ export class SharedService {
   private onPaper: boolean = false;
 
   private remoteUserID: string = "vhW15gAUqTYAw0VjZ2HD";
-
-  private studentPicPath: string = "profilePictures/1569192075365_Student.jpg";
-  private studentPicUrl: string = "https://firebasestorage.googleapis.com/v0/b/questionapp-42922.appspot.com/o/profilePictures%2F1569192075365_Student.jpg?alt=media&token=da1c6f92-49a2-4e8b-a359-0979995f4d76";
-
-  private teacherPicPath: string = "profilePictures/1569192345051_Teacher.jpg";
-  private teacherPicUrl: string = "https://firebasestorage.googleapis.com/v0/b/questionapp-42922.appspot.com/o/profilePictures%2F1569192345051_Teacher.jpg?alt=media&token=bd4dbe94-2d14-4f37-bde6-0e9b597fbac5";
+  
+  private studentPicPath: string = "profilePictures/Default/student.jpg";
+  private studentPicUrl: string = "https://firebasestorage.googleapis.com/v0/b/mtute-sl.appspot.com/o/profilePictures%2FDefault%2Fstudent.jpg?alt=media&token=f61b56c0-f737-45d4-bfc3-3dba1de9683f";
+  
+  private teacherPicPath: string = "profilePictures/Default/Instructor.jpg";
+  private teacherPicUrl: string = "https://firebasestorage.googleapis.com/v0/b/mtute-sl.appspot.com/o/profilePictures%2FDefault%2FInstructor.jpg?alt=media&token=217f5045-c06a-4ce4-a21b-5efc533171b2";
 
   private notificationCount: number = 0;
   
   public STORAGE_PERMISSION: boolean = false;
   public CAMERA_PERMISSION: boolean = false;
+
+  //id: 'ca-app-pub-1240535405981859/3878740228'
+
+  private bannerConfig: AdMobFreeBannerConfig = {
+    id: 'ca-app-pub-1240535405981859/3878740228',
+    autoShow: true,
+    isTesting: false,
+    bannerAtTop: false,
+    overlap: false
+  }
 
   @Output() loginRequest: EventEmitter<any> = new EventEmitter();
   @Output() emailVerifyRequest: EventEmitter<any> = new EventEmitter();
@@ -86,6 +97,10 @@ export class SharedService {
 
   public getTeacherPic(): {path: string, url: string}{
     return {path: this.teacherPicPath, url: this.teacherPicUrl};
+  }
+
+  public getBannerConfig(){
+    return this.bannerConfig;
   }
 
   public timeStampToDate(timestamp: firebase.firestore.Timestamp){

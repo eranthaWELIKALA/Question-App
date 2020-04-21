@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, ViewChild, ComponentRef } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { faTimes, faArrowLeft, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { HelperService } from '../helper.service';
-import { NgTemplateOutlet } from '@angular/common';
 import { AgreementModalPage } from './agreementModal/agreement-modal/agreement-modal.page';
 
 @Component({

@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddQuestionPage } from './add-question.page';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ImageViewerPage } from './image-viewer.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AddQuestionPage
+    component: ImageViewerPage
   }
 ];
 
@@ -20,9 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    FontAwesomeModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AddQuestionPage]
+  declarations: [ImageViewerPage]
 })
-export class AddQuestionPageModule {}
+export class ImageViewerPageModule {}

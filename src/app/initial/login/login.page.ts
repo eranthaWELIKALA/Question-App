@@ -48,9 +48,18 @@ export class LoginPage implements OnInit, OnDestroy {
               this.rememberMe = true;
               this.storageLoad = true;
               this.email = data.email;
-              if(data.loggedIn && data.password!=undefined){        
-                this.login(true, data.password)
-            }  
+              if(data.password!=undefined){   
+                this.password = data.password; 
+                if(data.loggedIn){
+                  this.login();
+                }
+                else{
+                  // nothing to do
+                }
+              } 
+              else{
+                // nothing to do
+              }
             }
           },
           error => console.error(error)
@@ -97,14 +106,22 @@ export class LoginPage implements OnInit, OnDestroy {
     alert.present();
   }
 
-  private login(rememberLogin: boolean = false, rememberedPassword?: any){
+  private login(){
     this.loading = true;
     console.log("___login()___");
 
-    if(this.rememberMe && !this.storageLoad){
-      this.nativeStorage.setItem('rememberedUser', {email: this.email, password: this.password, loggedIn: true})
-      .then(() => console.log('Stored item!'),
-      error => console.error('Error storing item', error));
+    if(this.platform.is("cordova")){
+      if(this.rememberMe && !this.storageLoad){
+        this.nativeStorage.setItem('rememberedUser', {email: this.email, password: this.password, loggedIn: true})
+        .then(() => console.log('Stored item!'),
+        error => console.error('Error storing item', error));
+      }
+      else{
+        this.nativeStorage.remove('rememberedUser');
+      }
+    }
+    else{
+      // nothing to do
     }
 
     this.loginSubscription = this.userService.getUsers().subscribe(res =>{

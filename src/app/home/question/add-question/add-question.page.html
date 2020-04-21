@@ -147,6 +147,11 @@
           </div>
   
           <!-- Image selection and previewing -->
+          <ion-item>
+            <ion-col><ion-text>Add/ Remove Images</ion-text></ion-col>
+            <ion-col class="ion-float-right" size="1"><fa-icon [icon]="imagesGroupShow?faCaretSquareUp:faCaretSquareDown" (click)="imagesGroupShow=!imagesGroupShow"></fa-icon></ion-col>
+        </ion-item>
+        <ion-item-group *ngIf="imagesGroupShow">
           <div>          
             <ion-item>
               <ion-label>Image for the question: </ion-label><ion-checkbox name=image{{t}} [(ngModel)]="questionItem.data.image"></ion-checkbox>
@@ -154,7 +159,7 @@
             <ion-item *ngIf="questionItem.data.image">
               <ion-col size="8"><input
                 type="file"
-                class="upload"
+                class="upload img_input"
                 (change)="uploadFile($event.target.files, t)"
                 name=imageFile{{t}}
                 accept="image/*"
@@ -163,6 +168,87 @@
               <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.image_url!=''" [src]="questionItem.data.image_url"/></ion-thumbnail></ion-col>              
             </ion-item>
           </div>
+          <div>          
+            <ion-item>
+              <ion-label>Image for the Answer A: </ion-label><ion-checkbox name=imageA{{t}} [(ngModel)]="questionItem.data.image_A"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image_A">
+              <ion-col size="8"><input
+                type="file"
+                class="upload img_input"
+                (change)="uploadFile($event.target.files, t, 'answerImage', 'a')"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.imageA!=''" [src]="questionItem.data.imageA"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item>
+              <ion-label>Image for the Answer B: </ion-label><ion-checkbox name=imageB{{t}} [(ngModel)]="questionItem.data.image_B"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image_B">
+              <ion-col size="8"><input
+                type="file"
+                class="upload img_input"
+                (change)="uploadFile($event.target.files, t, 'answerImage', 'b')"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.imageB!=''" [src]="questionItem.data.imageB"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item>
+              <ion-label>Image for the Answer C: </ion-label><ion-checkbox name=imageC{{t}} [(ngModel)]="questionItem.data.image_C"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image_C">
+              <ion-col size="8"><input
+                type="file"
+                class="upload img_input"
+                (change)="uploadFile($event.target.files, t, 'answerImage', 'c')"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.imageC!=''" [src]="questionItem.data.imageC"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item>
+              <ion-label>Image for the Answer D: </ion-label><ion-checkbox name=imageD{{t}} [(ngModel)]="questionItem.data.image_D"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image_D">
+              <ion-col size="8"><input
+                type="file"
+                class="upload img_input"
+                (change)="uploadFile($event.target.files, t, 'answerImage', 'd')"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.imageD!=''" [src]="questionItem.data.imageD"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item>
+              <ion-label>Image for the Answer E: </ion-label><ion-checkbox name=imageE{{t}} [(ngModel)]="questionItem.data.image_E"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="questionItem.data.image_E">
+              <ion-col size="8"><input
+                type="file"
+                class="upload img_input"
+                (change)="uploadFile($event.target.files, t, 'answerImage', 'e')"
+                name=imageFile{{t}}
+                accept="image/*"
+              />
+              </ion-col>
+              <ion-col size="4"><ion-thumbnail><img *ngIf="questionItem.data.imageE!=''" [src]="questionItem.data.imageE"/></ion-thumbnail></ion-col>              
+            </ion-item>
+          </div>  
+        </ion-item-group>
         </ion-card>
   
           <!-- Buttons Area -->

@@ -10,6 +10,7 @@ import { Newsfeed, NewsfeedService } from '../../newsfeed/newsfeed.service';
 import * as firebase from 'firebase/app';
 import { NavController, ModalController } from '@ionic/angular';
 import { CreateNewsfeedPage } from '../../newsfeed/create-newsfeed/create-newsfeed.page';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @Component({
   selector: 'app-create-note',
@@ -44,9 +45,11 @@ export class CreateNotePage implements OnInit, OnDestroy {
     private newsfeedService: NewsfeedService,
     private loadingService: LoadingService,
     private modalController: ModalController,
-    private navController: NavController) {
+    private navController: NavController,    
+    public adMob: AdMobFree) {
       // Get Logged in User's details
       this.loggedInUser = this.sharedService.getLoggedInUser();
+      this.adMob.banner.config(this.sharedService.getBannerConfig());
      }
 
   async ngOnInit() {     
@@ -63,7 +66,14 @@ export class CreateNotePage implements OnInit, OnDestroy {
       console.log(err);
       this.loadingService.hideLoading();
     });    
-    console.log(this.note.contentURL)
+    console.log(this.note.contentURL);
+
+    // Google Ads
+    this.adMob.banner.prepare().then(()=>{
+      this.adMob.banner.show();
+    }).catch(onrejected=>{
+      console.log(onrejected);
+    });
   }
 
   ngOnDestroy(){
@@ -71,6 +81,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
     this.fileUploadSubscription!=undefined?this.fileUploadSubscription.unsubscribe():"";
     this.subjectSubscription!=undefined?this.subjectSubscription.unsubscribe():"";
+    this.adMob.banner.remove();
   }
 
   private async formSubmit(){

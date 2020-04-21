@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 import { NewsfeedService, Newsfeed } from '../../newsfeed/newsfeed.service';
 import * as firebase from 'firebase/app';
 import { CreateNewsfeedPage } from '../../newsfeed/create-newsfeed/create-newsfeed.page';
-import { IconService } from 'src/app/util/icon/icon.service';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @Component({
   selector: 'app-add-question',
@@ -33,6 +33,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
 
   private paperDetailsShow: boolean = true;
   private filtersShow: boolean = true;
+  private imagesGroupShow: boolean = false;
   
   //private image;
   private questionGroup: {id: string, data: Question}[] = [];
@@ -69,9 +70,11 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     private paperService: PaperService,
     private newsfeedService: NewsfeedService,
     private loadingService: LoadingService,
-    private toastMessageService: ToastMessageService){
+    private toastMessageService: ToastMessageService,
+    private adMob: AdMobFree){
       // Get Logged in User's details
       this.loggedInUser = this.sharedService.getLoggedInUser();
+      this.adMob.banner.config(this.sharedService.getBannerConfig());
    }
 
   async ngOnInit() {  
@@ -99,6 +102,13 @@ export class AddQuestionPage implements OnInit, OnDestroy {
       console.log(error);
       this.loadingService.hideLoading();
     });
+
+    // Google Ads
+    this.adMob.banner.prepare().then(()=>{
+      this.adMob.banner.show();
+    }).catch(onrejected=>{
+      console.log(onrejected);
+    });
   }
   
   ngOnDestroy(){
@@ -107,6 +117,11 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.fileUploadSubscription!=undefined?this.fileUploadSubscription.unsubscribe():"";
     this.questionSubscription!=undefined?this.questionSubscription.unsubscribe():"";
     this.subjectSubscription!=undefined?this.subjectSubscription.unsubscribe():"";
+    this.adMob.banner.remove();
+  }
+
+  removeImage(evnt){
+    console.log("___removeImage()___" + evnt)
   }
 
   /** This function loads the Quill Keyboad
@@ -166,33 +181,161 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     
   }
 
-  private async uploadFile(event: FileList, index: number){
+  private async uploadFile(event: FileList, index: number, type: string = "questionImage", answerLetter: string = ''){
     await this.loadingService.showLoading('Uploading');
     this.disableSaveBtn = true;
 
-    // Remove previously added image
-    if(this.questionGroup[index].data.image_url != "" && this.questionGroup[index].data.metadata != ""){
-      this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.metadata));
+    if(type=="questionImage"){
+      // Remove previously added image
+      if(this.questionGroup[index].data.image_url != "" && this.questionGroup[index].data.metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.metadata));
+      }
+      let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+      task.then().then(
+        res => {
+          this.questionGroup[index].data.metadata = JSON.stringify(res.metadata);
+          this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+            this.questionGroup[index].data.image_url = res;
+            console.log(this.questionGroup[index].data.image_url);      
+            
+            // Quickly save the current question
+            this.quickSave(index);
+            this.loadingService.hideLoading();
+            this.disableSaveBtn = false;
+          },
+          err => {
+            console.log(err);
+            this.loadingService.hideLoading();
+            this.disableSaveBtn = false;
+          })
+        });
     }
-    let {task, fileRef} = this.questionService.uploadImage(event.item(0));
-    task.then().then(
-      res => {
-        this.questionGroup[index].data.metadata = JSON.stringify(res.metadata);
-        this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
-          this.questionGroup[index].data.image_url = res;
-          console.log(this.questionGroup[index].data.image_url);      
-          
-          // Quickly save the current question
-          this.quickSave(index);
-          this.loadingService.hideLoading();
-          this.disableSaveBtn = false;
-        },
-        err => {
-          console.log(err);
-          this.loadingService.hideLoading();
-          this.disableSaveBtn = false;
-        })
-      });
+    else{
+      // Remove previously added image
+      if(answerLetter=='a'){
+        if(this.questionGroup[index].data.imageA != "" && this.questionGroup[index].data.a_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.a_metadata));          
+        }
+        let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+          task.then().then(
+            res => {
+              this.questionGroup[index].data.a_metadata = JSON.stringify(res.metadata);
+              this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+                this.questionGroup[index].data.imageA = res;
+                console.log(this.questionGroup[index].data.imageA);      
+                
+                // Quickly save the current question
+                this.quickSave(index);
+                this.loadingService.hideLoading();
+                this.disableSaveBtn = false;
+              },
+              err => {
+                console.log(err);
+                this.loadingService.hideLoading();
+                this.disableSaveBtn = false;
+              })
+            });
+      }
+      else if(answerLetter=='b'){
+        if(this.questionGroup[index].data.imageB != "" && this.questionGroup[index].data.b_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.b_metadata));
+        }
+        let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+        task.then().then(
+          res => {
+            this.questionGroup[index].data.b_metadata = JSON.stringify(res.metadata);
+            this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+              this.questionGroup[index].data.imageB = res;
+              console.log(this.questionGroup[index].data.imageB);      
+              
+              // Quickly save the current question
+              this.quickSave(index);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            },
+            err => {
+              console.log(err);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            })
+          });
+      }
+      else if(answerLetter=='c'){
+        if(this.questionGroup[index].data.imageC != "" && this.questionGroup[index].data.c_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.c_metadata));
+        }
+        let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+        task.then().then(
+          res => {
+            this.questionGroup[index].data.c_metadata = JSON.stringify(res.metadata);
+            this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+              this.questionGroup[index].data.imageC = res;
+              console.log(this.questionGroup[index].data.imageC);      
+              
+              // Quickly save the current question
+              this.quickSave(index);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            },
+            err => {
+              console.log(err);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            })
+          });
+      }
+      else if(answerLetter=='d'){
+        if(this.questionGroup[index].data.imageD != "" && this.questionGroup[index].data.d_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.d_metadata));
+        }
+        let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+        task.then().then(
+          res => {
+            this.questionGroup[index].data.d_metadata = JSON.stringify(res.metadata);
+            this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+              this.questionGroup[index].data.imageA = res;
+              console.log(this.questionGroup[index].data.imageA);      
+              
+              // Quickly save the current question
+              this.quickSave(index);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            },
+            err => {
+              console.log(err);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            })
+          });
+      }
+      else if(answerLetter=='e'){
+        if(this.questionGroup[index].data.imageE != "" && this.questionGroup[index].data.e_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.e_metadata));
+        }
+        let {task, fileRef} = this.questionService.uploadImage(event.item(0));
+        task.then().then(
+          res => {
+            this.questionGroup[index].data.e_metadata = JSON.stringify(res.metadata);
+            this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(res => {
+              this.questionGroup[index].data.imageE = res;
+              console.log(this.questionGroup[index].data.imageE);      
+              
+              // Quickly save the current question
+              this.quickSave(index);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            },
+            err => {
+              console.log(err);
+              this.loadingService.hideLoading();
+              this.disableSaveBtn = false;
+            })
+          });
+      }
+      else{
+        // ntohing to do
+      }
+    }
     
   }
 
@@ -205,6 +348,51 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     if(this.questionGroup[index].data.metadata == undefined){
       this.questionGroup[index].data.metadata = "";
     } 
+
+  
+    // Remove previously added image
+    if(!this.questionGroup[index].data.image){
+      if(this.questionGroup[index].data.image_url != "" && this.questionGroup[index].data.metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.metadata)); 
+        this.questionGroup[index].data.image_url = "";
+        this.questionGroup[index].data.metadata = "";     
+      }
+    }
+    if(!this.questionGroup[index].data.image_A){
+      if(this.questionGroup[index].data.imageA != "" && this.questionGroup[index].data.a_metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.a_metadata)); 
+        this.questionGroup[index].data.imageA = "";
+        this.questionGroup[index].data.a_metadata = "";     
+      }
+    }
+    if(!this.questionGroup[index].data.image_B){
+      if(this.questionGroup[index].data.imageB != "" && this.questionGroup[index].data.b_metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.b_metadata));
+        this.questionGroup[index].data.imageB = "";
+        this.questionGroup[index].data.b_metadata = "";
+      }
+    }
+    if(!this.questionGroup[index].data.image_C){
+      if(this.questionGroup[index].data.imageC != "" && this.questionGroup[index].data.c_metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.c_metadata));
+        this.questionGroup[index].data.imageC = "";
+        this.questionGroup[index].data.c_metadata = "";
+      }
+    }
+    if(!this.questionGroup[index].data.image_D){
+      if(this.questionGroup[index].data.imageD != "" && this.questionGroup[index].data.d_metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.d_metadata));
+        this.questionGroup[index].data.imageD = "";
+        this.questionGroup[index].data.d_metadata = "";
+      }
+    }
+    if(!this.questionGroup[index].data.image_E){
+      if(this.questionGroup[index].data.imageE != "" && this.questionGroup[index].data.e_metadata != ""){
+        this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.e_metadata));
+        this.questionGroup[index].data.imageE = "";
+        this.questionGroup[index].data.e_metadata = "";
+      }
+    }
 
     // Define the question
     let que: Question = {
@@ -220,8 +408,23 @@ export class AddQuestionPage implements OnInit, OnDestroy {
       "paper": this.paper.id,
       "number": (index+1).toString(),
       "image": this.questionGroup[index].data.image,
+      "image_A": this.questionGroup[index].data.image_A,
+      "imageA": this.questionGroup[index].data.imageA,
+      "image_B": this.questionGroup[index].data.image_B,
+      "imageB": this.questionGroup[index].data.imageB,
+      "image_C": this.questionGroup[index].data.image_C,
+      "imageC": this.questionGroup[index].data.imageC,
+      "image_D": this.questionGroup[index].data.image_D,
+      "imageD": this.questionGroup[index].data.imageD,
+      "image_E": this.questionGroup[index].data.image_E,
+      "imageE": this.questionGroup[index].data.imageE,
       "image_url": this.questionGroup[index].data.image_url,
-      "metadata": this.questionGroup[index].data.metadata
+      "metadata": this.questionGroup[index].data.metadata,
+      "a_metadata": this.questionGroup[index].data.a_metadata,
+      "b_metadata": this.questionGroup[index].data.b_metadata,
+      "c_metadata": this.questionGroup[index].data.c_metadata,
+      "d_metadata": this.questionGroup[index].data.d_metadata,
+      "e_metadata": this.questionGroup[index].data.e_metadata
     }
     console.log(JSON.stringify(que));
     if(this.questionGroup[index].id != ""){
@@ -265,6 +468,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     else{
       this.toastMessageService.showToastMessage("You have already defined all the questions for this paper", 2000, "top");
     }
+
     this.disableSaveBtn=!this.disableSaveBtn;
   }
 
@@ -377,8 +581,52 @@ export class AddQuestionPage implements OnInit, OnDestroy {
       return;
     }
 
-    this.questionGroup.forEach(async element => {
-      let index: number = this.questionGroup.indexOf(element);
+    this.questionGroup.forEach(async (element, index, array) => {
+      // let index: number = this.questionGroup.indexOf(element);      
+  
+      // Remove previously added image
+      if(!this.questionGroup[index].data.image){
+        if(this.questionGroup[index].data.image_url != "" && this.questionGroup[index].data.metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.metadata)); 
+          this.questionGroup[index].data.image_url = "";
+          this.questionGroup[index].data.metadata = "";     
+        }
+      }
+      if(!this.questionGroup[index].data.image_A){
+        if(this.questionGroup[index].data.imageA != "" && this.questionGroup[index].data.a_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.a_metadata)); 
+          this.questionGroup[index].data.imageA = "";
+          this.questionGroup[index].data.a_metadata = "";     
+        }
+      }
+      if(!this.questionGroup[index].data.image_B){
+        if(this.questionGroup[index].data.imageB != "" && this.questionGroup[index].data.b_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.b_metadata));
+          this.questionGroup[index].data.imageB = "";
+          this.questionGroup[index].data.b_metadata = "";
+        }
+      }
+      if(!this.questionGroup[index].data.image_C){
+        if(this.questionGroup[index].data.imageC != "" && this.questionGroup[index].data.c_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.c_metadata));
+          this.questionGroup[index].data.imageC = "";
+          this.questionGroup[index].data.c_metadata = "";
+        }
+      }
+      if(!this.questionGroup[index].data.image_D){
+        if(this.questionGroup[index].data.imageD != "" && this.questionGroup[index].data.d_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.d_metadata));
+          this.questionGroup[index].data.imageD = "";
+          this.questionGroup[index].data.d_metadata = "";
+        }
+      }
+      if(!this.questionGroup[index].data.image_E){
+        if(this.questionGroup[index].data.imageE != "" && this.questionGroup[index].data.e_metadata != ""){
+          this.questionService.removeImage(JSON.parse(this.questionGroup[index].data.e_metadata));
+          this.questionGroup[index].data.imageE = "";
+          this.questionGroup[index].data.e_metadata = "";
+        }
+      }
       let que: Question = {
         "instructor": this.loggedInUser.id,
         "subject": this.paper.data.subject,
@@ -393,7 +641,22 @@ export class AddQuestionPage implements OnInit, OnDestroy {
         "number": (index + 1).toString(),
         "image": element.data.image,
         "image_url": element.data.image_url,
-        "metadata": element.data.metadata
+        "image_A": element.data.image_A,
+        "imageA": element.data.imageA,
+        "image_B": element.data.image_B,
+        "imageB": element.data.imageB,
+        "image_C": element.data.image_C,
+        "imageC": element.data.imageC,
+        "image_D": element.data.image_D,
+        "imageD": element.data.imageD,
+        "image_E": element.data.image_E,
+        "imageE": element.data.imageE,
+        "metadata": element.data.metadata,
+        "a_metadata": element.data.a_metadata,
+        "b_metadata": element.data.b_metadata,
+        "c_metadata": element.data.c_metadata,
+        "d_metadata": element.data.d_metadata,
+        "e_metadata": element.data.e_metadata
       };
       console.log(JSON.stringify(que));
       if (element.id != "") {
@@ -413,14 +676,16 @@ export class AddQuestionPage implements OnInit, OnDestroy {
       }
       await this.paperService.updatePaper(this.paper.data, this.paper.id).then(onfulfilled => {
         console.log(onfulfilled);
-        this.loadingService.hideLoading();
-        this.filterQuestionsByPaper();
+        this.filterQuestionsByPaper(false);
       }, onrejected => {
         console.log(onrejected);
-        this.loadingService.hideLoading();
-        this.filterQuestionsByPaper();
+        this.filterQuestionsByPaper(false);
       });
+      if(index===array.length-1){
+        this.loadingService.hideLoading();
+      }
     });
+    
 
     // Publish confirmation
     if(this.paper.data.no_of_questions == this.paper.data.added_questions){
@@ -464,21 +729,22 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     await this.paperService.getPapersBySubjectId_InstructorId(this.subjectId, this.loggedInUser.id).then(res =>{
       this.papers = res.filter( el => !el.data.published);
     });
-    this.loadingService.hideLoading();
     if(this.tempPaperId != undefined){        
       this.paperId = this.tempPaperId;
       this.getPaperSubject();
       this.paper.id = this.paperId;
       this.tempPaperId = undefined;
+      this.filterQuestionsByPaper();
     }
+    this.loadingService.hideLoading();
   }
 
-  private async filterQuestionsByPaper(){
+  private async filterQuestionsByPaper(loading: boolean = true){
     console.log("___filterQuestionsByPaper()___"); 
     if(this.paperId == undefined){
       return;
     }
-    await this.loadingService.showLoading("Loading");
+    loading?await this.loadingService.showLoading("Loading"):"";
     await this.questionService.getQuestionsByPapers(this.paperId).then(res =>{
       this.questionGroup = res;
     });
@@ -490,7 +756,8 @@ export class AddQuestionPage implements OnInit, OnDestroy {
         return -1;
       }
     });
-    this.loadingService.hideLoading();
+    console.log(this.questionGroup);
+    loading?this.loadingService.hideLoading():'';
   }
 
   private async loadPreviousQuestions(){
@@ -532,7 +799,22 @@ export class AddQuestionPage implements OnInit, OnDestroy {
         "number": "",
         "image": false,
         "image_url": "",
-        "metadata": ""
+        "metadata": "",
+        "image_A": false,
+        "imageA": "",
+        "image_B": false,
+        "imageB": "",
+        "image_C": false,
+        "imageC": "",
+        "image_D": false,
+        "imageD": "",
+        "image_E": false,
+        "imageE": "",
+        "a_metadata": "",
+        "b_metadata": "",
+        "c_metadata": "",
+        "d_metadata": "",
+        "e_metadata": ""
       }
     }
     this.questionGroup.push(question);
@@ -584,25 +866,28 @@ export class AddQuestionPage implements OnInit, OnDestroy {
                     backdropDismiss : false,
 
                   });
-                  modal.onDidDismiss().then(data => {     
-                    description = data.data["description"]
+                  modal.onDidDismiss().then(async data => {     
+                    description = data.data["description"];
+                    let news: Newsfeed = {
+                      userId: this.loggedInUser.id,
+                      description:  description,
+                      type: "Paper",
+                      ref_id: this.paper.id,
+                      posted_timestamp: firebase.firestore.Timestamp.now(),
+                      timestamp: firebase.firestore.Timestamp.now(),
+                      likes: 0,
+                      likedUsers: "[]"
+                    }                    
+                    this.loadingService.showLoading("Saving Newsfeed");
+                    await this.newsfeedService.addNewsfeed(news);
+                    this.paperId = undefined;
+                    this.disableSaveBtn=!this.disableSaveBtn;
+                    this.loadingService.hideLoading();
+                    this.filterPapersBySubject();
                   })
                   await modal.present();
-                  let news: Newsfeed = {
-                    userId: this.loggedInUser.id,
-                    description:  description,
-                    type: "Paper",
-                    ref_id: this.paper.id,
-                    posted_timestamp: firebase.firestore.Timestamp.now(),
-                    timestamp: firebase.firestore.Timestamp.now(),
-                    likes: 0,
-                    likedUsers: "[]"
-                  }
-                  await this.newsfeedService.addNewsfeed(news);
-                  this.paperId = undefined;
-                  this.disableSaveBtn=!this.disableSaveBtn;
                   this.loadingService.hideLoading();
-                  this.filterPapersBySubject();
+                  
                 },
                 err=>{
                   console.log(err);

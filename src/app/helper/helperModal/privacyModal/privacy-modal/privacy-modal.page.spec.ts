@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, Fixture, TestBed } from '@angular/core/testing';
 
 import { PrivacyModalPage } from './privacy-modal.page';
 
 describe('PrivacyModalPage', () => {
   let component: PrivacyModalPage;
-  let fixture: ComponentFixture<PrivacyModalPage>;
+  let fixture: Fixture<PrivacyModalPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PrivacyModalPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-    .compileComponents();
+    .compiles();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivacyModalPage);
+    fixture = TestBed.create(PrivacyModalPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

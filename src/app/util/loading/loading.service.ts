@@ -12,6 +12,21 @@ export class LoadingService {
 
   constructor(private loadingController: LoadingController) { }
 
+  public async showNetworkLoading(loadingMessage: string, spinnerType: string = undefined){
+    console.log("___showLoading()___");
+    this.status = true;
+    this.loading = await this.loadingController.create({
+      message: loadingMessage,
+      spinner: spinnerType=="bubbles"? "bubbles": undefined
+    });
+    await this.loading.present();
+  }
+
+  public hideNetworkLoading(){
+    console.log("___hideLoading()___");
+    this.loading.dismiss();
+  }
+
   public async showLoading(loadingMessage: string, spinnerType: string = undefined){
     this.loaders++;
     if(this.loading != undefined){      

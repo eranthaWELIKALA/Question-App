@@ -72,23 +72,38 @@
         <div>
             <ion-item *ngIf="questionItem.data.a!=''">
                 <ion-col size="2"><ion-label>A</ion-label></ion-col>
-                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}a [innerHTML]="questionItem.data.a" readonly></ion-input></ion-col>
+                <ion-col size="10">
+                  <ion-input type="text" class="form-control" name=answer{{t}}a [innerHTML]="questionItem.data.a" readonly></ion-input>
+                  <ion-button *ngIf="questionItem.data.image_A" class="btn btn-sm" (click)="openImageViewer(questionItem.data.imageA)"><fa-icon [icon]="faImage"></fa-icon></ion-button>
+                </ion-col>
               </ion-item>
               <ion-item *ngIf="questionItem.data.b!=''">
                 <ion-col size="2"><ion-label>B</ion-label></ion-col>
-                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}b [innerHTML]="questionItem.data.b" readonly></ion-input></ion-col>
+                <ion-col size="10">
+                  <ion-input type="text" class="form-control" name=answer{{t}}b [innerHTML]="questionItem.data.b" readonly></ion-input>
+                  <ion-button *ngIf="questionItem.data.image_B!" class="btn btn-sm" (click)="openImageViewer(questionItem.data.imageB)"><fa-icon [icon]="faImage"></fa-icon></ion-button>
+                </ion-col>
               </ion-item>
               <ion-item *ngIf="questionItem.data.c!=''">
                 <ion-col size="2"><ion-label>C</ion-label></ion-col>
-                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}c [innerHTML]="questionItem.data.c" readonly></ion-input></ion-col>
+                <ion-col size="10">
+                  <ion-input type="text" class="form-control" name=answer{{t}}c [innerHTML]="questionItem.data.c" readonly></ion-input>
+                  <ion-button *ngIf="questionItem.data.image_C" class="btn btn-sm" (click)="openImageViewer(questionItem.data.imageC)"><fa-icon [icon]="faImage"></fa-icon></ion-button>
+                </ion-col>
               </ion-item>
               <ion-item *ngIf="questionItem.data.d!=''">
                 <ion-col size="2"><ion-label>D</ion-label></ion-col>
-                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}d [innerHTML]="questionItem.data.d" readonly></ion-input></ion-col>
+                <ion-col size="10">
+                  <ion-input type="text" class="form-control" name=answer{{t}}d [innerHTML]="questionItem.data.d" readonly></ion-input>
+                  <ion-button *ngIf="questionItem.data.image_D" class="btn btn-sm" (click)="openImageViewer(questionItem.data.imageD)"><fa-icon [icon]="faImage"></fa-icon></ion-button>
+                </ion-col>
               </ion-item>
               <ion-item *ngIf="questionItem.data.e!=''">
                 <ion-col size="2"><ion-label>E</ion-label></ion-col>
-                <ion-col size="10"><ion-input type="text" class="form-control" name=answer{{t}}e [innerHTML]="questionItem.data.e" readonly></ion-input></ion-col>
+                <ion-col size="10">
+                  <ion-input type="text" class="form-control" name=answer{{t}}e [innerHTML]="questionItem.data.e" readonly></ion-input>
+                  <ion-button *ngIf="questionItem.data.image_E" class="btn btn-sm" (click)="openImageViewer(questionItem.data.imageE)"><fa-icon [icon]="faImage"></fa-icon></ion-button>
+                </ion-col>
               </ion-item>
         </div>
 

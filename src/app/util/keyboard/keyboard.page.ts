@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { faTimes, faSave } from '@fortawesome/free-solid-svg-icons';
 import { ModalController } from '@ionic/angular';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { text } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-keyboard',

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule, Route } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
@@ -23,7 +23,7 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [ValidityState],
+  entryComponents: [],
   declarations: [RegisterPage]
 })
 export class RegisterPageModule {}

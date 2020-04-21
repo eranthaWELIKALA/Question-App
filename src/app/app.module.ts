@@ -17,7 +17,7 @@ import { environment } from '../environments/environment';
 
 import { FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { Sim } from '@ionic-native/sim/ngx';
-import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -32,6 +32,7 @@ import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,7 +42,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     AngularFirestoreModule, AngularFireStorageModule, FontAwesomeModule, HttpClientModule, CKEditorModule, QuillModule.forRoot() ],
   providers: [
     Sim,
-    StatusBar,
+    StatusBar, AdMobFree,
     SplashScreen, AndroidPermissions, NativeStorage, Camera,
     HttpClient, File, FileOpener, FileTransfer, DocumentViewer, Network,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

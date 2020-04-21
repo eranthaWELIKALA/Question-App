@@ -5,11 +5,13 @@ import { QuestionService, Question } from '../../question/question.service';
 import { IonSlides, AlertController, ModalController, NavController } from '@ionic/angular';
 import { User } from 'src/app/initial/user.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { faBars} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faImage} from '@fortawesome/free-solid-svg-icons';
 import { AnswerPaperModelPage } from './answer-paper-model/answer-paper-model.page';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
+import { ImageViewerPage } from 'src/app/util/image-viewer/image-viewer.page';
 
 @Component({
   selector: 'app-answer-paper',
@@ -19,11 +21,13 @@ import { Subscription } from 'rxjs';
 export class AnswerPaperPage implements OnInit, OnDestroy {
 
   faBars = faBars;
+  faImage = faImage;
 
   @ViewChild("questionSlider",{ read: false, static: false }) slides: IonSlides;
   private backSlideButton: boolean = true;
   private nextSlideButton: boolean = true;
   private submitButton: boolean = false;
+  private adRef: number = 0;
   private jumpQuestion: number;
 
   private maxTime: number;
@@ -51,10 +55,11 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     private modalController: ModalController,
     private toastMessageService: ToastMessageService,
     private route: ActivatedRoute,
-    private navController: NavController) {      
+    private navController: NavController,
+    private adMob: AdMobFree) {      
     // Get Logged in User's details
     this.loggedInUser = this.sharedService.getLoggedInUser();
-    
+    this.adMob.banner.config(this.sharedService.getBannerConfig());
     this.routerSubscription = this.route.queryParams.subscribe(params => {
       if (params && params.paper) {
         this.paper = JSON.parse(params.paper);
@@ -85,10 +90,23 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.routerSubscription.unsubscribe();
     this.questionSubscription.unsubscribe();
+    this.adMob.banner.remove();
+  }
+
+  private async openImageViewer(url: string){
+    const modal = await this.modalController.create({
+      component: ImageViewerPage,
+      cssClass: 'my-custom-modal-css',
+      componentProps: {
+        'image_url': url
+      },
+      backdropDismiss : true
+    });
+    return await modal.present();
   }
 
   private async readyToAnswer(){
-    let alert = await this.alertController.create({
+    let alertM = await this.alertController.create({
       header: 'Confirm',
       subHeader: 'Are you ready to answer ' + this.paper.data.name + ' ' + this.paper.data.year + '?',
       message: 'No. of Questions: ' + this.paper.data.no_of_questions + ', <br>Allocated time(mins): ' + this.paper.data.time,
@@ -109,19 +127,29 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
             this.maxTime = Number(this.paper.data.time) * 60;
             this.startTimer();
             this.sharedService.setOnPaper(true);
+            // Google Ads
+            this.adMob.banner.prepare().then(()=>{
+              this.adMob.banner.show();
+              this.adRef++;
+            }).catch(onrejected=>{
+              console.log(onrejected);
+            });
           }
         }
       ]
     });
-    alert.present();
+    alertM.present();
   }
 
   private startTimer(){
     clearInterval(this.timeoutVar);
     this.timeoutVar = setTimeout(async x => 
       {
-        if(this.maxTime <= 0) {          
+        if(this.maxTime <= 0) {     
+          console.log('Examine');     
           this.toastMessageService.showToastMessage("Time out", 2000);
+          this.sharedService.setOnPaper(false);
+          this.handleAnswerModal();
           this.toastMessageService.showToastMessage("You have got " + this.checkAnswers(), 5000);
         }
         else if(this.maxTime>0){
@@ -147,6 +175,13 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
 
   private slide(option){
     option == "back"? this.slides.slidePrev(): this.slides.slideNext();    
+    if(this.adRef%2==0){
+      this.adRef = this.adRef + 1;
+      this.adMob.banner.show();
+    }
+    else{
+      this.adMob.banner.hide();
+    }
   }
 
   private checkSlideOptions(){
@@ -193,6 +228,13 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     Promise.all([this.slides.length()]).then((data) =>{
       questionNumber>0 && data[0]>=questionNumber? this.slides.slideTo(questionNumber-1): this.toastMessageService.showToastMessage("Invalid Question No.");
     }); 
+    if(this.adRef%2==0){
+      this.adRef = this.adRef + 1;
+      this.adMob.banner.show();
+    }
+    else{
+      this.adMob.banner.hide();
+    }
   }
 
   private checkAnswers(): string{
