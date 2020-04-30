@@ -9,7 +9,6 @@ import { InitialPage } from './initial.page';
 import { LoginPage } from './login/login.page';
 import { RegisterPage } from './register/register.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ValidateMobilePage } from './register/validate-mobile/validate-mobile.page';
 import { AgreementModalPage } from './register/agreement-modal/agreement-modal.page';
 
 const routes: Routes = [
@@ -43,7 +42,7 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [ValidateMobilePage, AgreementModalPage],
-  declarations: [InitialPage, RegisterPage, LoginPage, ValidateMobilePage, AgreementModalPage]
+  entryComponents: [AgreementModalPage],
+  declarations: [InitialPage, RegisterPage, LoginPage, AgreementModalPage]
 })
 export class InitialPageModule {}
