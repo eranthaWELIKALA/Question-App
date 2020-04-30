@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { IconService } from 'src/app/util/icon/icon.service';
 
 @Component({
   selector: 'app-create-newsfeed',

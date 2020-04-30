@@ -3,16 +3,11 @@ import { faCheck, faGraduationCap, faChalkboardTeacher, faArrowLeft, faUpload, f
 import { User, UserService, Subject } from '../user.service';
 import { ModalController, NavController, Platform } from '@ionic/angular';
 import { SharedService } from 'src/app/shared/shared.service';
-import CryptoJS from 'crypto-js';
-import { IdeaMartService } from 'src/app/util/ideaMart/idea-mart.service';
-import { ValidateMobilePage } from './validate-mobile/validate-mobile.page';
-import { isNumber } from 'util';
 import { AgreementModalPage } from './agreement-modal/agreement-modal.page';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { FirebaseApp  } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
 
@@ -41,7 +36,6 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   private user: User;
   private subjects: {id: string, data: Subject}[];
-  private users: {id: string, data: User}[];
   private imageFile: File;
 
   private contact: string;
@@ -55,7 +49,6 @@ export class RegisterPage implements OnInit, OnDestroy {
     private modalController: ModalController,
     private userService: UserService, 
     private sharedService: SharedService,
-    private ideaMartService: IdeaMartService,
     private loadingService: LoadingService,
     private toastMessageService: ToastMessageService,
     private navController: NavController,
@@ -72,17 +65,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.subjectRegisterSubscription = this.userService.getSubjects().subscribe(async res => {
       this.subjects = res;
       console.log(res);
-
-      // Get Users
-      this.userRegisterSubscription = this.userService.getUsers().subscribe(async res => {
-        this.users = res;
-        console.log(res);
-        this.loadingService.hideLoading();
-      },
-      error => {
-        console.log(error);
-        this.loadingService.hideLoading();
-      });
+      this.loadingService.hideLoading();
     },
     error => {
       console.log(error);
@@ -99,7 +82,6 @@ export class RegisterPage implements OnInit, OnDestroy {
     console.log("___ngOnDestroy()___");
     this.backButtonRegisterSubscription.unsubscribe();
     this.subjectRegisterSubscription.unsubscribe();
-    this.userRegisterSubscription.unsubscribe();
     this.fileUploadRegisterSubscription!=undefined?this.fileUploadRegisterSubscription.unsubscribe():"";
   }
 
@@ -115,19 +97,6 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.user = this.createNullUser();
     this.imageFile = undefined;
     this.navController.navigateRoot('/');
-  }
-
-  // Not using
-  private async addSubject(){
-    console.log("___addSubject()___");
-    
-    if(this.otherSubject!=""){
-      this.userService.addSubject({
-        "name": this.otherSubject
-      });
-      this.otherSubject = "";
-      this.toastMessageService.showToastMessage("Subject is added.<br>Select it from the above subjects");
-    }    
   }
 
   private checkFileType(event: FileList){
@@ -224,9 +193,6 @@ export class RegisterPage implements OnInit, OnDestroy {
 
     this.user.contact = "+94"+this.user.contact;
 
-    // Hashing the password
-    this.password = JSON.stringify(CryptoJS.SHA1(this.password));
-
     // Adding the selected subjects
     this.user.units = this.subject;   
 
@@ -314,75 +280,6 @@ export class RegisterPage implements OnInit, OnDestroy {
       return true;
     }
     else return false;
-  }
-
-  // Not using
-  private generateOTP(): string{
-    console.log("___generateOTP()___"); 
-    let min = 10000;
-    let max = 100000;
-    let otp: number;
-    otp = Math.floor(Math.random() * (max - min + 1)) + min;
-    return otp.toString();
-  }
-
-  // Not using
-  private async validateMobileNumber(){
-    console.log("___validateMobileNumber()___"); 
-    if(this.contact != undefined && this.contact.toString().length == 9 && isNumber(this.contact)){
-      let otp = this.generateOTP();
-      let otpId;
-      this.ideaMartService.sendSMS({message: otp, telNo: "94"+this.contact});
-      await this.userService.addOTP({otp: otp, status: false}).then(
-        onfulfilled =>{
-          otpId = onfulfilled.id;
-          this.handleModal(otpId);
-        },
-        onrejected =>{
-          console.log(onrejected);
-        }
-      );
-      setTimeout(async x => 
-        {
-          if(otpId != undefined){
-            await this.userService.removeOTP(otpId);          
-          }
-          this.modalController.getTop().then(onfullfilled =>{   
-            if(onfullfilled != undefined) {
-              this.modalController.dismiss({"status": false});
-            }         
-          },
-          onrejected =>{
-            console.log(onrejected);
-          })
-        }, 20000);   
-    } 
-    else{
-      this.toastMessageService.showToastMessage("Invalid Phone Number");
-    }
-  }
-
-  // Not using
-  private async handleModal(otpId: string){  
-    console.log("___handleModal()___");   
-    const modal = await this.modalController.create({
-      component: ValidateMobilePage,
-      cssClass: "my-validateMobile-modal-css",
-      componentProps: {
-        "otpId" : otpId 
-      },
-      backdropDismiss : false
-    });
-    modal.onDidDismiss().then(data => {
-      console.log(data)
-      if(data.data["status"]){
-        this.user.contact = this.contact;
-      }
-      else{
-        this.user.contact = "";
-      }
-    })
-    return await modal.present();
   }
 
   private async showAgreement(){

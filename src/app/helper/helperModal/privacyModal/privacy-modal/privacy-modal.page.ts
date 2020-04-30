@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-privacy-modal',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrivacyModalPage implements OnInit {
 
-  constructor() { }
+  faTimes = faTimes;
+
+  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
+  }
+
+  private async close(){
+    await this.modalController.dismiss();
   }
 
 }

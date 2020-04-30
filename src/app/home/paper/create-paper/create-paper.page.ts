@@ -8,7 +8,6 @@ import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
 import { isNumber } from 'util';
-import { IconService } from 'src/app/util/icon/icon.service';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @Component({

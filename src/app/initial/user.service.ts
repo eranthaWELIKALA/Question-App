@@ -68,7 +68,6 @@ export class UserService {
   private instructorCollection: AngularFirestoreCollection<Instructor>;
   private studentCollection: AngularFirestoreCollection<Student>;
   private subjectsCollection: AngularFirestoreCollection<Subject>;
-  private otpsCollection: AngularFirestoreCollection<OTP>;
 
   private users: Observable<{id: string, data: User}[]>;
   private subjects: Observable<{id: string, data: Subject}[]>;
@@ -79,7 +78,6 @@ export class UserService {
     this.instructorCollection = db.collection<Instructor>('instructor');
     this.studentCollection = db.collection<Student>('student');
     this.subjectsCollection = db.collection<Subject>('subjects');
-    this.otpsCollection = db.collection<OTP>('otp');
   }
 
   uploadImage(file: File): {task: AngularFireUploadTask, fileRef: AngularFireStorageReference, path}{
@@ -256,35 +254,5 @@ export class UserService {
  
   removeSubject(id) {
     return this.subjectsCollection.doc(id).delete();
-  }
-
-  // Handling OTP details
-  getOTPs(): Observable<{id: string, data: OTP}[]> {
-    this.otps = this.otpsCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, data };
-        });
-      })
-    );
-    return this.otps;
-  }
- 
-  getOTP(id): Observable<OTP> {
-    return this.otpsCollection.doc<OTP>(id).valueChanges();
-  }
- 
-  updateOTP(otp: OTP, id: string) {
-    return this.otpsCollection.doc(id).update(otp);
-  }
- 
-  addOTP(otp: OTP) {
-    return this.otpsCollection.add(otp);
-  }
- 
-  removeOTP(id) {
-    return this.otpsCollection.doc(id).delete();
   }
 }

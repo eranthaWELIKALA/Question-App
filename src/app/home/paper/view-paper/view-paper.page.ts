@@ -7,7 +7,6 @@ import { Router, NavigationExtras } from '@angular/router';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { IonRefresher } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { IconService } from 'src/app/util/icon/icon.service';
 
 @Component({
   selector: 'app-view-paper',

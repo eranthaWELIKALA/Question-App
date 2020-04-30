@@ -2,13 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { UserService, User } from '../user.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import CryptoJS from 'crypto-js';
-import { Platform, AlertController, ModalController, NavController } from '@ionic/angular';
-import { IdeaMartService } from 'src/app/util/ideaMart/idea-mart.service';
+import { Platform, AlertController, NavController } from '@ionic/angular';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Subscription } from 'rxjs';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
-import { IconService } from 'src/app/util/icon/icon.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({

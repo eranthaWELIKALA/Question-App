@@ -7,7 +7,6 @@ import { faBars, faPlusSquare, faArrowLeft } from '@fortawesome/free-solid-svg-i
 import { Paper, PaperService } from '../../paper/paper.service';
 import { NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { IconService } from 'src/app/util/icon/icon.service';
 
 @Component({
   selector: 'app-attempt',

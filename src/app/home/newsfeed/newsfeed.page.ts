@@ -10,7 +10,6 @@ import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { IonRefresher} from '@ionic/angular';
 import { LoadingService } from 'src/app/util/loading/loading.service';
-import { IconService } from 'src/app/util/icon/icon.service';
 import { PendingDeletionService, PendingDeletion } from 'src/app/util/pendingDeletion/pending-deletion.service';
 
 @Component({

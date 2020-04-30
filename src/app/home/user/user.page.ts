@@ -6,7 +6,6 @@ import { faBars, faUserCog, faStar } from '@fortawesome/free-solid-svg-icons';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
-import { IconService } from 'src/app/util/icon/icon.service';
 
 @Component({
   selector: 'app-user',
