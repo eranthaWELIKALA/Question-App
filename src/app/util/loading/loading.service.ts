@@ -7,6 +7,7 @@ import { LoadingController } from '@ionic/angular';
 export class LoadingService {
 
   private loading: any;
+  private netLoading: any;
   private status: boolean = false;
   private loaders: number = 0;
 
@@ -15,16 +16,22 @@ export class LoadingService {
   public async showNetworkLoading(loadingMessage: string, spinnerType: string = undefined){
     console.log("___showLoading()___");
     this.status = true;
-    this.loading = await this.loadingController.create({
+    this.netLoading = await this.loadingController.create({
       message: loadingMessage,
       spinner: spinnerType=="bubbles"? "bubbles": undefined
     });
-    await this.loading.present();
+    await this.netLoading.present();
   }
 
   public hideNetworkLoading(){
     console.log("___hideLoading()___");
-    this.loading.dismiss();
+    if(this.netLoading!=undefined){
+      this.netLoading.dismiss();
+      this.netLoading = undefined;
+    }
+    else{
+      // nothing to do
+    }
   }
 
   public async showLoading(loadingMessage: string, spinnerType: string = undefined){

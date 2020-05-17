@@ -23,12 +23,9 @@ export class SharedService {
   private notificationCount: number = 0;
   
   public STORAGE_PERMISSION: boolean = false;
-  public CAMERA_PERMISSION: boolean = false;
-
-  //id: 'ca-app-pub-1240535405981859/3878740228'
 
   private bannerConfig: AdMobFreeBannerConfig = {
-    id: 'ca-app-pub-1240535405981859/3878740228',
+    id: 'ca-app-pub-1795449277018424/8618897172',
     autoShow: true,
     isTesting: false,
     bannerAtTop: false,
@@ -107,7 +104,7 @@ export class SharedService {
     return timestamp!=undefined?timestamp.toDate().toDateString():"";
   }
 
-  private toggleMenu(){
+  public toggleMenu(){
     console.log("___toggleMenu___");
     this.menuController.toggle("mainMenu");
   }

@@ -24,17 +24,17 @@ export class ViewCreatedNotePage implements OnInit, OnDestroy {
 
   private loggedInUser: {id: string, data: User};
 
-  private notes: {id: string, data: Note}[];
+  public notes: {id: string, data: Note}[];
 
   private subjectIdArray: string[] = [];
-  private subjects: {id: string, data: Subject}[];
+  public subjects: {id: string, data: Subject}[];
 
-  private subjectFilter: string;
+  public subjectFilter: string;
 
   private userSubscription: Subscription;
 
   constructor(    
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private noteService: NoteService,
     private userService: UserService,
     private loadingService: LoadingService,   
@@ -74,7 +74,7 @@ export class ViewCreatedNotePage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  private async filterNotes(){
+  public async filterNotes(){
     await this.loadingService.showLoading("Loading");
     await this.noteService.getNotesBySubjectId_InstructorId(this.subjectFilter, this.loggedInUser.id).then(res => {
       this.notes = res;
@@ -82,7 +82,7 @@ export class ViewCreatedNotePage implements OnInit, OnDestroy {
     this.loadingService.hideLoading();
   }
 
-  private async download_openPDF(url: string, fileName: string){
+  public async download_openPDF(url: string, fileName: string){
     await this.loadingService.showLoading("Downloading");
     let downloadURL = url;
     let path = this.file.dataDirectory;
@@ -101,7 +101,7 @@ export class ViewCreatedNotePage implements OnInit, OnDestroy {
     })
   }
 
-  private async deleteNote(noteId: string){
+  public async deleteNote(noteId: string){
     let alert = await this.alertController.create({
       header: 'Confirm',
       subHeader: 'Do you realy want to DELETE this note?',

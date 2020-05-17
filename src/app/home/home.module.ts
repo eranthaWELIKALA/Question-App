@@ -10,13 +10,6 @@ import { PrivacyGuardService } from './privacy-guard.service';
 import { HelperModalPage } from 'src/app/helper/helperModal/helper-modal.page';
 import { AgreementModalPage } from '../helper/helperModal/agreementModal/agreement-modal/agreement-modal.page';
 import { PrivacyModalPage } from '../helper/helperModal/privacyModal/privacy-modal/privacy-modal.page';
-import { QuestionPageModule } from './question/question.module';
-import { PaperPageModule } from './paper/paper.module';
-import { UserPageModule } from './user/user.module';
-import { NotePageModule } from './note/note.module';
-import { NewsfeedPageModule } from './newsfeed/newsfeed.module';
-import { NotificationsPageModule } from './notification/notification.module';
-import { AccountSettingsPageModule } from './account-settings/account-settings.module';
 import { ImageViewerPage } from '../util/image-viewer/image-viewer.page';
 
 const routes: Routes = [
@@ -31,32 +24,32 @@ const routes: Routes = [
       },
       { 
         path: 'question', 
-        loadChildren: () => QuestionPageModule, 
+        loadChildren: './question/question.module#QuestionPageModule', 
         canActivate: [PrivacyGuardService]
       },
       { 
         path: 'paper', 
-        loadChildren: () => PaperPageModule
+        loadChildren: './paper/paper.module#PaperPageModule'
       },
       { 
         path: 'user', 
-        loadChildren: () => UserPageModule
+        loadChildren: './user/user.module#UserPageModule'
       },
       { 
         path: 'note', 
-        loadChildren: () => NotePageModule
+        loadChildren: './note/note.module#NotePageModule'
       },
       { 
         path: 'newsfeed', 
-        loadChildren: () => NewsfeedPageModule
+        loadChildren: './newsfeed/newsfeed.module#NewsfeedPageModule'
       },
       { 
         path: 'notification', 
-        loadChildren: () => NotificationsPageModule
+        loadChildren: './notification/notification.module#NotificationsPageModule'
       },
       { 
         path: 'accountSettings', 
-        loadChildren: () => AccountSettingsPageModule
+        loadChildren: './account-settings/account-settings.module#AccountSettingsPageModule'
       }
     ]
   }  

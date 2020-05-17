@@ -13,7 +13,8 @@
   <ion-card *ngIf="!showContentPanel">
     <ion-list>
       <ion-item *ngFor="let title of helpTitles" (click)="showContent(title.type)">{{title.Title}}</ion-item>      
-      <ion-item (click)="openAgreementModal()"><fa-icon class="ion-margin-end" [icon]="faCircle"></fa-icon>Agreement</ion-item>
+      <ion-item (click)="openAgreementModal()"><fa-icon class="ion-margin-end" [icon]="faCircle"></fa-icon>Agreement</ion-item>     
+      <ion-item (click)="openPrivacyModal()"><fa-icon class="ion-margin-end" [icon]="faCircle"></fa-icon>Terms & Privacy</ion-item>
     </ion-list>
   </ion-card>
   <ion-card *ngIf="showContentPanel">

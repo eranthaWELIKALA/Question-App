@@ -18,11 +18,11 @@ export class AgreementModalPage implements OnInit {
   ngOnInit() {
   }
 
-  private async close(){
+  public async close(){
     await this.modalController.dismiss({"signed": false});
   }
 
-  private async accept(){
+  public async accept(){
     await this.modalController.dismiss({"signed": true});
   }
 }

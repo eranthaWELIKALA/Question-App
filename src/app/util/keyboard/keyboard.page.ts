@@ -20,14 +20,14 @@ export class KeyboardPage implements OnInit {
   ngOnInit() {
   }  
 
-  private add(){
+  public add(){
     console.log(this.text)
     this.modalController.dismiss({
       'text': this.text
     });
   }
 
-  private close(){
+  public close(){
     this.modalController.dismiss({
       'text': undefined
     })

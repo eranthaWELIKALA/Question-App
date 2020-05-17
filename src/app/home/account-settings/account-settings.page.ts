@@ -23,7 +23,7 @@ export class AccountSettingsPage implements OnInit {
   private loggedInUser: {id: string, data: User};
 
   constructor(
-    private sharedService: SharedService, 
+    public sharedService: SharedService, 
     private loadingService: LoadingService,
     private userService: UserService,
     private paperService: PaperService,

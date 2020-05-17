@@ -11,7 +11,7 @@ export class CreateNewsfeedPage implements OnInit {
   
   faTimes = faTimes;
 
-  private diableSaveBtn: boolean = false;
+  public disableSaveBtn: boolean = false;
 
   @Input("description") description: string;
 
@@ -21,13 +21,13 @@ export class CreateNewsfeedPage implements OnInit {
   ngOnInit() {
   }
 
-  private post(){
+  public post(){
     this.modalController.dismiss({
       'description': this.description
     });
   }
 
-  private close(){
+  public close(){
     this.modalController.dismiss({
       'description': this.description
     });

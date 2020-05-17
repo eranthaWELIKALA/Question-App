@@ -20,18 +20,18 @@ export class AdminPage implements OnInit, OnDestroy {
   faCaretSquareDown= faCaretSquareDown;
   faInfoCircle = faInfoCircle;
 
-  private subject: string;
+  public subject: string;
 
-  private subjectShow: boolean = false;
-  private adminShow: boolean = false;
-  private upgrade: boolean = true;
+  public subjectShow: boolean = false;
+  public adminShow: boolean = false;
+  public upgrade: boolean = true;
 
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
 
-  private users: { id: string, data: User}[];
-  private admins: { id: string, data: User}[];
+  public users: { id: string, data: User}[];
+  public admins: { id: string, data: User}[];
   private allUsers: { id: string, data: User}[];
-  private allSubjects: { id: string, data: Subject}[];
+  public allSubjects: { id: string, data: Subject}[];
 
   private backButtonSubscription: Subscription;
   private userSubscription: Subscription;
@@ -40,7 +40,7 @@ export class AdminPage implements OnInit, OnDestroy {
     private navController: NavController,
     private userService: UserService,
     private loadingService: LoadingService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private alertController: AlertController,
     private platform: Platform
   ) { 
@@ -79,12 +79,11 @@ export class AdminPage implements OnInit, OnDestroy {
     this.users = this.allUsers;
   }
 
-  private goBack(){
+  public goBack(){
     this.navController.back();
   }
 
-
-  filterUsers(evt) {
+  public filterUsers(evt) {
     this.initializeItems();
   
     const searchTerm = evt.srcElement.value;
@@ -118,7 +117,41 @@ export class AdminPage implements OnInit, OnDestroy {
     });
   }
 
-  private async upgradeUser(user: { id: string, data: User}){
+  public filterAdmins(evt) {
+    this.initializeItems();
+  
+    const searchTerm = evt.srcElement.value;
+  
+    if (!searchTerm) {
+      return;
+    }
+  
+    this.admins = this.admins.filter(admin => {
+      if (searchTerm) {
+        if (admin.data.firstname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          if(admin.data.adminFeatures){
+            return false;
+          }
+          return true;
+        }
+        else if (admin.data.lastname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          if(admin.data.adminFeatures){
+            return false;
+          }
+          return true;
+        }
+        else if (admin.data.email.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          if(admin.data.adminFeatures){
+            return false;
+          }
+          return true;
+        }
+        return false;
+      }
+    });
+  }
+
+  public async upgradeUser(user: { id: string, data: User}){
     let alert = await this.alertController.create({
       header: 'Confirm',
       subHeader: 'Are you sure you want to make ' + user.data.firstname + ' ' + user.data.lastname + ' as an ADMIN?',
@@ -146,7 +179,35 @@ export class AdminPage implements OnInit, OnDestroy {
     alert.present();
   }
 
-  private panelHandling(panel: string){
+  public async degradeAdmin(admin: { id: string, data: User}){
+    let alert = await this.alertController.create({
+      header: 'Confirm',
+      subHeader: 'Are you sure you want to degrade ' + admin.data.firstname + ' ' + admin.data.lastname + ' from ADMIN title?',
+      message: 'This might be irreversible!!!',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('Cancel');
+            admin.data.adminFeatures = true;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Continue');
+            admin.data.adminFeatures = false;
+            this.userService.updateUser(admin.data, admin.id);
+            this.loadData(false);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  public panelHandling(panel: string){
     if(panel=="subject"){
       this.subjectShow = !this.subjectShow;
       this.adminShow? this.adminShow = false: '';
@@ -157,7 +218,7 @@ export class AdminPage implements OnInit, OnDestroy {
     }
   }
 
-  private async add_Subject(){
+  public async add_Subject(){
     let duplicate = false;
     await this.loadingService.showLoading("Adding")
     this.allSubjects.forEach(el=>{
@@ -173,12 +234,12 @@ export class AdminPage implements OnInit, OnDestroy {
     }
   }
 
-  private async removeSubject(subject: {id: string, data: Subject}){
+  public async removeSubject(subject: {id: string, data: Subject}){
     await this.loadingService.showLoading("Removing")
     this.userService.removeSubject(subject.id);
   }
 
-  private async openHelpModal(){
+  public async openHelpModal(){
     let alert = await this.alertController.create({
       header: 'Help',
       subHeader: 'Do you want to degrade an Admin?',

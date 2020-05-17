@@ -22,7 +22,7 @@
           </ion-item>
       </ion-card>
         
-        <!-- Papers -->
+        <!-- Notes -->
         <ion-item-group *ngIf="subjectFilter!=undefined">
             <ion-card *ngIf="notes?.length==0">
                 <ion-item class="ion-margin-vertical">
@@ -34,7 +34,7 @@
                   <ion-item-group class="ion-margin-bottom">
                       <ion-item>
                         <ion-text>{{note.data.name + " " + note.data.year}}</ion-text>
-                        <ion-col><span class="ion-float-right">View <fa-icon [icon]="faFilePdf" (click)="download_openPDF(note.data.contentURL, note.data.name)"></fa-icon></span></ion-col>
+                        <ion-col><ion-button fill="clear" size="small" class="ion-float-right" (click)="download_openPDF(note.data.contentURL, note.data.name)"><span>View <fa-icon [icon]="faFilePdf"></fa-icon></span></ion-button></ion-col>
                       </ion-item>                             
                       <ion-item>                        
                           <ion-text>{{"Grade/ Level: " + note.data.grade_level}}</ion-text>

@@ -18,7 +18,7 @@ export class ImageViewerPage implements OnInit {
   ngOnInit() {
   }
 
-  private close(){
+  public close(){
     this.modalController.dismiss();
   }
 

@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Question } from 'src/app/home/question/question.service';
 import { Attempt, AttemptService } from 'src/app/home/user/attempt.service';
-import { firestore } from 'firebase';
 import { ModalController } from '@ionic/angular';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import * as firebase from 'firebase/app/';
+import { firestore } from 'firebase/app';
 
 @Component({
   selector: 'app-answer-paper-model',
@@ -33,7 +32,7 @@ export class AnswerPaperModelPage implements OnInit {
     this.saveAttempts();
   }
 
-  private async close(){
+  public async close(){
     await this.modalController.dismiss();
   }
 
@@ -71,7 +70,7 @@ export class AnswerPaperModelPage implements OnInit {
       previousAttempt.attempt.data.average = Number((((previousAttempt.attempt.data.average * previousAttempt.attempt.data.no_of_attempts) + marks) / (previousAttempt.attempt.data.no_of_attempts + 1)).toFixed(2));
       previousAttempt.attempt.data.no_of_attempts++;
 
-      previousAttempt.attempt.data.timestamp = firebase.firestore.Timestamp.now();
+      previousAttempt.attempt.data.timestamp = firestore.Timestamp.now();
 
       this.attemptService.updateAttempt(previousAttempt.attempt.data, previousAttempt.attempt.id)
     }
@@ -83,7 +82,7 @@ export class AnswerPaperModelPage implements OnInit {
         "highest": marks,
         "lowest": marks,
         "average": marks,
-        "timestamp": firebase.firestore.Timestamp.now()
+        "timestamp": firestore.Timestamp.now()
       }
       this.attemptService.addAttempt(attempt);
     }   
@@ -97,7 +96,7 @@ export class AnswerPaperModelPage implements OnInit {
       "highest": 0,
       "lowest": 0,
       "average": 0,
-      "timestamp": firebase.firestore.Timestamp.now()
+      "timestamp": firestore.Timestamp.now()
     }
   }
 

@@ -16,7 +16,7 @@ export class AgreementModalPage implements OnInit {
   ngOnInit() {
   }
 
-  private async close(){
+  public async close(){
     await this.modalController.dismiss();
   }
 

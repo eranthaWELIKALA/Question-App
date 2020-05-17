@@ -15,7 +15,7 @@ export class DeleteModalPage implements OnInit {
 
   @Input() trashQuestionArray: {id: string, data: Question}[] = [];
   private deletedQuestionArray: {id: string, data: Question}[] = [];
-  private confirmedTrashQuestionArray: any[];
+  public confirmedTrashQuestionArray: any[];
 
   constructor(
     private modalController: ModalController, 
@@ -25,7 +25,7 @@ export class DeleteModalPage implements OnInit {
   ngOnInit() {
   }
 
-  private deleteQuestions(){
+  public deleteQuestions(){
     if(this.confirmedTrashQuestionArray != undefined){
       this.confirmedTrashQuestionArray.forEach(async element => { 
         if(element.id!=""){
@@ -37,7 +37,7 @@ export class DeleteModalPage implements OnInit {
     this.dismissDeleteModal();
   }
 
-  private dismissDeleteModal() {
+  public dismissDeleteModal() {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
@@ -62,7 +62,7 @@ export class DeleteModalPage implements OnInit {
     }   
   }
 
-  private async confirmRestore(){
+  public async confirmRestore(){
     let alert = await this.alertController.create({
       header: 'Confirm',
       subHeader: 'Do you want restore the remaining questions in trash?',

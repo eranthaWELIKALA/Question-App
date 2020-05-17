@@ -7,7 +7,7 @@ import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.ser
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { Subscription } from 'rxjs';
 import { Newsfeed, NewsfeedService } from '../../newsfeed/newsfeed.service';
-import * as firebase from 'firebase/app';
+import { firestore } from 'firebase/app';
 import { NavController, ModalController } from '@ionic/angular';
 import { CreateNewsfeedPage } from '../../newsfeed/create-newsfeed/create-newsfeed.page';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
@@ -27,11 +27,11 @@ export class CreateNotePage implements OnInit, OnDestroy {
   private loggedInUser:{id: string, data: User};
   
   private subjectIDGroup: string[];
-  private subjectGroup: {id: string, data: Subject}[];
+  public subjectGroup: {id: string, data: Subject}[];
 
   private pdfFile: File = undefined;
 
-  private note: Note;
+  public note: Note;
 
   private userSubscription: Subscription;
   private fileUploadSubscription: Subscription;
@@ -39,7 +39,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
 
   constructor(
     private noteService: NoteService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private userService: UserService,
     private toastMessageService: ToastMessageService,
     private newsfeedService: NewsfeedService,
@@ -84,7 +84,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
     this.adMob.banner.remove();
   }
 
-  private async formSubmit(){
+  public async formSubmit(){
     if(this.pdfFile == undefined){
       this.toastMessageService.showToastMessage("PDF file is a must", 2000);
       return;
@@ -103,7 +103,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
     else return true;
   }
 
-  private checkFileType(event: FileList){
+  public checkFileType(event: FileList){
     if(event.item(0).type != "application/pdf"){
       this.toastMessageService.showToastMessage("Please select PDF type only", 2000);
       this.pdfFile = undefined;
@@ -127,7 +127,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
         this.fileUploadSubscription = fileRef.getDownloadURL().subscribe(async (res) => {
           console.log(res);
           this.note.contentURL = res;
-          this.note.timestamp = firebase.firestore.Timestamp.now();
+          this.note.timestamp = firestore.Timestamp.now();
           let id: string;
           await this.noteService.addNote(this.note).then(
             async onfulfilled=>{
@@ -155,8 +155,8 @@ export class CreateNotePage implements OnInit, OnDestroy {
                     description: description,
                     type: "Note",
                     ref_id: id,
-                    posted_timestamp: firebase.firestore.Timestamp.now(),
-                    timestamp: firebase.firestore.Timestamp.now(),
+                    posted_timestamp: firestore.Timestamp.now(),
+                    timestamp: firestore.Timestamp.now(),
                     likes: 0,
                     likedUsers: "[]"
                   }
@@ -188,7 +188,7 @@ export class CreateNotePage implements OnInit, OnDestroy {
       });
   }
 
-  private pickYear(){
+  public pickYear(){
     this.note.year = this.note.year.split("-")[0];
   }
 
@@ -210,12 +210,12 @@ export class CreateNotePage implements OnInit, OnDestroy {
       name: "",
       year: "",
       subject: "",
-      grade_level: "",
+      grade_level: "Other",
       instructor: userId,
       description: "", 
       contentURL: "",
       metadata: "",
-      timestamp: firebase.firestore.Timestamp.now()
+      timestamp: firestore.Timestamp.now()
     }
   }
 

@@ -22,27 +22,27 @@ export class ViewPaperPage implements OnInit, OnDestroy {
   faCaretSquareDown = faCaretSquareDown;
   faCaretSquareUp = faCaretSquareUp;
   
-  private filtersShow: boolean = true;
+  public filtersShow: boolean = true;
 
   private maxTime: number = 20;
 
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
   private instructors: {id: string, data: User}[];
   private allInstructors: {id: string, data: User}[];
 
-  private papers: {id: string, data: Paper}[];
+  public papers: {id: string, data: Paper}[];
   private allPapers: {id: string, data: Paper}[];
 
-  private subjects: {id: string, data: Subject}[];
+  public subjects: {id: string, data: Subject}[];
 
-  private subjectFilter: string;
+  public subjectFilter: string;
 
   private userSubscription: Subscription;
 
-  private search_by_instructor: boolean = false;
+  public search_by_instructor: boolean = false;
 
   constructor(
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private paperService: PaperService,
     private userService: UserService,
     private loadingService: LoadingService,
@@ -81,7 +81,7 @@ export class ViewPaperPage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  private async filterPapers(){
+  public async filterPapers(){
     await this.loadingService.showLoading("Loading");
     await this.paperService.getPapersBySubjectId(this.subjectFilter).then(res => {
       this.allPapers = res;
@@ -89,7 +89,7 @@ export class ViewPaperPage implements OnInit, OnDestroy {
     this.allPapers = this.allPapers.filter(x => x.data.published);
     let grade_level = this.loggedInUser.data.grade_level;
     if(grade_level != ""){
-      if(grade_level!="other"){
+      if(grade_level!="Other"){
         this.allPapers = this.allPapers.filter(x => x.data.grade_level == grade_level);
       }
     }
@@ -98,12 +98,12 @@ export class ViewPaperPage implements OnInit, OnDestroy {
     this.refresher.complete();
   }
 
-  private initializeItems(){
+  public initializeItems(){
     this.papers = this.allPapers;
     this.instructors = this.allInstructors;
   }
 
-  private filterByInstructor(evt){    
+  public filterByInstructor(evt){    
     this.initializeItems();
 
     const searchTerm = evt.srcElement.value;
@@ -138,7 +138,7 @@ export class ViewPaperPage implements OnInit, OnDestroy {
 
   }
 
-  private getInstructorName(id, part: string = "all"): string{
+  public getInstructorName(id, part: string = "all"): string{
     if(this.instructors != undefined){      
       let instructor = this.instructors.filter(x=> x.id == id)[0];
       if(instructor!=undefined){
@@ -158,7 +158,7 @@ export class ViewPaperPage implements OnInit, OnDestroy {
     }
   }
 
-  private answerPaper(paper: any){
+  public answerPaper(paper: any){
     let navigationExtras: NavigationExtras = {
       queryParams: {
         paper: JSON.stringify(paper)

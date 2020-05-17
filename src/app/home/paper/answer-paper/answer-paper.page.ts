@@ -24,32 +24,34 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
   faImage = faImage;
 
   @ViewChild("questionSlider",{ read: false, static: false }) slides: IonSlides;
-  private backSlideButton: boolean = true;
-  private nextSlideButton: boolean = true;
-  private submitButton: boolean = false;
+  public backSlideButton: boolean = true;
+  public nextSlideButton: boolean = true;
+  public submitButton: boolean = false;
   private adRef: number = 0;
-  private jumpQuestion: number;
+  public jumpQuestion: number;
 
-  private maxTime: number;
+  public maxTime: number;
 
-  private answerPaper: boolean = false;
+  public answerPaper: boolean = false;
 
   private loggedInUser: {id: string, data: User};
 
-  private paper: {id: string, data: Paper};
+  public paper: {id: string, data: Paper};
 
-  private questionArray: {id: string, data: Question}[];
+  public questionArray: {id: string, data: Question}[];
   private allQuestionArray: {id: string, data: Question}[];
-  private answerArray: string[];
+  public answerArray: string[];
 
   private routerSubscription: Subscription;
   private questionSubscription: Subscription;
 
   private timeoutVar;
 
+  public slideOpts: any;
+
   constructor(
     private questionService: QuestionService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private loadingService: LoadingService,
     private alertController: AlertController,
     private modalController: ModalController,
@@ -93,7 +95,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     this.adMob.banner.remove();
   }
 
-  private async openImageViewer(url: string){
+  public async openImageViewer(url: string){
     const modal = await this.modalController.create({
       component: ImageViewerPage,
       cssClass: 'my-custom-modal-css',
@@ -159,7 +161,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
       }, 1000);
   }
 
-  private showTime(seconds: number): string{
+  public showTime(seconds: number): string{
     let zerothBreaker = "";
     let firstBreaker = ": ";
     let secondBreaker = ": ";
@@ -173,7 +175,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     return zerothBreaker + no_of_hours + firstBreaker + no_of_minutes + secondBreaker + no_of_seconds;
   }
 
-  private slide(option){
+  public slide(option){
     option == "back"? this.slides.slidePrev(): this.slides.slideNext();    
     if(this.adRef%2==0){
       this.adRef = this.adRef + 1;
@@ -184,7 +186,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     }
   }
 
-  private checkSlideOptions(){
+  public checkSlideOptions(){
     console.log('___checkSlideOptions()___');
     let promise1 = this.slides.isBeginning();
     let promise2 = this.slides.isEnd();
@@ -195,7 +197,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     });
   }
 
-  private async submit(){
+  public async submit(){
     console.log("___submit()___");
     let alert = await this.alertController.create({
       header: 'Confirm',
@@ -223,7 +225,7 @@ export class AnswerPaperPage implements OnInit, OnDestroy {
     
   }
 
-  private jumpToQuestion(questionNumber: number){
+  public jumpToQuestion(questionNumber: number){
     this.checkSlideOptions();
     Promise.all([this.slides.length()]).then((data) =>{
       questionNumber>0 && data[0]>=questionNumber? this.slides.slideTo(questionNumber-1): this.toastMessageService.showToastMessage("Invalid Question No.");

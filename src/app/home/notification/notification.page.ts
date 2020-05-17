@@ -21,14 +21,14 @@ export class NotificationPage implements OnInit {
   faTrash = faTrash;
   faEdit = faEdit;
 
-  private disableSaveBtn: boolean = false;
+  public disableSaveBtn: boolean = false;
 
-  private notifications: {id: string, data: Notification}[] = [];
-  private loggedInUser: {id: string, data: User};
+  public notifications: {id: string, data: Notification}[] = [];
+  public loggedInUser: {id: string, data: User};
 
   constructor(
     private notificationService: NotificationService, 
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private loadingService: LoadingService,
     private modalController: ModalController,
     private navController: NavController) {
@@ -51,7 +51,7 @@ export class NotificationPage implements OnInit {
     this.loadingService.hideLoading();
   }
 
-  private async openCreateNotificationModal(){
+  public async openCreateNotificationModal(){
     console.log("___openCreateNotificationModal()___");
     const modal = await this.modalController.create({
       component: CreateNotificationModalPage,
@@ -64,7 +64,7 @@ export class NotificationPage implements OnInit {
     return await modal.present();
   }
 
-  private async clearForMe(notification: {id: string, data: Notification}){
+  public async clearForMe(notification: {id: string, data: Notification}){
     console.log("___clearForMe()___");
     await this.loadingService.showLoading("Loading");
     await this.notificationService.clearNotificationForMe(notification.id, notification.data, this.loggedInUser.id); 
@@ -73,7 +73,7 @@ export class NotificationPage implements OnInit {
     this.loadingService.hideLoading();
   }
 
-  private async openEditNotificationModal(notification: {id: string, data: Notification}){
+  public async openEditNotificationModal(notification: {id: string, data: Notification}){
     console.log("___openEditNotificationModal()___");
     const modal = await this.modalController.create({
       component: EditNotificationModalPage,
@@ -89,7 +89,7 @@ export class NotificationPage implements OnInit {
     return await modal.present();
   }
 
-  private async deleteNotification(id: string){
+  public async deleteNotification(id: string){
     console.log("___deleteNotification()___");
     await this.loadingService.showLoading("Loading");
     await this.notificationService.removeNotification(id);
@@ -98,7 +98,7 @@ export class NotificationPage implements OnInit {
     this.loadingService.hideLoading();
   }
 
-  private async cleanClearedUsers(notification: {id: string, data: Notification}){
+  public async cleanClearedUsers(notification: {id: string, data: Notification}){
     console.log("___cleanClearedUsers()___");
     await this.loadingService.showLoading("Loading");
     await this.notificationService.cleanClearedUsers(notification.id, notification.data);

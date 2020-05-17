@@ -21,7 +21,7 @@ export class AttemptPage implements OnInit, OnDestroy {
 
   private loggedInUser: {id: string, data: User};
 
-  private attempts: {id: string, paper: string, data: Attempt, lastAttempt: string}[] = [];
+  public attempts: {id: string, paper: string, data: Attempt, lastAttempt: string}[] = [];
   private papers: {id: string, data: Paper}[] = [];
   
   private subjectGroup: {id: string, data: Subject}[];
@@ -32,7 +32,7 @@ export class AttemptPage implements OnInit, OnDestroy {
   
   constructor(
     private attemptService: AttemptService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private loadingService: LoadingService,
     private paperService: PaperService,
     private userService: UserService,
@@ -54,6 +54,7 @@ export class AttemptPage implements OnInit, OnDestroy {
       this.userSubscription = this.userService.getSubjects().subscribe(async (res) => {
         this.subjectGroup = res; 
         await this.attemptService.getAttemptsByUserId(this.loggedInUser.id).then(async res=>{
+          console.log(res);
           res.forEach(async (el) => {
             let paper = this.papers.filter(paper_el => paper_el.id == el.data.paper)[0];
             if(paper != undefined){
@@ -89,7 +90,7 @@ export class AttemptPage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  private goBack(){
+  public goBack(){
     this.navController.back();
   }
 

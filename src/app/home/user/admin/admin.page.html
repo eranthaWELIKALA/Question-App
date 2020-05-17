@@ -53,7 +53,7 @@
         <ion-col size="11"><ion-text *ngIf="adminShow">Hide Admins Panel</ion-text><ion-text *ngIf="!adminShow">Show Admins Panel</ion-text></ion-col>
         <ion-col class="ion-float-right" size="1"><fa-icon [icon]="adminShow?faCaretSquareUp:faCaretSquareDown" (click)="panelHandling('admin')"></fa-icon></ion-col>
     </ion-item>
-    <ion-item *ngIf="adminShow && loggedInUser.data.degradeUserAbility">
+    <ion-item *ngIf="adminShow && loggedInUser.data.adminFeatures">
       <ion-col size="6">
         <ion-button class="ion-float-right" color="success" (click)="upgrade=true">
           Upgrade
@@ -97,7 +97,7 @@
       <ion-button size="small" color="dark" (click)="openHelpModal()"><fa-icon [icon]="faInfoCircle"></fa-icon></ion-button>
     </ion-item-group>
 
-    <ion-item-group *ngIf="adminShow && loggedInUser.data.degradeUserAbility && !upgrade">      
+    <ion-item-group *ngIf="adminShow && loggedInUser.data.adminFeatures && !upgrade">      
       <div class="ion-text-center">
           <h4>Degrade an Admin</h4>
       </div>

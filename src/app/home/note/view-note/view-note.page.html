@@ -60,7 +60,7 @@
                 <ion-item-group class="ion-margin-bottom">
                     <ion-item>
                       <ion-text>{{note.data.name + " " + note.data.year}}</ion-text>
-                      <ion-col><span class="ion-float-right">View <fa-icon [icon]="faFilePdf" (click)="download_openPDF(note.data.contentURL, note.data.name)"></fa-icon></span></ion-col>
+                      <ion-col><ion-button fill="clear" size="small" class="ion-float-right" (click)="download_openPDF(note.data.contentURL, note.data.name)"><span>View <fa-icon [icon]="faFilePdf"></fa-icon></span></ion-button></ion-col>
                     </ion-item>
                     <ion-item>
                       <ion-text>{{"Prepared by " + getInstructorName(note.data.instructor)}}</ion-text>
@@ -82,5 +82,5 @@
 </ion-content>
 
 <ion-footer class="ion-text-center">
-    <small *ngIf="loggedInUser.data.grade_level=='' || loggedInUser.data.grade_level=='other'">Set Grade/ Level in your "Profile" for more filtered results</small>
+    <small *ngIf="loggedInUser.data.grade_level=='' || loggedInUser.data.grade_level=='Other'">Set Grade/ Level in your "Profile" for more filtered results</small>
 </ion-footer>

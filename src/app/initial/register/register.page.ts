@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { faCheck, faGraduationCap, faChalkboardTeacher, faArrowLeft, faUpload, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faGraduationCap, faChalkboardTeacher, faArrowLeft, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { User, UserService, Subject } from '../user.service';
 import { ModalController, NavController, Platform } from '@ionic/angular';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -7,9 +7,8 @@ import { AgreementModalPage } from './agreement-modal/agreement-modal.page';
 import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
+import { firestore } from 'firebase/app';
 
 @Component({
   selector: 'app-register',
@@ -25,17 +24,16 @@ export class RegisterPage implements OnInit, OnDestroy {
   faChalkboardTeacher = faChalkboardTeacher;
   faArrowLeft = faArrowLeft;
   faUpload = faUpload;
-  faCamera = faCamera;
 
-  private signedAgreement: boolean = false;
-  private password: string;
-  private confirmPassword: string;
-  private subject: string[] = []
+  public signedAgreement: boolean = false;
+  public password: string;
+  public confirmPassword: string;
+  public subject: string[] = []
   private otherSubject: string = "";
   private otherSubjectArray: string[];
 
-  private user: User;
-  private subjects: {id: string, data: Subject}[];
+  public user: User;
+  public subjects: {id: string, data: Subject}[];
   private imageFile: File;
 
   private contact: string;
@@ -53,8 +51,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     private toastMessageService: ToastMessageService,
     private navController: NavController,
     private fAuth: AngularFireAuth,
-    private platform: Platform,
-    private camera: Camera
+    private platform: Platform
     ) { }
 
   async ngOnInit() {
@@ -85,7 +82,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.fileUploadRegisterSubscription!=undefined?this.fileUploadRegisterSubscription.unsubscribe():"";
   }
 
-  private goBack(){
+  public goBack(){
     console.log("___goBack()___");
 
     // Remove if an image is uploaded without creating an account
@@ -99,7 +96,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.navController.navigateRoot('/');
   }
 
-  private checkFileType(event: FileList){
+  public checkFileType(event: FileList){
     if(event.item(0).type != "image/jpg" && event.item(0).type != "image/png" && event.item(0).type != "image/jpeg" && event.item(0).type != "image/gif"){
       this.toastMessageService.showToastMessage("Please select IMG type only", 2000);
       this.imageFile = undefined;
@@ -140,7 +137,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     }
   }
   
-  private async register(form: any){
+  public async register(form: any){
     console.log("___register()___");
     console.log(JSON.stringify(form.value));
     await this.loadingService.showLoading("Validating inputs");
@@ -196,7 +193,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     // Adding the selected subjects
     this.user.units = this.subject;   
 
-    this.user.create = firebase.firestore.Timestamp.now();
+    this.user.create = firestore.Timestamp.now();
 
     // Clear the user
     if(this.userService.addUser(this.user)){      
@@ -244,7 +241,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     return true
   }
 
-  private passwordValidation(): boolean{ 
+  public passwordValidation(): boolean{ 
     if(this.password!= undefined && this.confirmPassword!= undefined){
       if(this.confirmPassword==this.password && this.password!='' && this.password.length >= 8){
         return true;
@@ -275,14 +272,14 @@ export class RegisterPage implements OnInit, OnDestroy {
     else return false;
   }
 
-  private emailFormatValidation(): boolean{ 
+  public emailFormatValidation(): boolean{ 
     if(this.user.email.includes("@") && this.user.email.includes(".")){
       return true;
     }
     else return false;
   }
 
-  private async showAgreement(){
+  public async showAgreement(){
     console.log("___showAgreement()___");
     const modal = await this.modalController.create({
       component: AgreementModalPage,
@@ -310,29 +307,10 @@ export class RegisterPage implements OnInit, OnDestroy {
       lastname: "",
       role: "",
       verify: "assets/verification/not_verified.png",
-      grade_level: "",
+      grade_level: "Other",
       metadata: "",
       units: [],
     };
-  }
-
-  private openCamera(){
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-    
-    this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
-     //alert(imageData)
-     this.user.img_url=(<any>window).Ionic.WebView.convertFileSrc(imageData);
-    }, (err) => {
-     // Handle error
-     alert("error "+JSON.stringify(err))
-    });
   }
 
 }

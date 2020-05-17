@@ -53,7 +53,7 @@
                   <ion-col size="2">
                       <ion-button class="btn" 
                       (click)="disableLikeButton=!disableLikeButton;increaseLikes(news, i);" 
-                      [size]="small" 
+                      size="small" 
                       [color]="checkInterference(news)?'primary': 'medium'" 
                       [disabled]="disableLikeButton">
                       <fa-icon class="ion-margin-right" [icon]="faThumbsUp"></fa-icon><ion-text class="ion-float-right">{{news.data.likes}}</ion-text></ion-button>

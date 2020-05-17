@@ -22,21 +22,21 @@ export class CreatePaperPage implements OnInit, OnDestroy {
 
   private loggedInUser: {id: string, data: User};
 
-  private paper: Paper;
+  public paper: Paper;
 
-  private charging = false;
+  public charging = false;
 
   private subjectIDGroup: string[];
-  private subjectGroup: {id: string, data: Subject}[];
+  public subjectGroup: {id: string, data: Subject}[];
 
   private subjectSubscription: Subscription;
 
-  private disableSavebtn: boolean = false;
+  public disableSaveBtn: boolean = false;
 
   constructor(
     private userService: UserService, 
     private paperService: PaperService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private loadingService: LoadingService,
     private toastMessageService: ToastMessageService,
     private navController: NavController,
@@ -76,15 +76,15 @@ export class CreatePaperPage implements OnInit, OnDestroy {
     this.adMob.banner.remove();
   }
 
-  private async formSubmit(){  
+  public async formSubmit(){  
     if(!isNumber(this.paper.no_of_questions)){
       this.showToastMessage("No of Questions should be a Number");
-      this.disableSavebtn!=this.disableSavebtn;
+      this.disableSaveBtn!=this.disableSaveBtn;
       return;
     }
     if(this.paper.name == "" || this.paper.subject == "" || this.paper.time == "" || this.paper.no_of_questions == 0 || (this.charging && this.paper.price == "")){
       this.showToastMessage("Please fill-out all the feilds with stars");
-      this.disableSavebtn!=this.disableSavebtn;
+      this.disableSaveBtn!=this.disableSaveBtn;
       return;
     }
     let duplicate: boolean = false;
@@ -93,7 +93,7 @@ export class CreatePaperPage implements OnInit, OnDestroy {
     })
     if(duplicate){
       this.showToastMessage("Paper name is already exists");
-      this.disableSavebtn!=this.disableSavebtn;
+      this.disableSaveBtn!=this.disableSaveBtn;
       return;
     }
     await this.loadingService.showLoading("Creating");
@@ -104,12 +104,12 @@ export class CreatePaperPage implements OnInit, OnDestroy {
         this.navController.navigateRoot("home/question/add");
       },
       onrejected =>{
-        this.disableSavebtn!=this.disableSavebtn;
+        this.disableSaveBtn!=this.disableSaveBtn;
         this.loadingService.hideLoading();
       });
   }
 
-  private pickYear(){
+  public pickYear(){
     this.paper.year = this.paper.year.split("-")[0];
   }
 
@@ -151,7 +151,7 @@ export class CreatePaperPage implements OnInit, OnDestroy {
       "year": "",
       "instructor": userId,
       "subject": "",
-      "grade_level": "",
+      "grade_level": "Other",
       "no_of_questions": 0,
       "added_questions": 0,
       "time": "",

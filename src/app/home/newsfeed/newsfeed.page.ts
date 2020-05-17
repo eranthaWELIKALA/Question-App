@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { faBars, faThumbsUp, faThumbsDown, faEdit, faQuestionCircle, faCaretSquareDown, faCaretSquareUp, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Newsfeed, NewsfeedService } from './newsfeed.service';
-import * as firebase from 'firebase/app';
+import { firestore } from 'firebase/app';
 import { User, UserService } from 'src/app/initial/user.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { PaperService, Paper } from '../paper/paper.service';
@@ -30,24 +30,24 @@ export class NewsfeedPage implements OnInit, OnDestroy {
   faCaretUp = faCaretUp;
   faCaretDown = faCaretDown;
 
-  private swapIcon: boolean = false;
+  public swapIcon: boolean = false;
   
   private datePipe = new DatePipe('en-US');
-  private disableLikeButton: boolean = false;
+  public disableLikeButton: boolean = false;
 
-  private loggedInUser: {id: string, data: User}
+  public loggedInUser: {id: string, data: User}
 
-  private newsfeed:{id: string, data: Newsfeed, user: User}[];
+  public newsfeed:{id: string, data: Newsfeed, user: User}[];
 
   private newsfeedSubscription: Subscription;
 
-  private feedCount = 50;
+  public feedCount = 50;
 
   private previousItemId: string = "";
-  private hideButton: boolean = true;
+  public hideButton: boolean = true;
 
   constructor(
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private newsfeedService: NewsfeedService,
     private paperService: PaperService,
     private userService: UserService,
@@ -100,7 +100,7 @@ export class NewsfeedPage implements OnInit, OnDestroy {
     //   }, 60000);
   }
 
-  private refresh(){
+  public refresh(){
     if(isNaN(this.feedCount) || this.feedCount < 10){
       this.feedCount = 10;
     }
@@ -119,8 +119,8 @@ export class NewsfeedPage implements OnInit, OnDestroy {
     });
   }
 
-  private timeConvert(timeStamp: firebase.firestore.Timestamp): string{
-    let timeGap: Date = new Date(firebase.firestore.Timestamp.now().toMillis() - timeStamp.toMillis());
+  public timeConvert(timeStamp: firestore.Timestamp): string{
+    let timeGap: Date = new Date(firestore.Timestamp.now().toMillis() - timeStamp.toMillis());
     let days = Number(timeGap.getTime()/(1000*60*60*24)).toFixed(); 
     let str = "";
     let daysInNumber: Number = Number(days);
@@ -153,7 +153,7 @@ export class NewsfeedPage implements OnInit, OnDestroy {
     
   }
 
-  private async increaseLikes(news: {id: string, data: Newsfeed}, index: number){
+  public async increaseLikes(news: {id: string, data: Newsfeed}, index: number){
     console.log("__increaseLikes()___");
     let availability = false;
     await this.newsfeedService.checkAvailability(news.data.type, news.data.ref_id).then(onfulfilled=>{
@@ -196,7 +196,7 @@ export class NewsfeedPage implements OnInit, OnDestroy {
     this.disableLikeButton = !this.disableLikeButton;
   }
 
-  private checkInterference(news: {id: string, data: Newsfeed}): boolean{
+  public checkInterference(news: {id: string, data: Newsfeed}): boolean{
     let usersArray: string[] = JSON.parse(news.data.likedUsers);  
       usersArray = usersArray.filter(x=> x == this.loggedInUser.id);
       if(usersArray.length>0){
@@ -207,17 +207,17 @@ export class NewsfeedPage implements OnInit, OnDestroy {
       }
   }
 
-  private loadPreviousItem(){
+  public loadPreviousItem(){
     console.log("___loadPreviousItem()___");
     this.previousItemId != null && this.previousItemId != '' ? document.getElementById(this.previousItemId).scrollIntoView({behavior: "smooth", block: 'center'}) : console.log("Previous Item Id is null or empty");
     this.hideButton = !this.hideButton
   }
 
-  private jumpTo(direction: string){
+  public jumpTo(direction: string){
     direction == "up" ? document.getElementById(this.newsfeed[0].id).scrollIntoView({behavior: "smooth", block: 'start'}) : document.getElementById(this.newsfeed[this.newsfeed.length-1].id).scrollIntoView({behavior: "smooth", block: 'end'})
   }
 
-  private goToLink(id: string, type: string){
+  public goToLink(id: string, type: string){
     console.log(type);
     if(this.newsfeedService.checkAvailability(type, id)){
       if(type == "Paper"){
@@ -228,7 +228,7 @@ export class NewsfeedPage implements OnInit, OnDestroy {
             "year": "",
             "instructor": "",
             "subject": "",
-            "grade_level": "",
+            "grade_level": "Other",
             "no_of_questions": 0,
             "added_questions": 0,
             "time": "",

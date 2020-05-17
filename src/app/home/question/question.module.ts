@@ -9,12 +9,9 @@ import { QuestionPage } from './question.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DeleteModalPage } from './delete-question/delete-modal/delete-modal.page';
 import { KeyboardPage } from 'src/app/util/keyboard/keyboard.page';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { QuillModule } from 'ngx-quill';
 import { CreateNewsfeedPage } from '../newsfeed/create-newsfeed/create-newsfeed.page';
 import { CreateNewsfeedPageModule } from '../newsfeed/create-newsfeed/create-newsfeed.module';
-import { AddQuestionPageModule } from './add-question/add-question.module';
-import { ViewQuestionPageModule } from './view-question/view-question.module';
 
 const routes: Routes = [
   {
@@ -28,11 +25,11 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        loadChildren: () => AddQuestionPageModule
+        loadChildren: './add-question/add-question.module#AddQuestionPageModule'
       },
       {
         path: 'view',
-        loadChildren: () => ViewQuestionPageModule
+        loadChildren: './view-question/view-question.module#ViewQuestionPageModule'
       }
     ]
   }
@@ -43,8 +40,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    FontAwesomeModule,    
-    CKEditorModule,
+    FontAwesomeModule, 
     QuillModule,    
     CreateNewsfeedPageModule,
     RouterModule.forChild(routes)

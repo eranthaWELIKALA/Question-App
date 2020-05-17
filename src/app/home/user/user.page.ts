@@ -20,10 +20,10 @@ export class UserPage implements OnInit, OnDestroy {
   faUserCog = faUserCog;
   faStar = faStar;
 
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
 
-  private subjects: {id: string, data: Subject}[];
-  private subject: string[];
+  public subjects: {id: string, data: Subject}[];
+  public subject: string[];
   private otherSubject: string = "";
   private otherSubjectArray: string[];
   
@@ -34,7 +34,7 @@ export class UserPage implements OnInit, OnDestroy {
 
   constructor(
     private navController: NavController,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private userService: UserService,
     private loadingService: LoadingService,
     private toastMessageService: ToastMessageService){
@@ -62,15 +62,15 @@ export class UserPage implements OnInit, OnDestroy {
     this.fileUploadSubscription!=undefined?this.fileUploadSubscription.unsubscribe():"";
   }
 
-  private goAdmin(){
+  public goAdmin(){
     this.navController.navigateForward("/home/user/admin");
   }
 
-  private goAttempt(){
+  public goAttempt(){
     this.navController.navigateForward("/home/user/attempt");
   }
 
-  private checkFileType(event: FileList){
+  public checkFileType(event: FileList){
     if(event.item(0).type != "image/jpg" && event.item(0).type != "image/png" && event.item(0).type != "image/jpeg" && event.item(0).type != "image/gif"){
       this.toastMessageService.showToastMessage("Please select IMG type only", 2000);
       this.imageFile = undefined;
@@ -114,7 +114,7 @@ export class UserPage implements OnInit, OnDestroy {
       });
   }
 
-  private async update(form){
+  public async update(form){
     console.log(form);
     await this.loadingService.showLoading("Validating inputs");
     if(!(this.formValidation() && this.emailValidation())){
@@ -192,7 +192,7 @@ export class UserPage implements OnInit, OnDestroy {
     return true;
   }
 
-  private emailValidation(): boolean{
+  public emailValidation(): boolean{
     if(this.loggedInUser.data.email.includes("@") && this.loggedInUser.data.email.includes(".")){
       return true;
     }

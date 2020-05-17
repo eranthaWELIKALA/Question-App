@@ -25,26 +25,26 @@ export class ViewNotePage implements OnInit, OnDestroy {
   faCaretSquareDown = faCaretSquareDown;
   faCaretSquareUp = faCaretSquareUp;
 
-  private filtersShow: boolean = true;
+  public filtersShow: boolean = true;
 
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
   private instructors: {id: string, data: User}[];
   private allInstructors: {id: string, data: User}[];
 
-  private notes: {id: string, data: Note}[];
+  public notes: {id: string, data: Note}[];
   private allNotes: {id: string, data: Note}[];
 
   private subjectIdArray: string[] = [];
-  private subjects: {id: string, data: Subject}[];
+  public subjects: {id: string, data: Subject}[];
 
-  private subjectFilter: string;
+  public subjectFilter: string;
 
   private userSubscription: Subscription;
 
-  private search_by_instructor: boolean = false;
+  public search_by_instructor: boolean = false;
 
   constructor(    
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private noteService: NoteService,
     private userService: UserService,
     private loadingService: LoadingService,
@@ -90,14 +90,14 @@ export class ViewNotePage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  private async filterNotes(){
+  public async filterNotes(){
     await this.loadingService.showLoading("Loading");
     await this.noteService.getNotesBySubjectId(this.subjectFilter).then(res => {
       this.allNotes = res;
     });    
     let grade_level = this.loggedInUser.data.grade_level;
     if(grade_level != ""){
-      if(grade_level!="other"){
+      if(grade_level!="Other"){
         this.allNotes = this.allNotes.filter(x => x.data.grade_level == grade_level);
       }
     }
@@ -106,12 +106,12 @@ export class ViewNotePage implements OnInit, OnDestroy {
     this.refresher.complete();
   }
 
-  private initializeItems(){
+  public initializeItems(){
     this.notes = this.allNotes;
     this.instructors = this.allInstructors; 
   }
 
-  private filterByInstructor(evt){    
+  public filterByInstructor(evt){    
     this.initializeItems();
 
     const searchTerm = evt.srcElement.value;
@@ -146,7 +146,7 @@ export class ViewNotePage implements OnInit, OnDestroy {
 
   }
 
-  private async download_openPDF(url: string, fileName: string){
+  public async download_openPDF(url: string, fileName: string){
     await this.loadingService.showLoading("Downloading");
     let downloadURL = url;
     let path = this.file.dataDirectory;
@@ -165,7 +165,7 @@ export class ViewNotePage implements OnInit, OnDestroy {
     })
   }
 
-  private getInstructorName(id): string{
+  public getInstructorName(id): string{
     if(this.instructors != undefined){
       let instructor = this.instructors.filter(x=> x.id == id)[0].data;
       return instructor.firstname + " " + instructor.lastname;

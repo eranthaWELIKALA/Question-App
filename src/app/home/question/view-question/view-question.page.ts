@@ -26,13 +26,13 @@ export class ViewQuestionPage implements OnInit, OnDestroy {
   faCaretSquareDown = faCaretSquareDown;
   faCaretSquareUp = faCaretSquareUp;
 
-  private paperDetailsShow: boolean = true;
+  public paperDetailsShow: boolean = true;
   
   //private image;
-  private questionGroup: {id: string, data: Question}[] = [];
+  public questionGroup: {id: string, data: Question}[] = [];
 
-  private paper: {id: string, data: Paper};
-  private paperId: string;
+  public paper: {id: string, data: Paper};
+  public paperId: string;
 
   private loggedInUser: {id: string, data: User};
 
@@ -43,7 +43,7 @@ export class ViewQuestionPage implements OnInit, OnDestroy {
     private navController: NavController,
     private modalController: ModalController,
     private questionService: QuestionService, 
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private paperService: PaperService,
     private loadingService: LoadingService) {
       // Get Logged in User's details
@@ -79,7 +79,7 @@ export class ViewQuestionPage implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
-  private async openImageViewer(url: string){
+  public async openImageViewer(url: string){
     const modal = await this.modalController.create({
       component: ImageViewerPage,
       cssClass: 'my-custom-modal-css',

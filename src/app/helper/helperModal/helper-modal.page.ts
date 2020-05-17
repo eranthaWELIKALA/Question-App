@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { faTimes, faArrowLeft, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { HelperService } from '../helper.service';
 import { AgreementModalPage } from './agreementModal/agreement-modal/agreement-modal.page';
+import { PrivacyModalPage } from './privacyModal/privacy-modal/privacy-modal.page';
 
 @Component({
   selector: 'app-helper-modal',
@@ -15,12 +16,12 @@ export class HelperModalPage implements OnInit {
   faArrowLeft = faArrowLeft;
   faCircle = faCircle;
 
-  private helpTitle = "Help";
+  public helpTitle = "Help";
 
-  private helpTitles: any[] = [];
-  private helpContent: any;
+  public helpTitles: any[] = [];
+  public helpContent: any;
 
-  private showContentPanel: boolean = false;
+  public showContentPanel: boolean = false;
 
   constructor(
     private helperService: HelperService,
@@ -51,9 +52,19 @@ export class HelperModalPage implements OnInit {
       backdropDismiss : false
     });
     return await modal.present();
+  }  
+
+  async openPrivacyModal(){
+    console.log("openPrivacyModal()___");
+    const modal = await this.modalController.create({
+      component: PrivacyModalPage,
+      cssClass: "my-agreement-modal-css",
+      backdropDismiss : false
+    });
+    return await modal.present();
   }
 
-  private async close(){
+  public async close(){
     await this.modalController.dismiss();
   }
 

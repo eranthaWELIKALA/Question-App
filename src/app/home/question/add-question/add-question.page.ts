@@ -12,7 +12,7 @@ import { LoadingService } from 'src/app/util/loading/loading.service';
 import { ToastMessageService } from 'src/app/util/toastMessage/toast-message.service';
 import { Subscription } from 'rxjs';
 import { NewsfeedService, Newsfeed } from '../../newsfeed/newsfeed.service';
-import * as firebase from 'firebase/app';
+import { firestore } from 'firebase/app';
 import { CreateNewsfeedPage } from '../../newsfeed/create-newsfeed/create-newsfeed.page';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
@@ -31,28 +31,28 @@ export class AddQuestionPage implements OnInit, OnDestroy {
   faCaretSquareDown = faCaretSquareDown;
   faCaretSquareUp = faCaretSquareUp;
 
-  private paperDetailsShow: boolean = true;
-  private filtersShow: boolean = true;
-  private imagesGroupShow: boolean = false;
+  public paperDetailsShow: boolean = true;
+  public filtersShow: boolean = true;
+  public imagesGroupShow: boolean = false;
   
   //private image;
-  private questionGroup: {id: string, data: Question}[] = [];
+  public questionGroup: {id: string, data: Question}[] = [];
 
-  private papers: {id: string, data: Paper}[];
-  private paper: {id: string, data: Paper};
-  private paperId: string;
+  public papers: {id: string, data: Paper}[];
+  public paper: {id: string, data: Paper};
+  public paperId: string;
   private tempPaperId: string;
 
-  private subjects: {id: string, data: Subject}[];  
+  public subjects: {id: string, data: Subject}[];  
   //private subject: {id: string, data: Subject};
-  private subjectId: string;
+  public subjectId: string;
 
   private loggedInUser: {id: string, data: User};
 
   private trashQuestionArray: {id: string, data: Question}[] = [];
-  private no_trash_questions: number;
+  public no_trash_questions: number;
 
-  private disableSaveBtn: boolean = false;
+  public disableSaveBtn: boolean = false;
 
   private routerSubscription: Subscription;
   private userSubscription: Subscription;
@@ -66,7 +66,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private questionService: QuestionService, 
     private userService: UserService, 
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private paperService: PaperService,
     private newsfeedService: NewsfeedService,
     private loadingService: LoadingService,
@@ -133,7 +133,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
    *  @index - if it is in an array the index
    *  @path - ex: data.question.options
    */
-  private async loadKeyboard(curentText: string, isArray: boolean, variable: any, index: number, path: string){
+  public async loadKeyboard(curentText: string, isArray: boolean, variable: any, index: number, path: string){
     console.log("___loadKeyboard()___");
     const modal = await this.modalController.create({
       component: KeyboardPage,
@@ -181,7 +181,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     
   }
 
-  private async uploadFile(event: FileList, index: number, type: string = "questionImage", answerLetter: string = ''){
+  public async uploadFile(event: FileList, index: number, type: string = "questionImage", answerLetter: string = ''){
     await this.loadingService.showLoading('Uploading');
     this.disableSaveBtn = true;
 
@@ -458,7 +458,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     );
   }
 
-  private addQuestion(){   
+  public addQuestion(){   
     // Checking whether more questions can be added or not
     if(this.paper.data.no_of_questions > this.questionGroup.length){
       this.createDummyQuestion();
@@ -472,7 +472,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.disableSaveBtn=!this.disableSaveBtn;
   }
 
-  private removeQuestion(index: number){
+  public removeQuestion(index: number){
     console.log("___removeQuestion()___");
     let question = this.questionGroup[index];
     this.questionGroup.splice(index,1);
@@ -480,7 +480,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.no_trash_questions = this.trashQuestionArray.length;
   }
 
-  private async showDeleteModal() {
+  public async showDeleteModal() {
     console.log("___showDeleteModal()___");
     const modal = await this.modalController.create({
       component: DeleteModalPage,
@@ -515,7 +515,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.disableSaveBtn = false;
   }
 
-  private async reload(){
+  public async reload(){
     this.disableSaveBtn = true;
     let alert = await this.alertController.create({
       header: 'Reload',
@@ -548,7 +548,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     alert.present();
   }
 
-  private async formSubmit(){
+  public async formSubmit(){
     if(this.paperId == undefined){
         this.toastMessageService.showToastMessage('Please select a Paper first', 2000);
         this.disableSaveBtn=!this.disableSaveBtn;
@@ -712,12 +712,12 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     return true;
   }
 
-  private getPaperSubject(){
+  public getPaperSubject(){
     console.log("___getPaperSubject()___");
     this.paper = this.papers.filter(x => x.id == this.paperId)[0];
   }
 
-  private async filterPapersBySubject(){
+  public async filterPapersBySubject(){
     console.log("___filterPapers()___");
     if(this.subjectId==undefined){
       return;
@@ -739,7 +739,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     this.loadingService.hideLoading();
   }
 
-  private async filterQuestionsByPaper(loading: boolean = true){
+  public async filterQuestionsByPaper(loading: boolean = true){
     console.log("___filterQuestionsByPaper()___"); 
     if(this.paperId == undefined){
       return;
@@ -830,7 +830,7 @@ export class AddQuestionPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  private async publishPaperConfirm(){
+  public async publishPaperConfirm(){
     let alert = await this.alertController.create({
       header: 'Publish',
       subHeader: 'Your paper is ready to be published. Continue?',
@@ -873,8 +873,8 @@ export class AddQuestionPage implements OnInit, OnDestroy {
                       description:  description,
                       type: "Paper",
                       ref_id: this.paper.id,
-                      posted_timestamp: firebase.firestore.Timestamp.now(),
-                      timestamp: firebase.firestore.Timestamp.now(),
+                      posted_timestamp: firestore.Timestamp.now(),
+                      timestamp: firestore.Timestamp.now(),
                       likes: 0,
                       likedUsers: "[]"
                     }                    

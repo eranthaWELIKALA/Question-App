@@ -17,16 +17,16 @@ export class CreateNotificationModalPage implements OnInit {
   faAsterisk = faAsterisk;
   faTimes = faTimes;
 
-  private disableSaveBtn: boolean = false;
+  public disableSaveBtn: boolean = false;
 
   private loggedInUser: {id: string, data: User};
 
   private users: {id: string, data: User}[] = [];
-  private usersFormatted: {id: string, name: string}[] = [];
+  public usersFormatted: {id: string, name: string}[] = [];
 
-  private userRoleS: boolean = false;
+  public userRoleS: boolean = false;
 
-  private notification: Notification;
+  public notification: Notification;
 
   private userSubscription: Subscription;
 
@@ -66,7 +66,7 @@ export class CreateNotificationModalPage implements OnInit {
     }
   }
 
-  private formSubmit(){
+  public formSubmit(){
     console.log("___formSubmit()___");
     if(this.notification.title == "" || this.notification.description == "" || this.notification.userRoleSelection == ""){
       this.toastMessageService.showToastMessage("Please fill-out all the feilds with stars");
@@ -86,7 +86,7 @@ export class CreateNotificationModalPage implements OnInit {
     })
   }
 
-  private close(){
+  public close(){
     this.modalController.dismiss();
   }
 

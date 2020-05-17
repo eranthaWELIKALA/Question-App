@@ -4,7 +4,6 @@ import { faFileAlt, faPlusCircle, faEye, faTrash, faSignOutAlt, faUser, faSticky
 import { User } from '../initial/user.service';
 import { AlertController, NavController, Platform, ModalController } from '@ionic/angular';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { HelperService } from '../helper/helper.service';
 import { HelperModalPage } from '../helper/helperModal/helper-modal.page';
 import { NotificationService } from './notification/notification.service';
 import { LoadingService } from '../util/loading/loading.service';
@@ -21,7 +20,7 @@ export class HomePage {
    "faSignOutAlt": faSignOutAlt, "faUser": faUser, "faStickyNote": faStickyNote, "faFileMedical": faFileMedical, "faQuestionCircle": faQuestionCircle, "faCog": faCog, "faBell": faBell};
 
   public questionGroup: Array<any> = [];
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
   
   constructor(
     public sharedService: SharedService,
@@ -45,7 +44,7 @@ export class HomePage {
     this.loadingService.hideLoading();    
   }
 
-  private async showHelper(){
+  public async showHelper(){
     const modal = await this.modalController.create({
       component: HelperModalPage,
       cssClass: "my-helper-modal-css",
@@ -56,7 +55,7 @@ export class HomePage {
     return await modal.present();
   }
 
-  private async logOut(){
+  public async logOut(){
     if(this.platform.is("cordova")){
       await this.nativeStorage.getItem('rememberedUser').then(
         data => {  
@@ -74,7 +73,7 @@ export class HomePage {
     this.navController.navigateRoot('/');
   }
 
-  private async displayAlert(){
+  public async displayAlert(){
       const alert = await this.alertController.create({
         message: "Please finish your paper",
         buttons: ['CLOSE']

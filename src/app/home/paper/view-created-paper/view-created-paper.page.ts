@@ -21,17 +21,17 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
 
   private loggedInUser: {id: string, data: User};
 
-  private papers: {id: string, data: Paper}[];
+  public papers: {id: string, data: Paper}[];
 
   private subjectIdArray: string[] = [];
-  private subjects: {id: string, data: Subject}[];
+  public subjects: {id: string, data: Subject}[];
 
-  private subjectFilter: string;
+  public subjectFilter: string;
 
   private userSubscription: Subscription;
 
   constructor(
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private paperService: PaperService,
     private userService: UserService,
     private loadingService: LoadingService,
@@ -66,7 +66,7 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  private async filterPapers(){
+  public async filterPapers(){
     await this.loadingService.showLoading("Loading");
     await this.paperService.getPapersBySubjectId_InstructorId(this.subjectFilter, this.loggedInUser.id).then(res => {
       this.papers = res;
@@ -74,7 +74,7 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
     this.loadingService.hideLoading();
   }
 
-  private async deletePaper(paperId: string){
+  public async deletePaper(paperId: string){
     let alert = await this.alertController.create({
       header: 'Confirm',
       subHeader: 'Do you realy want to DELETE this paper?',
@@ -99,7 +99,7 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
     alert.present();    
   }
 
-  private editPaper(subjectId: string, paperId: string){
+  public editPaper(subjectId: string, paperId: string){
     let navigationExtras: NavigationExtras = {
       queryParams: {
         subjectId: subjectId,
@@ -109,7 +109,7 @@ export class ViewCreatedPaperPage implements OnInit, OnDestroy {
     this.router.navigate(['/home/question/add'], navigationExtras);
   }
 
-  private viewPaper(paperId: string){
+  public viewPaper(paperId: string){
     let navigationExtras: NavigationExtras = {
       queryParams: {
         paperId: paperId

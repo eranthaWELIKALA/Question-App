@@ -16,14 +16,14 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class LoginPage implements OnInit, OnDestroy {
 
   faCoffee = faCoffee;
-  private email;
-  private password;
+  public email;
+  public password;
 
   
-  private loading = false;
-  private rememberMe = false;
+  public loading = false;
+  public rememberMe = false;
   private storageLoad = false;
-  private passwordType = "password";
+  public passwordType = "password";
 
   private loginSubscription: Subscription;
   private backButtonSubscription: Subscription;
@@ -103,7 +103,7 @@ export class LoginPage implements OnInit, OnDestroy {
     alert.present();
   }
 
-  private login(){
+  public login(){
     this.loading = true;
     console.log("___login()___");
 
@@ -173,7 +173,7 @@ export class LoginPage implements OnInit, OnDestroy {
     });
   }
 
-  private showPassword(){
+  public showPassword(){
     console.log("___showPassword()___");
     this.passwordType == 'password'? this.passwordType = 'text': this.passwordType = 'password';
   }  

@@ -9,7 +9,7 @@ import { User } from 'src/app/initial/user.service';
 })
 export class QuestionPage implements OnInit {
 
-  private loggedInUser: {id: string, data: User};
+  public loggedInUser: {id: string, data: User};
 
   constructor(private sharedService: SharedService) { 
     // Get Logged in User's details
